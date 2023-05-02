@@ -3,6 +3,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import axios from 'axios';
 
 const MyForm = styled("form")(({ theme }) => ({
   "& .MuiTextField-root": {
@@ -27,8 +28,16 @@ const SignUp = () => {
     reset({
       email: "",
       password: "",
+      username: "",
     });
-    alert("Registered Successfully");
+    
+    try {
+      await axios.post("http://localhost:8000/auth/register", userData);
+      alert("WELCOME ONBOARD!");
+    } catch (error) {
+      alert("INVALID DATA...");
+      console.log(error);
+    }
   };
 
   return (
@@ -95,7 +104,7 @@ const SignUp = () => {
           helperText={errors.password?.message}
         />
         <Button type='submit' fullWidth variant='contained' color='primary'>
-          Register
+          Sign Up
         </Button>
       </MyForm>
     </Box>
