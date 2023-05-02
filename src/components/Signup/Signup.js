@@ -32,13 +32,15 @@ const SignUp = () => {
     });
     
     try {
-      await axios.post("http://localhost:8000/auth/register", userData);
+      const {data} = await axios.post("http://localhost:8000/auth/register", userData);
+      console.log(data);
       alert("WELCOME ONBOARD!");
     } catch (error) {
       alert("INVALID DATA...");
       console.log(error);
     }
   };
+  
 
   return (
     <Box

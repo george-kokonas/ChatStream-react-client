@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import {useNavigate} from "react-router-dom";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
@@ -16,7 +17,8 @@ const MyForm = styled("form")(({ theme }) => ({
   margin: "auto", 
 }));
 
-const Login = () => {
+const Login = ({onLogin}) => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -31,8 +33,11 @@ const Login = () => {
       password: "",
     });
     try {
-      await axios.post("http://localhost:8000/auth/login", userData);
+      const {data} = await axios.post("http://localhost:8000/auth/login", userData);
+      localStorage.setItem("token", data);
+      onLogin(true);
       alert("Logged in Successfully");
+      navigate("/home");
       
     } catch (error) {
       alert(error.response.data.message);
