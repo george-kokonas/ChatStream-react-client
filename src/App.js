@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { Routes, Route ,Navigate} from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 import "./App.css";
 
 import Navbar from "./components/Navbar/Navbar";
 import Index from "./components/Index/Index";
 import SignUp from "./components/Signup/Signup";
 import Login from "./components/Login/Login";
-import ChatWrapper from "./components/ChatPage/ChatWrapper/ChatWrapper";
+import ChatWindow from "./components/ChatPage/ChatWindow/ChatWindow";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,7 +35,7 @@ function App() {
             </>
           ) : (
             <>
-              <Route path='/home' element={<ChatWrapper />} />
+              <Route path='/home' element={<ChatWindow />} />
               {/* <Route path='/logout' element={<Logout />} /> */}
             </>
           )}
