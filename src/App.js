@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 
 import Navbar from "./components/Navbar/Navbar";
@@ -24,22 +24,22 @@ function App() {
 
   return (
     <>
-      <Navbar isLoggedIn={isLoggedIn} />
       <div className='container'>
-        <Routes>
-          {!isLoggedIn ? (
-            <>
+        {!isLoggedIn ? (
+          <>
+            <Navbar isLoggedIn={isLoggedIn} />
+            <Routes>
               <Route path='/' element={<Index />} />
               <Route path='/signup' element={<SignUp />} />
               <Route path='/login' element={<Login onLogin={handleLogin} />} />
-            </>
-          ) : (
-            <>
-              <Route path='/home' element={<ChatWindow />} />
-              {/* <Route path='/logout' element={<Logout />} /> */}
-            </>
-          )}
-        </Routes>
+            </Routes>
+          </>
+        ) : (
+          <Routes>
+            <Route path='/home' element={<ChatWindow />} />
+            {/* <Route path='/logout' element={<Logout />} /> */}
+          </Routes>
+        )}
       </div>
     </>
   );

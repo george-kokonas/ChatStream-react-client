@@ -1,0 +1,17 @@
+.chatContainer{
+    height: calc(100vh -70px);
+    display: flex;
+}
+
+.chatMenu{
+    margin-left: 5px;
+    flex: 3.5;
+}
+
+.chatBox{
+    flex: 3.5;
+}
+
+.chatOnline{
+    flex: 3;
+}
