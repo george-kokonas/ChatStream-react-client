@@ -1,5 +1,9 @@
-const Home = () => {
-    return (<div>Hello!</div>)
-}
+import MessageWindow from "../MessageWindow/MessageWindow";
 
-export default Home
+const ChatWrapper = () => {
+  return <>
+    <MessageWindow></MessageWindow>
+  </>;
+};
+
+export default ChatWrapper;

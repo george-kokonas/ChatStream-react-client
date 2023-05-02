@@ -7,18 +7,17 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 const Navbar = ({ isLoggedIn }) => {
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='static'>
         <Toolbar>
-          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-            <Link to='/' style={{ textDecoration: "none", color: "white" }}>
-              Chat App
-            </Link>
-          </Typography>
           {!isLoggedIn ? (
             <>
+              <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+                <Link to='/' style={{ textDecoration: "none", color: "white" }}>
+                  Chat App
+                </Link>
+              </Typography>
               <Button component={Link} to='/signup' color='inherit'>
                 Sign Up
               </Button>
@@ -29,7 +28,9 @@ const Navbar = ({ isLoggedIn }) => {
           ) : (
             <>
               <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-                Welcome user
+              <Link to='/home' style={{ textDecoration: "none", color: "white" }}>
+                  Welcome User
+                </Link>
               </Typography>
               <Button component={Link} to='/logout' color='inherit'>
                 Log Out
