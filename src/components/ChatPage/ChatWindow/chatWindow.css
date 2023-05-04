@@ -1,17 +1,24 @@
+
 .chatContainer{
-    height: calc(100vh -70px);
+    height: 100vh;
     display: flex;
 }
 
 .chatMenu{
-    margin-left: 5px;
     flex: 3.5;
 }
 
-.chatBox{
+.message-window{
     flex: 3.5;
 }
 
-.chatOnline{
+.onlineUsers{
     flex: 3;
+  }
+  
+  .wrapper-menu, .wrapper-message-window, .wrapper-onlineUsers{
+    padding: 10px;
+    background-color: rgb(241, 241, 241);
+    border: 2px solid black;
+    height: 100%;
 }
