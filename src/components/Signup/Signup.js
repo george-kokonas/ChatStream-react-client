@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -16,7 +17,9 @@ const MyForm = styled("form")(({ theme }) => ({
   margin: "auto", 
 }));
 
-const SignUp = () => {
+const SignUp = ({onLogin}) => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -34,7 +37,9 @@ const SignUp = () => {
     try {
       const {data} = await axios.post("http://localhost:8000/auth/register", userData);
       console.log(data);
+      onLogin(true)
       alert("WELCOME ONBOARD!");
+      navigate("/home");
     } catch (error) {
       alert("INVALID DATA...");
       console.log(error);
