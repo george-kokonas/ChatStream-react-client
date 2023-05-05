@@ -24,3 +24,14 @@
   background-color: rgb(116, 230, 173);
   color: black;
 }
+
+.wrapper-input{
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.userMessage-input{
+    
+}
