@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./signup.css"
+import "./signup.css";
 import { MDBContainer, MDBInput, MDBBtn } from "mdb-react-ui-kit";
 const SignUp = () => {
   const navigate = useNavigate();
@@ -67,7 +67,7 @@ const SignUp = () => {
         );
         localStorage.setItem("token", data);
         alert("WELCOME ONBOARD!");
-        navigate("/chat")
+        navigate("/chat");
         setEmail("");
         setUsername("");
         setPassword("");
@@ -84,6 +84,7 @@ const SignUp = () => {
 
   return (
     <MDBContainer className='p-3 my-5 d-flex flex-column w-52'>
+      {/* EMAIL INPUT FIELD */}
       <MDBInput
         wrapperClass='mb-1'
         label='Email address'
@@ -91,10 +92,11 @@ const SignUp = () => {
         type='email'
         size='lg'
         value={email}
-        onChange={emailHandler}
+        onChange={(event) => setEmail(event.target.value)}
       />
       {emailError && <span className='error-msg-signup'>{emailError}</span>}
 
+      {/* USERNAME INPUT FIELD */}
       <MDBInput
         wrapperClass='mt-3 mb-1'
         label='User name'
@@ -102,10 +104,13 @@ const SignUp = () => {
         type='text'
         size='lg'
         value={username}
-        onChange={usernameHandler}
+        onChange={(event) => setUsername(event.target.value)}
       />
-      {usernameError && <span className='error-msg-signup'>{usernameError}</span>}
+      {usernameError && (
+        <span className='error-msg-signup'>{usernameError}</span>
+      )}
 
+      {/* PASSWORD INPUT FIELD */}
       <MDBInput
         wrapperClass='mt-3 mb-1'
         label='Password'
@@ -113,14 +118,18 @@ const SignUp = () => {
         type='password'
         size='lg'
         value={password}
-        onChange={passwordHandler}
+        onChange={(event) => setPassword(event.target.value)}
       />
-      {passwordError && <span className='error-msg-signup'>{passwordError}</span>}
+      {passwordError && (
+        <span className='error-msg-signup'>{passwordError}</span>
+      )}
 
+      {/* SUBMIT BUTTON */}
       <MDBBtn className='mt-3 mb-3' type='submit' onClick={submitHandler}>
         SIGN UP
       </MDBBtn>
 
+      {/* TODO : LINK THE SIGN UP LINK WITH THE SIGN UP COMPONENT */}
       <div className='text-center'>
         <p>
           Already a member? <a href='#!'>Log In</a>

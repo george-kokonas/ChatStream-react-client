@@ -23,12 +23,12 @@ const App = () => {
         {!isLoggedIn ? (
           <>
             <Routes>
-              <Route path='*' element={<Index />} />
+              <Route path='/' element={<Index />} />
             </Routes>
           </>
         ) : (
           <Routes>
-            <Route path='/chat' element={<ChatWindow />} />
+            <Route path='/chat' element={<ChatWindow/>} />
           </Routes>
         )}
       </div>
