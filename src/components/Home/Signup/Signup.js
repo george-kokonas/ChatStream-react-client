@@ -1,0 +1,133 @@
+import React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./signup.css"
+import { MDBContainer, MDBInput, MDBBtn } from "mdb-react-ui-kit";
+const SignUp = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState(null);
+  const [usernameError, setUsernameError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
+
+  const emailHandler = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const usernameHandler = (event) => {
+    setUsername(event.target.value);
+  };
+
+  const passwordHandler = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const isValidEmail = (email) => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
+
+  const isValidUsername = (username) => {
+    return username.length < 3 ? false : true;
+  };
+
+  const isValidPassword = (password) => {
+    return /^(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/.test(password);
+  };
+
+  const submitHandler = async (event) => {
+    event.preventDefault();
+
+    setEmailError(null);
+    setUsernameError(null);
+    setPasswordError(null);
+
+    isValidEmail(email) || setEmailError("Email is invalid");
+
+    isValidUsername(username) ||
+      setUsernameError("Username must be at least 3 characters");
+
+    isValidPassword(password) ||
+      setPasswordError(
+        "Must contain at least one digit, one special character and be at least 6 characters."
+      );
+
+    if (email && username && password) {
+      const userData = {
+        email,
+        username,
+        password,
+      };
+      try {
+        const { data } = await axios.post(
+          "http://localhost:8000/auth/register",
+          userData
+        );
+        localStorage.setItem("token", data);
+        alert("WELCOME ONBOARD!");
+        navigate("/chat")
+        setEmail("");
+        setUsername("");
+        setPassword("");
+      } catch (error) {
+        const { message } = error.response.data;
+        message.includes("Email")
+          ? setEmailError(message)
+          : message.includes("Username")
+          ? setUsernameError(message)
+          : alert(message);
+      }
+    }
+  };
+
+  return (
+    <MDBContainer className='p-3 my-5 d-flex flex-column w-52'>
+      <MDBInput
+        wrapperClass='mb-1'
+        label='Email address'
+        id='email'
+        type='email'
+        size='lg'
+        value={email}
+        onChange={emailHandler}
+      />
+      {emailError && <span className='error-msg-signup'>{emailError}</span>}
+
+      <MDBInput
+        wrapperClass='mt-3 mb-1'
+        label='User name'
+        id='form1'
+        type='text'
+        size='lg'
+        value={username}
+        onChange={usernameHandler}
+      />
+      {usernameError && <span className='error-msg-signup'>{usernameError}</span>}
+
+      <MDBInput
+        wrapperClass='mt-3 mb-1'
+        label='Password'
+        id='form2'
+        type='password'
+        size='lg'
+        value={password}
+        onChange={passwordHandler}
+      />
+      {passwordError && <span className='error-msg-signup'>{passwordError}</span>}
+
+      <MDBBtn className='mt-3 mb-3' type='submit' onClick={submitHandler}>
+        SIGN UP
+      </MDBBtn>
+
+      <div className='text-center'>
+        <p>
+          Already a member? <a href='#!'>Log In</a>
+        </p>
+      </div>
+    </MDBContainer>
+  );
+};
+
+export default SignUp;
