@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
 
-import Index from "./components/Home/Index/Index"
+import Index from "./components/Home/Index/Index";
 import ChatWindow from "./components/ChatPage/ChatWindow/ChatWindow";
 
 const App = () => {
@@ -13,7 +13,9 @@ const App = () => {
     const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
-      navigate("/chat");
+    } else {
+      setIsLoggedIn(false);
+      navigate("/");
     }
   }, [navigate]);
 
@@ -27,13 +29,13 @@ const App = () => {
             </Routes>
           </>
         ) : (
-          <Routes>
-            <Route path='/chat' element={<ChatWindow/>} />
-          </Routes>
+          <>
+            <ChatWindow />
+          </>
         )}
       </div>
     </>
   );
-}
+};
 
 export default App;

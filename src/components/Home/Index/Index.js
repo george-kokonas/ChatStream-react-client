@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import SignUp from "../Signup/Signup";
 import Login from "../Login/Login";
 import Tabs from "../Tabs/Tabs";
@@ -13,15 +13,11 @@ import {
 import "./index.css";
 
 function App() {
-  const [selection, setSelection] = useState("login");
+  const [selection, setSelection] = useState("");
 
   const handleSelection = (choice) => {
     setSelection(choice);
   };
-
-  useEffect(() => {
-    setSelection("login");
-  }, []);
 
   return (
     <MDBContainer fluid className='p-3 my-5 h-custom'>
@@ -45,12 +41,12 @@ function App() {
             {/* TABS TITLE AND DIVIDER */}
             <div className='divider d-flex align-items-center my-4'>
               <p className='text-center fw-bold mx-3 mb-0'>
-                {selection.toUpperCase()}
+                {selection.toUpperCase() || "LOG IN"}
               </p>
             </div>
 
             {/* RENDER COMPONENTS ON TAB CLICK */}
-            {selection === "login" && <Login />}
+            {(selection === "login" || selection === "") && <Login />}
             {selection === "signup" && <SignUp />}
             {selection === "about" && "about"}
           </MDBCol>
