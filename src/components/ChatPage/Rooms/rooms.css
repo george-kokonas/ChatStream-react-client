@@ -1,37 +1,4 @@
-.message {
+.rooms-container{
   display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-}
-
-.container-message {
-  display: flex;
-}
-
-.messageText {
-  padding: 10px;
-  border-radius: 20px;
-  background-color: #c618f2;
-  color: white;
-  max-width: 300px;
-}
-
-.message.isMine {
-  align-items: flex-end;
-}
-
-.message.isMine .messageText {
-  background-color: rgb(116, 230, 173);
-  color: black;
-}
-
-.wrapper-input{
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.userMessage-input{
-    
+  align-items: center;
 }
