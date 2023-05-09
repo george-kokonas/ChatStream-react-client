@@ -2,9 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Topbar from "../Topbar/Topbar";
 import Rooms from "../Rooms/Rooms";
+import Messages from "../Messages/Messages";
 import "./chatWindow.css";
+
 const ChatWindow = () => {
   const [rooms, setRooms] = useState([]);
+  const [currentRoom, setCurrentRoom] = useState({});
+  const [messages, setMessages] = useState([]);
+
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
@@ -23,16 +28,32 @@ const ChatWindow = () => {
     getRooms();
   }, [user._id]);
 
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:8000/chat/getMessages/${currentRoom._id}`
+        );
+        setMessages(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getMessages();
+  }, [currentRoom]);
+
   return (
     <>
       <Topbar />
       <div className='chatContainer'>
-        {/* LEFT BAR */}
+        {/* LEFT BAR SHOWING THE ROOMS*/}
         <div className='chatMenu'>
           <div className='wrapper-menu'>
             ---------ROOMS--------
             {rooms.map((room) => (
-              <Rooms chatroom={room} loggedUser={user} key={room._id} />
+              <div onClick={() => setCurrentRoom(room)} key={room._id}>
+                <Rooms chatroom={room} loggedUser={user} />
+              </div>
             ))}
           </div>
         </div>
@@ -40,7 +61,13 @@ const ChatWindow = () => {
         {/* MAIN PAGE */}
         <div className='message-window'>
           <div className='wrapper-message-window'>
-            <div className='message'>------MESSAGES-------</div>
+            <p>----MESSAGES------</p>
+            <div className='message'>
+              {messages.map((msg) => (
+                <Messages message={msg} sentByme={user._id === msg.senderId} key={msg._id} />
+              ))}
+            </div>
+
             <div className='wrapper-input'>
               <input
                 className='userMessage-Input'

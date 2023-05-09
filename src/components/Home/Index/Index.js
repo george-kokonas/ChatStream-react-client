@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState } from "react";
 import SignUp from "../Signup/Signup";
 import Login from "../Login/Login";
 import Tabs from "../Tabs/Tabs";
@@ -46,6 +46,7 @@ function App() {
             </div>
 
             {/* RENDER COMPONENTS ON TAB CLICK */}
+            {/* AFTER THE LOGIN TAB IS CLICKED OR ON FIRST LOAD, RENDER THE LOGIN COMPONENT */}
             {(selection === "login" || selection === "") && <Login />}
             {selection === "signup" && <SignUp />}
             {selection === "about" && "about"}
