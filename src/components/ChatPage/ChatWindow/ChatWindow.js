@@ -8,8 +8,9 @@ import "./chatWindow.css";
 const ChatWindow = () => {
   const [user, setUser] = useState({});
   const [rooms, setRooms] = useState([]);
-  const [messages, setMessages] = useState([]);
   const [currentRoom, setCurrentRoom] = useState({});
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -46,6 +47,34 @@ const ChatWindow = () => {
     getMessages();
   }, [currentRoom]);
 
+  const submitMessageHandler = async (event) => {
+    event.preventDefault();
+
+    let message = {};
+
+    //remove the spaces from string edges and check for empty message
+    const text = newMessage.trim();
+    if (!text) return;
+
+    message = {
+      roomId: currentRoom._id,
+      senderId: user._id,
+      text,
+    };
+
+    try {
+      const { data } = await axios.post(
+        "http://localhost:8000/chat/createMessage/",
+        message
+      );
+      setMessages([...messages, data]);
+      setNewMessage("");
+    } catch (error) {
+      console.log(error);
+      alert("Unable to send message...");
+    }
+  };
+
   return (
     <>
       <Topbar />
@@ -67,13 +96,17 @@ const ChatWindow = () => {
           <div className='wrapper-message-window'>
             <p>----MESSAGES------</p>
             <div className='message'>
-              {messages.map((msg) => (
-                <Messages
-                  message={msg}
-                  sentByme={user && user._id === msg.senderId}
-                  key={msg._id}
-                />
-              ))}
+              {Object.keys(currentRoom).length ? (
+                messages.map((msg) => (
+                  <Messages
+                    message={msg}
+                    sentByme={user && user._id === msg.senderId}
+                    key={msg._id}
+                  />
+                ))
+              ) : (
+                <p>Select a room</p>
+              )}
             </div>
 
             <div className='wrapper-input'>
@@ -81,8 +114,15 @@ const ChatWindow = () => {
                 className='userMessage-Input'
                 type='text'
                 placeholder='enter your message'
+                value={newMessage}
+                onChange={(event) => setNewMessage(event.target.value)}
               ></input>
-              <button className='sendMessage-Btn'>send</button>
+              <button
+                className='sendMessage-Btn'
+                onClick={submitMessageHandler}
+              >
+                send
+              </button>
             </div>
           </div>
         </div>
