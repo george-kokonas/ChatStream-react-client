@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Topbar from "../Topbar/Topbar";
 import Rooms from "../Rooms/Rooms";
@@ -6,27 +6,29 @@ import Messages from "../Messages/Messages";
 import "./chatWindow.css";
 
 const ChatWindow = () => {
+  const [user, setUser] = useState({});
   const [rooms, setRooms] = useState([]);
-  const [currentRoom, setCurrentRoom] = useState({});
   const [messages, setMessages] = useState([]);
-
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [currentRoom, setCurrentRoom] = useState({});
 
   useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    setUser(userData);
+
     const getRooms = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/chat/getChatRoom/${user._id}`
+          `http://localhost:8000/chat/getChatRoom/${userData._id}`
         );
         setRooms(data);
       } catch (error) {
-        //add decent error handling
         console.log(error);
         alert("Error fetching data");
       }
     };
+
     getRooms();
-  }, [user._id]);
+  }, []);
 
   useEffect(() => {
     const getMessages = async () => {
@@ -36,9 +38,11 @@ const ChatWindow = () => {
         );
         setMessages(data);
       } catch (error) {
+        alert("Error fetching data");
         console.log(error);
       }
     };
+
     getMessages();
   }, [currentRoom]);
 
@@ -64,7 +68,11 @@ const ChatWindow = () => {
             <p>----MESSAGES------</p>
             <div className='message'>
               {messages.map((msg) => (
-                <Messages message={msg} sentByme={user._id === msg.senderId} key={msg._id} />
+                <Messages
+                  message={msg}
+                  sentByme={user && user._id === msg.senderId}
+                  key={msg._id}
+                />
               ))}
             </div>
 
