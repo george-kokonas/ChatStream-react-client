@@ -3,26 +3,26 @@ import axios from "axios";
 import "./rooms.css";
 
 const Rooms = ({ chatroom, loggedUser }) => {
-  const [receiver, setReceiver] = useState(null)
+  const [friend, setFriend] = useState(null)
 
   useEffect(() => {
-    const receiverId = chatroom.members.find((memberId) => memberId !== loggedUser._Id);
-    
-    const getReceiver = async () => {
+    const friendId = chatroom.members.find((memberId) => memberId !== loggedUser._id);
+
+    const getFriend = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/user/getUser/${receiverId}`
+          `http://localhost:8000/user/getUser/${friendId}`
         );
-        setReceiver(data);
+        setFriend(data);
       } catch (error) {
         console.log(error);
         alert("Error fetching users...");
       }
     };
-    getReceiver();
+    getFriend();
   }, [ loggedUser,chatroom]);
 
-  return (<div className='room-container'>{receiver && receiver.username + " - " +loggedUser.username}</div>);
+  return (<div className='room-container'>{friend && friend.username}</div>);
 };
 
 export default Rooms;

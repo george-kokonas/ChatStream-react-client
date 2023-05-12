@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {io} from "socket.io-client"
+import { io } from "socket.io-client";
 import axios from "axios";
 import Topbar from "../Topbar/Topbar";
 import Rooms from "../Rooms/Rooms";
@@ -11,19 +11,32 @@ const ChatWindow = () => {
   const [currentRoom, setCurrentRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-
-  const socket = useRef()
+  const [arrivalMessage, setArrivalMessage] = useState(null);
   const user = JSON.parse(localStorage.getItem("user"));
 
+  const socket = useRef();
+  
   useEffect(() => {
     socket.current = io("http://localhost:8080");
-  },[])
+
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+      });
+    });
+  }, []);
 
   useEffect(() => {
-    socket.current.emit("addUser" , user._id )
-    socket.current.on("getUsers" , users => {console.log(users);})
-  },[user])
+    arrivalMessage &&
+      currentRoom?.members.includes(arrivalMessage.sender) &&
+      setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, currentRoom]);
 
+  useEffect(() => {
+    socket.current.emit("addUser", user._id);
+    // socket.current.on("getUsers" , users => {console.log(users);})
+  }, [user]);
 
   useEffect(() => {
     const getRooms = async () => {
@@ -39,7 +52,7 @@ const ChatWindow = () => {
     };
     getRooms();
   }, [user._id]);
-
+  
   useEffect(() => {
     const getMessages = async () => {
       try {
@@ -65,12 +78,22 @@ const ChatWindow = () => {
       text: newMessage,
     };
 
+    const receiverId = currentRoom.members.find(
+      (member) => member !== user._id
+    );
+
+    socket.current.emit("sendMessage", {
+      senderId: user._id,
+      receiverId: receiverId,
+      text: newMessage,
+    });
+
     try {
       const { data } = await axios.post(
         "http://localhost:8000/chat/createMessage/",
         message
       );
-      console.log(data);
+
       setMessages([...messages, data]);
       setNewMessage("");
     } catch (error) {
@@ -102,15 +125,16 @@ const ChatWindow = () => {
             {currentRoom ? (
               <>
                 <div className='message'>
-                  {messages.map((msg) => (
+                  {messages.map((msg, index) => (
                     <Messages
                       message={msg}
                       sentByme={msg.senderId === user._id}
-                      key={msg._id}
+                      key={index}
                     />
                   ))}
                 </div>
-
+                
+                {/* CHAT INPUT */}
                 <div className='wrapper-input'>
                   <input
                     className='userMessage-Input'

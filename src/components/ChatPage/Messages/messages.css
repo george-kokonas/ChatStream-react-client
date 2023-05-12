@@ -1,8 +1,9 @@
 .sentByMe-msg {
-    background-color: rgb(225, 204, 65);
-    text-align: right;
+  background-color: rgb(225, 204, 65);
+  text-align: right;
 }
 
 .sentByOther-msg {
   background-color: rgb(65, 225, 97);
+  text-align: left;
 }
