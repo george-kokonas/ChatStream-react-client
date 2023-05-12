@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { io } from "socket.io-client";
+import { initiateSocket, getSocket } from "../socket/Socket";
 import axios from "axios";
 import Topbar from "../Topbar/Topbar";
 import Rooms from "../Rooms/Rooms";
 import Messages from "../Messages/Messages";
+import RegisteredUsers from "../RegisteredUsers/RegisteredUsers";
 import "./chatWindow.css";
 
 const ChatWindow = () => {
@@ -11,27 +12,38 @@ const ChatWindow = () => {
   const [currentRoom, setCurrentRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [arrivalMessage, setArrivalMessage] = useState(null);
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [instantMessage, setInstantMessage] = useState(null);
+  const [registeredUsers, setRegisteredUsers] = useState([]);
 
+  const user = JSON.parse(localStorage.getItem("user"));
   const socket = useRef();
-  
+
   useEffect(() => {
-    socket.current = io("http://localhost:8080");
+    initiateSocket();
+    socket.current = getSocket();
 
     socket.current.on("getMessage", (data) => {
-      setArrivalMessage({
+      setInstantMessage({
         sender: data.senderId,
         text: data.text,
       });
     });
+
+    const fetchRegisteredUsers = async () => {
+      const {data} = await axios.get("http://localhost:8000/user/getRegisteredUsers");
+      setRegisteredUsers(data);
+    }
+    fetchRegisteredUsers()
   }, []);
 
   useEffect(() => {
-    arrivalMessage &&
-      currentRoom?.members.includes(arrivalMessage.sender) &&
-      setMessages((prev) => [...prev, arrivalMessage]);
-  }, [arrivalMessage, currentRoom]);
+    if (
+      instantMessage &&
+      currentRoom?.members.includes(instantMessage.sender)
+    ) {
+      setMessages((prev) => [...prev, instantMessage]);
+    }
+  }, [instantMessage, currentRoom]);
 
   useEffect(() => {
     socket.current.emit("addUser", user._id);
@@ -52,7 +64,7 @@ const ChatWindow = () => {
     };
     getRooms();
   }, [user._id]);
-  
+
   useEffect(() => {
     const getMessages = async () => {
       try {
@@ -88,6 +100,7 @@ const ChatWindow = () => {
       text: newMessage,
     });
 
+
     try {
       const { data } = await axios.post(
         "http://localhost:8000/chat/createMessage/",
@@ -101,7 +114,7 @@ const ChatWindow = () => {
       alert("Unable to send message...");
     }
   };
-
+  console.log(rooms);
   return (
     <>
       <Topbar />
@@ -133,7 +146,7 @@ const ChatWindow = () => {
                     />
                   ))}
                 </div>
-                
+
                 {/* CHAT INPUT */}
                 <div className='wrapper-input'>
                   <input
@@ -159,7 +172,16 @@ const ChatWindow = () => {
 
         {/* RIGHT PART */}
         <div className='onlineUsers'>
-          <div className='wrapper-onlineUsers'>----ONLINE USERS---------</div>
+          <div className='wrapper-onlineUsers'>
+            ----REGISTERED USERS---------
+            {registeredUsers.map((user) => (
+              <RegisteredUsers
+                user = {user}
+                rooms = {rooms}
+                key= {user._id}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </>
@@ -167,66 +189,3 @@ const ChatWindow = () => {
 };
 
 export default ChatWindow;
-
-/*  useEffect(() => {
-    setUser(userData);
-
-    const getRooms = async () => {
-      try {
-        const { data } = await axios.get(
-          `http://localhost:8000/chat/getChatRoom/${userData._id}`
-        );
-        setRooms(data);
-      } catch (error) {
-        console.log(error);
-        alert("Error fetching data");
-      }
-    };
-
-    getRooms();
-  }, []);
-
-  useEffect(() => {
-    const getMessages = async () => {
-      try {
-        const { data } = await axios.get(
-          `http://localhost:8000/chat/getMessages/${currentRoom._id}`
-        );
-        setMessages(data);
-      } catch (error) {
-        alert("Error fetching data");
-        console.log(error);
-      }
-    };
-
-    getMessages();
-  }, [currentRoom]);
-
-  const submitMessageHandler = async (event) => {
-    event.preventDefault();
-
-    let message = {};
-
-    //remove the spaces from string edges and check for empty message
-    const text = newMessage.trim();
-    if (!text) return;
-
-    message = {
-      roomId: currentRoom._id,
-      senderId: user._id,
-      text,
-    };
-
-    try {
-      const { data } = await axios.post(
-        "http://localhost:8000/chat/createMessage/",
-        message
-      );
-      setMessages([...messages, data]);
-      setNewMessage("");
-    } catch (error) {
-      console.log(error);
-      alert("Unable to send message...");
-    }
-  };
-*/
