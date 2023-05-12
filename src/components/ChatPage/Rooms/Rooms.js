@@ -3,15 +3,11 @@ import axios from "axios";
 import "./rooms.css";
 
 const Rooms = ({ chatroom, loggedUser }) => {
-  const [receiver, setReceiver] = useState({});
-  const { members } = chatroom;
-  const { _id: loggedUserId } = loggedUser;
-
-  // console.log(loggedUserId);
+  const [receiver, setReceiver] = useState(null)
 
   useEffect(() => {
-    const receiverId = members.filter((memberId) => memberId !== loggedUserId);
-
+    const receiverId = chatroom.members.find((memberId) => memberId !== loggedUser._Id);
+    
     const getReceiver = async () => {
       try {
         const { data } = await axios.get(
@@ -24,9 +20,9 @@ const Rooms = ({ chatroom, loggedUser }) => {
       }
     };
     getReceiver();
-  }, [chatroom, loggedUser, loggedUserId, members]);
+  }, [ loggedUser,chatroom]);
 
-  return <div className='room-container'>{receiver.email}</div>;
+  return (<div className='room-container'>{receiver && receiver.username + " - " +loggedUser.username}</div>);
 };
 
 export default Rooms;
