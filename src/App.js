@@ -16,24 +16,20 @@ const App = () => {
     }
   }, [token]);
 
-  const handleLogin = (state) => {
+  const userChangeStateHandler = (state) => {
     setIsLoggedIn(state);
   };
 
-  const handleLogout = (state) => {
-    setIsLoggedIn(state)
-  }
-
   return (
     <>
-      <div className='container'>
+      <div>
         {!isLoggedIn ? (
           <>
-            <Index onLogin={handleLogin} />
+            <Index onUserChangeState={userChangeStateHandler} />
           </>
         ) : (
           <>
-            <ChatWindow onLogout={handleLogout} />
+            <ChatWindow onUserChangeState={userChangeStateHandler} />
           </>
         )}
       </div>

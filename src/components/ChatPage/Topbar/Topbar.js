@@ -4,12 +4,12 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import Button from "@mui/material/Button";
 import "./topbar.css";
 
-const Topbar = ({onLogout}) => {
+const Topbar = ({onUserChangeState}) => {
 
   const logoutHandler = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    onLogout(false);
+    onUserChangeState(false);
   };
 
   return (

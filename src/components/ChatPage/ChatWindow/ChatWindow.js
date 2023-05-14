@@ -5,15 +5,28 @@ import Topbar from "../Topbar/Topbar";
 import Rooms from "../Rooms/Rooms";
 import Messages from "../Messages/Messages";
 import RegisteredUsers from "../RegisteredUsers/RegisteredUsers";
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBCard,
+  MDBCardBody,
+  MDBBtn,
+  MDBTypography,
+  MDBTextArea,
+} from "mdb-react-ui-kit";
 import "./chatWindow.css";
 
-const ChatWindow = ({onLogout}) => {
+const ChatWindow = ({ onUserChangeState }) => {
   const [rooms, setRooms] = useState([]);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [instantMessage, setInstantMessage] = useState(null);
   const [registeredUsers, setRegisteredUsers] = useState([]);
+  const [tab, setTab] = useState("conversations");
 
   const user = JSON.parse(localStorage.getItem("user"));
   const socket = useRef();
@@ -153,77 +166,106 @@ const ChatWindow = ({onLogout}) => {
   };
 
   return (
-    <>
-      <Topbar onLogout={onLogout} />
-      <div className='chatContainer'>
-        {/* LEFT BAR SHOWING THE ROOMS*/}
-        <div className='chatMenu'>
-          <div className='wrapper-menu'>
-            ---------ROOMS--------
-            {rooms.map((room) => (
-              <div onClick={() => setCurrentRoom(room)} key={room._id}>
-                <Rooms chatroom={room} loggedUser={user} />
-              </div>
-            ))}
-          </div>
-        </div>
+    <div className='chat-container'>
+      <Topbar onUserChangeState={onUserChangeState}/>
+      <MDBContainer fluid className='py-5' >
+        <MDBRow>
+          {/* TABS ON LEFT BAR  */}
+          <MDBCol md='6' lg='5' xl='4' className='mb-4 mb-md-0'>
+            <Tabs
+              id='controlled-tab-example'
+              activeKey={tab}
+              onSelect={(selectedTab) => setTab(selectedTab)}
+              className='mb-3'
+            >
+              {/* CONVERSATIONS TAB */}
+              <Tab eventKey='conversations' title='Conversations'>
+                <MDBCard>
+                  <MDBCardBody>
+                    <MDBTypography listUnStyled className='mb-0'>
+                      {rooms.map((room) => (
+                        <div
+                          onClick={() => setCurrentRoom(room)}
+                          key={room._id}
+                        >
+                          <Rooms chatroom={room} loggedUser={user} />
+                        </div>
+                      ))}
+                    </MDBTypography>
+                  </MDBCardBody>
+                </MDBCard>
+              </Tab>
 
-        {/* MAIN PAGE */}
-        <div className='message-window'>
-          <div className='wrapper-message-window'>
-            <p>----MESSAGES------</p>
-            {currentRoom ? (
-              <>
-                <div className='message'>
-                  {messages.map((msg, index) => (
-                    <Messages
-                      message={msg}
-                      sentByme={msg.senderId === user._id}
-                      key={index}
+              {/* REGISTERED USERS TAB */}
+              <Tab eventKey='allUsers' title='All Users'>
+                <MDBCard>
+                  <MDBCardBody>
+                    <MDBTypography listUnStyled className='mb-0'>
+                      {registeredUsers.map((registeredUser) => (
+                        <RegisteredUsers
+                          loggedUser={user}
+                          registeredUser={registeredUser}
+                          rooms={rooms}
+                          onNewConversation={newRoomHandler}
+                          key={registeredUser._id}
+                        />
+                      ))}
+                    </MDBTypography>
+                  </MDBCardBody>
+                </MDBCard>
+              </Tab>
+            </Tabs>
+
+            {/* <h5 className='font-weight-bold mb-3 text-center text-lg-start'>
+              CONVERSATIONS
+            </h5> */}
+          </MDBCol>
+
+          {/* CHAT WINDOW */}
+          <MDBCol id="chat-window-container" md='6' lg='7' xl='8'>
+            <MDBTypography listUnStyled>
+              {currentRoom ? (
+                <>
+                  <div id='message'>
+                    {messages.map((msg, index) => (
+                      <Messages
+                        message={msg}
+                        sentByMe={msg.senderId === user._id}
+                        key={index}
+                      />
+                    ))}
+                  </div>
+
+                  {/* TEXT FIELD */}
+                  <li id="chat-window-inputs" className='bg-white mb-3' >
+                    <MDBTextArea
+                      label='Message'
+                      id='textAreaExample'
+                      rows={4}
+                      value={newMessage}
+                      onChange={(event) => setNewMessage(event.target.value)}
                     />
-                  ))}
-                </div>
-
-                {/* CHAT INPUT */}
-                <div className='wrapper-input'>
-                  <input
-                    className='userMessage-Input'
-                    type='text'
-                    placeholder='enter your message'
-                    value={newMessage}
-                    onChange={(event) => setNewMessage(event.target.value)}
-                  ></input>
-                  <button
-                    className='sendMessage-Btn'
+                       {/* SEND BUTTON */}
+                  <MDBBtn
                     onClick={submitMessageHandler}
+                    color='info'
+                    rounded
+                    className='float-end'
                   >
-                    send
-                  </button>
-                </div>
-              </>
-            ) : (
-              <p>select room</p>
-            )}
-          </div>
-        </div>
+                    Send
+                  </MDBBtn>
+                  </li>
 
-        {/* RIGHT PART */}
-        <div className='onlineUsers'>
-          <div className='wrapper-onlineUsers'>
-            ----REGISTERED USERS---------
-            {registeredUsers.map((registeredUser) => (
-              <RegisteredUsers
-                loggedUser={user}
-                registeredUser={registeredUser}
-                rooms={rooms}
-                onNewConversation={newRoomHandler}
-                key={registeredUser._id}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </>
+               
+                </>
+              ) : (
+                <p>select room</p>
+              )}
+            </MDBTypography>
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer>
+    </div>
   );
 };
 
