@@ -13,18 +13,6 @@ const SignUp = () => {
   const [usernameError, setUsernameError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
-  const emailHandler = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const usernameHandler = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const passwordHandler = (event) => {
-    setPassword(event.target.value);
-  };
-
   const isValidEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
   };

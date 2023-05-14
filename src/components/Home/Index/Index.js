@@ -1,7 +1,9 @@
 import { useState } from "react";
-import SignUp from "../Signup/Signup";
-import Login from "../Login/Login";
+import { Routes, Route } from "react-router-dom";
 import Tabs from "../Tabs/Tabs";
+import Login from "../Login/Login";
+import SignUp from "../Signup/Signup";
+import About from "../About/About";
 import {
   MDBContainer,
   MDBCard,
@@ -12,7 +14,7 @@ import {
 } from "mdb-react-ui-kit";
 import "./index.css";
 
-function App() {
+const Index = () => {
   const [selection, setSelection] = useState("");
 
   const handleSelection = (choice) => {
@@ -45,11 +47,14 @@ function App() {
               </p>
             </div>
 
-            {/* RENDER COMPONENTS ON TAB CLICK */}
-            {/* AFTER THE LOGIN TAB IS CLICKED OR ON FIRST LOAD, RENDER THE LOGIN COMPONENT */}
-            {(selection === "login" || selection === "") && <Login />}
-            {selection === "signup" && <SignUp />}
-            {selection === "about" && "about"}
+            <Routes>
+              <Route path='/login' element={<Login />} />
+              <Route path='/signup' element={<SignUp />} />
+              <Route path="/about" element={<About/>}  />
+              <Route />
+              <Route />
+            </Routes>
+
           </MDBCol>
         </MDBRow>
 
@@ -92,6 +97,6 @@ function App() {
       </MDBCard>
     </MDBContainer>
   );
-}
+};
 
-export default App;
+export default Index;
