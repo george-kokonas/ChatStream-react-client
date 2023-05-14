@@ -11,8 +11,18 @@ const Tabs = ({ onSelection }) => {
     if (value === activeTab) {
       return;
     }
+
+    let dividerText;
+
+    if (value === "login") {
+      dividerText = "log in";
+    } else if (value === "signup") {
+      dividerText = "sign up";
+    } else {
+      dividerText = value;
+    }
     setActiveTab(value);
-    onSelection(value);
+    onSelection(dividerText);
     navigate(`/${value}`);
   };
 
@@ -49,13 +59,6 @@ const Tabs = ({ onSelection }) => {
           </MDBTabsLink>
         </MDBTabsItem>
       </MDBTabs>
-
-      {/* 
-       <MDBTabsContent>
-        <MDBTabsPane show={activeTab === "signup"} />
-        <MDBTabsPane show={activeTab === "login"} />
-        <MDBTabsPane show={activeTab === "about"} />
-  </MDBTabsContent>*/}
     </>
   );
 };

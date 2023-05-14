@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Tabs from "../Tabs/Tabs";
 import Login from "../Login/Login";
 import SignUp from "../Signup/Signup";
@@ -15,7 +15,7 @@ import {
 import "./index.css";
 
 const Index = () => {
-  const [selection, setSelection] = useState("");
+  const [selection, setSelection] = useState("log in");
 
   const handleSelection = (choice) => {
     setSelection(choice);
@@ -43,18 +43,16 @@ const Index = () => {
             {/* TABS TITLE AND DIVIDER */}
             <div className='divider d-flex align-items-center my-4'>
               <p className='text-center fw-bold mx-3 mb-0'>
-                {selection.toUpperCase() || "LOG IN"}
+                {selection.toUpperCase()}
               </p>
             </div>
 
             <Routes>
+              <Route path='/' element={<Navigate to='/login' replace />} />
               <Route path='/login' element={<Login />} />
-              <Route path='/signup' element={<SignUp />} />
-              <Route path="/about" element={<About/>}  />
-              <Route />
-              <Route />
+              <Route exact path='/signup' element={<SignUp />} />
+              <Route exact path='/about' element={<About />} />
             </Routes>
-
           </MDBCol>
         </MDBRow>
 
