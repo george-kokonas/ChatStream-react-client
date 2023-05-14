@@ -1,14 +1,21 @@
-const RegisteredUsers = ({ user, rooms }) => {
+const RegisteredUsers = ({
+  loggedUser,
+  registeredUser,
+  rooms,
+  onNewConversation,
+}) => {
+  //render the registered users with whom the user haven't chatted yet
   for (let i = 0; i < rooms.length; i++) {
-    if (rooms[i].members.includes(user._id)) return;
+    if (rooms[i].members.includes(registeredUser._id)) return;
   }
 
-  const newRoomHandler = () => {
-    const selectedUser = user;
-    console.log(selectedUser);
+  const selectedUserHandler = () => {
+    //create a room with the selected user
+    const selectedUserId = registeredUser._id;
+    onNewConversation(selectedUserId);
   };
 
-  return <p onClick={newRoomHandler}>{user.username}</p>;
+  return <p onClick={selectedUserHandler}>{registeredUser.username}</p>;
 };
 
 export default RegisteredUsers;

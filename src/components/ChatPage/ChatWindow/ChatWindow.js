@@ -18,24 +18,44 @@ const ChatWindow = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const socket = useRef();
 
+  //TRIGGERED WHEN COMPONENT IS MOUNTED
   useEffect(() => {
+    //initialize socket
     initiateSocket();
     socket.current = getSocket();
 
+    //executed when new instant message arrives
     socket.current.on("getMessage", (data) => {
       setInstantMessage({
         sender: data.senderId,
         text: data.text,
       });
     });
-
-    const fetchRegisteredUsers = async () => {
-      const {data} = await axios.get("http://localhost:8000/user/getRegisteredUsers");
-      setRegisteredUsers(data);
-    }
-    fetchRegisteredUsers()
   }, []);
 
+  //TRIGGERED ON USER LOGIN
+  useEffect(() => {
+    //add user to onlineUsers array on socket server
+    socket.current.emit("addUser", user._id);
+
+    //get online users from onlineUsers array on socket server
+    socket.current.on("getUsers", (users) => {});
+
+    //get all registered users from onlineUsers array on socket server
+    const getRegisteredUsers = async () => {
+      const { data } = await axios.get(
+        "http://localhost:8000/user/getRegisteredUsers"
+      );
+      //exclude logged in user from registeredUsers array
+      const filteredUsers = data.filter(
+        (registeredUser) => registeredUser._id !== user._id
+      );
+      setRegisteredUsers(filteredUsers);
+    };
+    getRegisteredUsers();
+  }, [user._id]);
+
+  //TRIGGERED WHEN INSTANT MESSAGE ARRIVES OR USER SELECTS A ROOM
   useEffect(() => {
     if (
       instantMessage &&
@@ -45,11 +65,7 @@ const ChatWindow = () => {
     }
   }, [instantMessage, currentRoom]);
 
-  useEffect(() => {
-    socket.current.emit("addUser", user._id);
-    // socket.current.on("getUsers" , users => {console.log(users);})
-  }, [user]);
-
+  //TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES TO OPEN A  NEW ROOM
   useEffect(() => {
     const getRooms = async () => {
       try {
@@ -63,8 +79,9 @@ const ChatWindow = () => {
       }
     };
     getRooms();
-  }, [user._id]);
+  }, [user._id, instantMessage]);
 
+  //TRIGGERED WHEN USER SELECTS A ROOM
   useEffect(() => {
     const getMessages = async () => {
       try {
@@ -81,6 +98,26 @@ const ChatWindow = () => {
     getMessages();
   }, [currentRoom]);
 
+  //CREATE NEW CHATROOM TO INITIATE CONVERSATION WITH SELECTED USER
+  const newRoomHandler = async (selectedUserId) => {
+    const room = {
+      senderId: user._id,
+      receiverId: selectedUserId,
+    };
+
+    try {
+      const { data } = await axios.post(
+        "http://localhost:8000/chat/createChatRoom/",
+        room
+      );
+      setRooms([...rooms, data]);
+    } catch (error) {
+      console.log(error);
+      alert("Unable to start new conversation...");
+    }
+  };
+
+  //SUBMIT THE MESSAGE
   const submitMessageHandler = async (event) => {
     event.preventDefault();
 
@@ -94,19 +131,19 @@ const ChatWindow = () => {
       (member) => member !== user._id
     );
 
+    //executed when instant message is sent
     socket.current.emit("sendMessage", {
       senderId: user._id,
       receiverId: receiverId,
       text: newMessage,
     });
 
-
+    //send message to server
     try {
       const { data } = await axios.post(
         "http://localhost:8000/chat/createMessage/",
         message
       );
-
       setMessages([...messages, data]);
       setNewMessage("");
     } catch (error) {
@@ -114,7 +151,7 @@ const ChatWindow = () => {
       alert("Unable to send message...");
     }
   };
-  console.log(rooms);
+
   return (
     <>
       <Topbar />
@@ -174,11 +211,13 @@ const ChatWindow = () => {
         <div className='onlineUsers'>
           <div className='wrapper-onlineUsers'>
             ----REGISTERED USERS---------
-            {registeredUsers.map((user) => (
+            {registeredUsers.map((registeredUser) => (
               <RegisteredUsers
-                user = {user}
-                rooms = {rooms}
-                key= {user._id}
+                loggedUser={user}
+                registeredUser={registeredUser}
+                rooms={rooms}
+                onNewConversation={newRoomHandler}
+                key={registeredUser._id}
               />
             ))}
           </div>
