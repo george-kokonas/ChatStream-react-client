@@ -4,7 +4,7 @@ import { useState } from "react";
 import { MDBContainer, MDBInput, MDBBtn } from "mdb-react-ui-kit";
 import "./login.css";
 
-const Login = () => {
+const Login = ({onLogin}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(null);
@@ -46,8 +46,8 @@ const Login = () => {
 
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-
         alert("Logged in Successfully");
+        onLogin(true)
       } catch (error) {
         alert(error.response.data.message);
         console.log(error);

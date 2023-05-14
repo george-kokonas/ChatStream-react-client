@@ -14,7 +14,7 @@ import {
 } from "mdb-react-ui-kit";
 import "./index.css";
 
-const Index = () => {
+const Index = ({onLogin}) => {
   const [selection, setSelection] = useState("log in");
 
   const handleSelection = (choice) => {
@@ -49,7 +49,7 @@ const Index = () => {
 
             <Routes>
               <Route path='/' element={<Navigate to='/login' replace />} />
-              <Route path='/login' element={<Login />} />
+              <Route path='/login' element={<Login onLogin={onLogin}/>} />
               <Route exact path='/signup' element={<SignUp />} />
               <Route exact path='/about' element={<About />} />
             </Routes>

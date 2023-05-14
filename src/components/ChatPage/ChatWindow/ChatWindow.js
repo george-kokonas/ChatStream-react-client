@@ -7,7 +7,7 @@ import Messages from "../Messages/Messages";
 import RegisteredUsers from "../RegisteredUsers/RegisteredUsers";
 import "./chatWindow.css";
 
-const ChatWindow = () => {
+const ChatWindow = ({onLogout}) => {
   const [rooms, setRooms] = useState([]);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -154,7 +154,7 @@ const ChatWindow = () => {
 
   return (
     <>
-      <Topbar />
+      <Topbar onLogout={onLogout} />
       <div className='chatContainer'>
         {/* LEFT BAR SHOWING THE ROOMS*/}
         <div className='chatMenu'>

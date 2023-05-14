@@ -1,17 +1,15 @@
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { Search } from "@mui/icons-material";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import Button from "@mui/material/Button";
 import "./topbar.css";
 
-const Topbar = () => {
-  const navigate = useNavigate();
+const Topbar = ({onLogout}) => {
 
   const logoutHandler = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/");
+    onLogout(false);
   };
 
   return (
@@ -34,7 +32,6 @@ const Topbar = () => {
         <Button
           onClick={logoutHandler}
           component={Link}
-          to='/logout'
           color='inherit'
         >
           Log Out
