@@ -1,8 +1,13 @@
-.my-message {
-  background-color: aqua;
+.my-message-card .friend-message-card {
+  width: fit-content;
 }
 
-#friends-message {
-  background-color: rgb(65, 225, 97);
-  text-align: left;
+.my-message-card{
+  background-color: rgb(156, 211, 232);
+  margin-right: 5px;
+}
+
+.friend-message-card{
+  background-color: rgb(226, 220, 231);
+  margin-left: 5px;
 }
