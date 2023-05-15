@@ -1,8 +1,10 @@
 import React from "react";
-import { MDBCard, MDBCardBody, MDBIcon, MDBCardHeader } from "mdb-react-ui-kit";
+import { MDBCard, MDBCardBody, MDBIcon } from "mdb-react-ui-kit";
+import CustomTimeAgo from "./CustomTimeAgo";
 import "./messages.css";
 
 const Messages = ({ message, sentByMe }) => {
+  console.log(message.createdAt);
   let messageOutput = sentByMe ? (
     <li className='d-flex flex-row-reverse mb-3'>
       <img
@@ -12,10 +14,11 @@ const Messages = ({ message, sentByMe }) => {
         width='60'
       />
       <MDBCard className='my-message-card'>
-        <MDBCardBody>
-          <p className='mb-0'>{message.text}</p>
-          <p className='text-muted small mb-0'>
-            <MDBIcon far icon='clock' /> 12 mins ago
+        <MDBCardBody className='message-card'>
+          <p className='message-text'>{message.text}</p>
+          <p className='time-container text-muted'>
+            <MDBIcon className='clock-icon' far icon='clock' />
+            <CustomTimeAgo date={message.createdAt} />
           </p>
         </MDBCardBody>
       </MDBCard>
@@ -29,10 +32,11 @@ const Messages = ({ message, sentByMe }) => {
         width='60'
       />
       <MDBCard className='friend-message-card'>
-        <MDBCardBody>
-          <p className='mb-0'>{message.text}</p>
-          <p className='text-muted small mb-0'>
-            <MDBIcon far icon='clock' /> 13 mins ago
+        <MDBCardBody className='message-card'>
+          <p className='message-text'>{message.text}</p>
+          <p className='time-container text-muted'>
+            <MDBIcon className='clock-icon' far icon='clock' />
+            <CustomTimeAgo date={message.createdAt} />
           </p>
         </MDBCardBody>
       </MDBCard>

@@ -43,6 +43,7 @@ const ChatWindow = ({ onUserChangeState }) => {
       setInstantMessage({
         sender: data.senderId,
         text: data.text,
+        createdAt: Date.now(),
       });
     });
   }, []);
@@ -174,7 +175,7 @@ const ChatWindow = ({ onUserChangeState }) => {
   return (
     <div className='chat-container'>
       <Topbar onUserChangeState={onUserChangeState} />
-      <MDBContainer fluid className='py-5'>
+      <MDBContainer fluid className='py-4'>
         <MDBRow>
           {/* TABS ON LEFT BAR  */}
           <MDBCol md='6' lg='5' xl='4' className='mb-4 mb-md-0'>
@@ -229,7 +230,7 @@ const ChatWindow = ({ onUserChangeState }) => {
           </MDBCol>
 
           {/* CHAT WINDOW */}
-          <MDBCol id='chat-window-container' md='6' lg='7' xl='8'>
+          <MDBCol id='chat-window-container'   >
             <MDBTypography listUnStyled>
               {currentRoom ? (
                 <>

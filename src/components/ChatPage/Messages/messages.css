@@ -11,3 +11,28 @@
   background-color: rgb(226, 220, 231);
   margin-left: 5px;
 }
+ 
+.message-card{
+  margin: 0px;
+  padding: 0px;
+} 
+
+.message-text{
+  padding: 6px 6px 0px 20px;
+  margin: 0;
+}
+
+.time-container{
+  margin: 0px 8px 2px 5px;
+  font-size: small;
+  text-align: end;
+}
+
+.timeago{
+  padding-left: 5px;
+  padding-right: 2px;
+}
+
+.clock-icon{
+  margin-right: 4px;
+}
