@@ -30,6 +30,7 @@ const ChatWindow = ({ onUserChangeState }) => {
 
   const user = JSON.parse(localStorage.getItem("user"));
   const socket = useRef();
+  const scrollToEnd = useRef();
 
   //TRIGGERED WHEN COMPONENT IS MOUNTED
   useEffect(() => {
@@ -60,10 +61,10 @@ const ChatWindow = ({ onUserChangeState }) => {
         "http://localhost:8000/user/getRegisteredUsers"
       );
       //exclude logged in user from registeredUsers array
-      const filteredUsers = data.filter(
-        (registeredUser) => registeredUser._id !== user._id
-      );
-      setRegisteredUsers(filteredUsers);
+      // const filteredUsers = data.filter(
+      //   (registeredUser) => registeredUser._id !== user._id
+      // );
+      setRegisteredUsers(data);
     };
     getRegisteredUsers();
   }, [user._id]);
@@ -110,6 +111,11 @@ const ChatWindow = ({ onUserChangeState }) => {
 
     getMessages();
   }, [currentRoom]);
+
+  //SCROLL TO THE END OF PAGE WHEN A NEW MESSAGE ARRIVES
+  useEffect(() => {
+    scrollToEnd.current?.scrollIntoView({ behaviour: "smooth" });
+  }, [messages]);
 
   //CREATE NEW CHATROOM TO INITIATE CONVERSATION WITH SELECTED USER
   const newRoomHandler = async (selectedUserId) => {
@@ -167,8 +173,8 @@ const ChatWindow = ({ onUserChangeState }) => {
 
   return (
     <div className='chat-container'>
-      <Topbar onUserChangeState={onUserChangeState}/>
-      <MDBContainer fluid className='py-5' >
+      <Topbar onUserChangeState={onUserChangeState} />
+      <MDBContainer fluid className='py-5'>
         <MDBRow>
           {/* TABS ON LEFT BAR  */}
           <MDBCol md='6' lg='5' xl='4' className='mb-4 mb-md-0'>
@@ -182,15 +188,16 @@ const ChatWindow = ({ onUserChangeState }) => {
               <Tab eventKey='conversations' title='Conversations'>
                 <MDBCard>
                   <MDBCardBody>
-                    <MDBTypography listUnStyled className='mb-0'>
-                      {rooms.map((room) => (
+                    <MDBTypography listUnStyled className='mb-0'>           
+                      {rooms.length ?
+                      rooms.map((room) => (
                         <div
                           onClick={() => setCurrentRoom(room)}
                           key={room._id}
                         >
                           <Rooms chatroom={room} loggedUser={user} />
                         </div>
-                      ))}
+                      )) : <p>no conversations yet...</p>}
                     </MDBTypography>
                   </MDBCardBody>
                 </MDBCard>
@@ -222,22 +229,24 @@ const ChatWindow = ({ onUserChangeState }) => {
           </MDBCol>
 
           {/* CHAT WINDOW */}
-          <MDBCol id="chat-window-container" md='6' lg='7' xl='8'>
+          <MDBCol id='chat-window-container' md='6' lg='7' xl='8'>
             <MDBTypography listUnStyled>
               {currentRoom ? (
                 <>
                   <div id='message'>
-                    {messages.map((msg, index) => (
-                      <Messages
-                        message={msg}
-                        sentByMe={msg.senderId === user._id}
-                        key={index}
-                      />
+                    {messages.map((msg) => (
+                      <div key={msg._id} ref={scrollToEnd}>
+                        <Messages
+                          message={msg}
+                          sentByMe={msg.senderId === user._id}
+                        />
+                      </div>
                     ))}
                   </div>
 
-                  {/* TEXT FIELD */}
-                  <li id="chat-window-inputs" className='bg-white mb-3' >
+                  {/* INPUTS */}
+                  <li id='chat-window-inputs' className='bg-white mb-3'>
+                    {/* TEXT FIELD */}
                     <MDBTextArea
                       label='Message'
                       id='textAreaExample'
@@ -245,18 +254,16 @@ const ChatWindow = ({ onUserChangeState }) => {
                       value={newMessage}
                       onChange={(event) => setNewMessage(event.target.value)}
                     />
-                       {/* SEND BUTTON */}
-                  <MDBBtn
-                    onClick={submitMessageHandler}
-                    color='info'
-                    rounded
-                    className='float-end'
-                  >
-                    Send
-                  </MDBBtn>
+                    {/* SEND BUTTON */}
+                    <MDBBtn
+                      onClick={submitMessageHandler}
+                      color='info'
+                      rounded
+                      className='float-end mt-2'
+                    >
+                      Send
+                    </MDBBtn>
                   </li>
-
-               
                 </>
               ) : (
                 <p>select room</p>

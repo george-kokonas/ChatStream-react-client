@@ -1,14 +1,12 @@
 #chat-window-container {
-  text-align: center;
-  height: 100vh;
+ 
 }
 
-#message{
+#message {
+  min-height: 70vh;
 }
 
 #chat-window-inputs {
-  position: relative;
   width: 100%;
-  max-width: 100%;
   bottom: 0;
 }
