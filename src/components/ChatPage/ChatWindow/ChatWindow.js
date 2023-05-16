@@ -120,6 +120,11 @@ const ChatWindow = ({ onUserChangeState }) => {
 
   //CREATE NEW CHATROOM TO INITIATE CONVERSATION WITH SELECTED USER
   const newRoomHandler = async (selectedUserId) => {
+    
+    //prevent the user from starting a conversation with himself
+    if (selectedUserId === user._id) {
+      return;
+    }
     const room = {
       senderId: user._id,
       receiverId: selectedUserId,

@@ -7,6 +7,9 @@ const Rooms = ({ chatroom, loggedUser }) => {
   useEffect(() => {
     const friendId = chatroom.members.find((memberId) => memberId !== loggedUser._id);
 
+    //prevent the user from starting a conversation for second time with same friend
+    if(!friendId) return;
+    
     const getFriend = async () => {
       try {
         const { data } = await axios.get(
