@@ -1,11 +1,18 @@
-const RegisteredUsers = ({ registeredUser, rooms, onNewConversation }) => {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
-  //render the registered users with whom the user haven't chatted yet
-  for (let i = 0; i < rooms.length; i++) {
-    if (rooms[i].members.includes(registeredUser._id)) return;
-  }
 
+const RegisteredUsers = ({
+  registeredUser,
+  isOnline,
+  rooms,
+  onNewConversation,
+}) => {
   const selectedUserHandler = () => {
+    //only allow chat with users that haven't started converstation yet(inluding yourself)
+    for (let i = 0; i < rooms.length; i++) {
+      if (rooms[i].members.includes(registeredUser._id)) return;
+    }
     //create a room with the selected user
     const selectedUserId = registeredUser._id;
     onNewConversation(selectedUserId);
@@ -27,8 +34,12 @@ const RegisteredUsers = ({ registeredUser, rooms, onNewConversation }) => {
           </div>
         </div>
         <div className='pt-1'>
-          {/* <p className="small text-muted mb-1">Just now</p>
-        <span className="badge bg-danger float-end">1</span> */}
+          <p className='small text-muted mb-1'>
+          <FontAwesomeIcon
+        icon={faCircle}
+        style={isOnline ? { color: 'green' } : { color: '#AA0000' }}
+      />{' '}          </p>
+          {/* <span className="badge bg-danger float-end">1</span> */}
         </div>
       </a>
     </li>

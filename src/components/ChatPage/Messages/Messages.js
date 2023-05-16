@@ -4,7 +4,7 @@ import CustomTimeAgo from "./CustomTimeAgo";
 import "./messages.css";
 
 const Messages = ({ message, sentByMe }) => {
-  console.log(message.createdAt);
+  
   let messageOutput = sentByMe ? (
     <li className='d-flex flex-row-reverse mb-3'>
       <img
@@ -42,13 +42,12 @@ const Messages = ({ message, sentByMe }) => {
       </MDBCard>
     </li>
   );
+{/* <MDBCardHeader className='d-flex justify-content-between p-3'>
+<p className='fw-bold mb-0'>{}</p>
+</MDBCardHeader> */}
   return <>{messageOutput}</>;
 };
 
 export default Messages;
 
-{
-  /* <MDBCardHeader className='d-flex justify-content-between p-3'>
-<p className='fw-bold mb-0'>{}</p>
-</MDBCardHeader> */
-}
+

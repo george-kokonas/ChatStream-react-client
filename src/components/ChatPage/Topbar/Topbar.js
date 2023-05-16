@@ -4,11 +4,11 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import Button from "@mui/material/Button";
 import "./topbar.css";
 
-const Topbar = ({onUserChangeState}) => {
-
+const Topbar = ({ onUserChangeState, onDisconnectSocket }) => {
   const logoutHandler = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    onDisconnectSocket();
     onUserChangeState(false);
   };
 
@@ -29,11 +29,7 @@ const Topbar = ({onUserChangeState}) => {
         <div className='topbarIconItem'>
           <SettingsOutlinedIcon />
         </div>
-        <Button
-          onClick={logoutHandler}
-          component={Link}
-          color='inherit'
-        >
+        <Button onClick={logoutHandler} component={Link} color='inherit'>
           Log Out
         </Button>
       </div>

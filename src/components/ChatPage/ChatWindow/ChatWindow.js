@@ -26,6 +26,7 @@ const ChatWindow = ({ onUserChangeState }) => {
   const [newMessage, setNewMessage] = useState("");
   const [instantMessage, setInstantMessage] = useState(null);
   const [registeredUsers, setRegisteredUsers] = useState([]);
+  const [onlineUsers, setOnlineUsers] = useState([]);
   const [tab, setTab] = useState("conversations");
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -53,18 +54,17 @@ const ChatWindow = ({ onUserChangeState }) => {
     //add user to onlineUsers array on socket server
     socket.current.emit("addUser", user._id);
 
-    //get online users from onlineUsers array on socket server
-    socket.current.on("getUsers", (users) => {});
+    //get online users
+    socket.current.on("getOnlineUsers", (users) => {
+      setOnlineUsers(users);
+    });
 
-    //get all registered users from onlineUsers array on socket server
+    //get all registered users from database
     const getRegisteredUsers = async () => {
       const { data } = await axios.get(
         "http://localhost:8000/user/getRegisteredUsers"
       );
-      //exclude logged in user from registeredUsers array
-      // const filteredUsers = data.filter(
-      //   (registeredUser) => registeredUser._id !== user._id
-      // );
+
       setRegisteredUsers(data);
     };
     getRegisteredUsers();
@@ -137,7 +137,12 @@ const ChatWindow = ({ onUserChangeState }) => {
     }
   };
 
-  //SUBMIT THE MESSAGE
+  // TRIGGERED WHEN USER LOGS OUT TO UPDATE ONLINE USERS ARRAY
+  const disconnectSocketHandler = () => {
+    socket.current.emit("logout", socket.current.id);
+  };
+
+  //SUBMIT MESSAGE
   const submitMessageHandler = async (event) => {
     event.preventDefault();
 
@@ -174,7 +179,10 @@ const ChatWindow = ({ onUserChangeState }) => {
 
   return (
     <div className='chat-container'>
-      <Topbar onUserChangeState={onUserChangeState} />
+      <Topbar
+        onUserChangeState={onUserChangeState}
+        onDisconnectSocket={disconnectSocketHandler}
+      />
       <MDBContainer fluid className='py-4'>
         <MDBRow>
           {/* TABS ON LEFT BAR  */}
@@ -189,32 +197,38 @@ const ChatWindow = ({ onUserChangeState }) => {
               <Tab eventKey='conversations' title='Conversations'>
                 <MDBCard>
                   <MDBCardBody>
-                    <MDBTypography listUnStyled className='mb-0'>           
-                      {rooms.length ?
-                      rooms.map((room) => (
-                        <div
-                          onClick={() => setCurrentRoom(room)}
-                          key={room._id}
-                        >
-                          <Rooms chatroom={room} loggedUser={user} />
-                        </div>
-                      )) : <p>no conversations yet...</p>}
+                    <MDBTypography listUnStyled className='mb-0'>
+                      {rooms.length ? (
+                        rooms.map((room) => (
+                          <div
+                            onClick={() => setCurrentRoom(room)}
+                            key={room._id}
+                          >
+                            <Rooms chatroom={room} loggedUser={user} />
+                          </div>
+                        ))
+                      ) : (
+                        <p>no conversations yet...</p>
+                      )}
                     </MDBTypography>
                   </MDBCardBody>
                 </MDBCard>
               </Tab>
 
               {/* REGISTERED USERS TAB */}
-              <Tab eventKey='allUsers' title='All Users'>
+              <Tab eventKey='allUsers' title='Users'>
                 <MDBCard>
                   <MDBCardBody>
                     <MDBTypography listUnStyled className='mb-0'>
                       {registeredUsers.map((registeredUser) => (
                         <RegisteredUsers
-                          loggedUser={user}
                           registeredUser={registeredUser}
                           rooms={rooms}
                           onNewConversation={newRoomHandler}
+                          isOnline={onlineUsers.some(
+                            (onlineUser) =>
+                              onlineUser.userId === registeredUser._id
+                          )}
                           key={registeredUser._id}
                         />
                       ))}
@@ -230,13 +244,13 @@ const ChatWindow = ({ onUserChangeState }) => {
           </MDBCol>
 
           {/* CHAT WINDOW */}
-          <MDBCol id='chat-window-container'   >
+          <MDBCol id='chat-window-container'>
             <MDBTypography listUnStyled>
               {currentRoom ? (
                 <>
                   <div id='message'>
-                    {messages.map((msg) => (
-                      <div key={msg._id} ref={scrollToEnd}>
+                    {messages.map((msg, index) => (
+                      <div key={index} ref={scrollToEnd}>
                         <Messages
                           message={msg}
                           sentByMe={msg.senderId === user._id}
