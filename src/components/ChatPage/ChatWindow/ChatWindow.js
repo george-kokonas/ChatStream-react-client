@@ -120,7 +120,7 @@ const ChatWindow = ({ onUserChangeState }) => {
 
   //CREATE NEW CHATROOM TO INITIATE CONVERSATION WITH SELECTED USER
   const newRoomHandler = async (selectedUserId) => {
-    
+
     //prevent the user from starting a conversation with himself
     if (selectedUserId === user._id) {
       return;
@@ -183,15 +183,16 @@ const ChatWindow = ({ onUserChangeState }) => {
   };
 
   return (
-    <div className='chat-container'>
-      <Topbar
+    <>
+    <Topbar
         onUserChangeState={onUserChangeState}
         onDisconnectSocket={disconnectSocketHandler}
       />
+    <div className='chat-container'>
       <MDBContainer fluid className='py-4'>
         <MDBRow>
-          {/* TABS ON LEFT BAR  */}
-          <MDBCol md='6' lg='5' xl='4' className='mb-4 mb-md-0'>
+          {/*LEFT-SIDE BAR  */}
+          <MDBCol id="left-bar-container" md='6' lg='5' xl='4' className='mb-4 mb-md-0'>
             <Tabs
               id='controlled-tab-example'
               activeKey={tab}
@@ -249,7 +250,7 @@ const ChatWindow = ({ onUserChangeState }) => {
           </MDBCol>
 
           {/* CHAT WINDOW */}
-          <MDBCol id='chat-window-container'>
+          <MDBCol className='chat-window-container'>
             <MDBTypography listUnStyled>
               {currentRoom ? (
                 <>
@@ -293,6 +294,7 @@ const ChatWindow = ({ onUserChangeState }) => {
         </MDBRow>
       </MDBContainer>
     </div>
+    </>
   );
 };
 
