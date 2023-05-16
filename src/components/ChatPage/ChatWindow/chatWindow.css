@@ -6,7 +6,8 @@
 .chat-window-container {
   flex: 5.5;
   height: 90vh;
-  overflow: scroll;
+  overflow-y : scroll;
+  overflow-x: hidden;
 }
 
 #left-bar-container{

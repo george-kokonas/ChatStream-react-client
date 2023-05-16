@@ -4,7 +4,7 @@ import { useState } from "react";
 import { MDBContainer, MDBInput, MDBBtn } from "mdb-react-ui-kit";
 import "./login.css";
 
-const Login = ({onUserChangeState}) => {
+const Login = ({ onUserChangeState }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(null);
@@ -46,8 +46,9 @@ const Login = ({onUserChangeState}) => {
 
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
+        
         alert("Logged in Successfully");
-        onUserChangeState(true)
+        onUserChangeState(true);
       } catch (error) {
         alert(error.response.data.message);
         console.log(error);
@@ -60,7 +61,6 @@ const Login = ({onUserChangeState}) => {
 
   return (
     <MDBContainer className='p-3 my-5 d-flex flex-column w-52'>
-      
       {/* EMAIL INPUT FIELD */}
       <MDBInput
         wrapperClass='mb-1'

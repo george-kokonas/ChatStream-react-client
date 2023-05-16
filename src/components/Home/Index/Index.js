@@ -50,7 +50,7 @@ const Index = ({onUserChangeState}) => {
             <Routes>
               <Route path='/' element={<Navigate to='/login' replace />} />
               <Route path='/login' element={<Login onUserChangeState={onUserChangeState}/>} />
-              <Route exact path='/signup' element={<SignUp />} />
+              <Route exact path='/signup' element={<SignUp onUserChangeState={onUserChangeState} />} />
               <Route exact path='/about' element={<About />} />
             </Routes>
           </MDBCol>
