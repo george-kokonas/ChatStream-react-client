@@ -120,7 +120,6 @@ const ChatWindow = ({ onUserChangeState }) => {
 
   //CREATE NEW CHATROOM TO INITIATE CONVERSATION WITH SELECTED USER
   const newRoomHandler = async (selectedUserId) => {
-
     //prevent the user from starting a conversation with himself
     if (selectedUserId === user._id) {
       return;
@@ -182,118 +181,135 @@ const ChatWindow = ({ onUserChangeState }) => {
     }
   };
 
+  // console.log("current room : " , currentRoom);
+  console.log("rooms : " , rooms);
+  // console.log("message : ", messages);
+
   return (
     <>
-    <Topbar
+      <Topbar
         onUserChangeState={onUserChangeState}
         onDisconnectSocket={disconnectSocketHandler}
       />
-    <div className='chat-container'>
-      <MDBContainer fluid className='py-4'>
-        <MDBRow>
-          {/*LEFT-SIDE BAR  */}
-          <MDBCol id="left-bar-container" md='6' lg='5' xl='4' className='mb-4 mb-md-0'>
-            <Tabs
-              id='controlled-tab-example'
-              activeKey={tab}
-              onSelect={(selectedTab) => setTab(selectedTab)}
-              className='mb-3'
+      <div className='chat-container'>
+        <MDBContainer fluid className='py-4'>
+          <MDBRow>
+            {/*LEFT-SIDE BAR  */}
+            <MDBCol
+              id='left-bar-container'
+              md='6'
+              lg='5'
+              xl='4'
+              className='mb-4 mb-md-0'
             >
-              {/* CONVERSATIONS TAB */}
-              <Tab eventKey='conversations' title='Conversations'>
-                <MDBCard>
-                  <MDBCardBody>
-                    <MDBTypography listUnStyled className='mb-0'>
-                      {rooms.length ? (
-                        rooms.map((room) => (
-                          <div
-                            onClick={() => setCurrentRoom(room)}
-                            key={room._id}
-                          >
-                            <Rooms chatroom={room} loggedUser={user} />
-                          </div>
-                        ))
-                      ) : (
-                        <p>no conversations yet...</p>
-                      )}
-                    </MDBTypography>
-                  </MDBCardBody>
-                </MDBCard>
-              </Tab>
+              <Tabs
+                id='controlled-tab-example'
+                activeKey={tab}
+                onSelect={(selectedTab) => setTab(selectedTab)}
+                className='mb-3'
+              >
+                {/* CONVERSATIONS TAB */}
+                <Tab eventKey='conversations' title='Conversations'>
+                  <MDBCard>
+                    <MDBCardBody>
+                      <MDBTypography listUnStyled className='mb-0'>
+                        {rooms.length ? (
+                          !currentRoom ? (
+                            setCurrentRoom(rooms[rooms.length - 1])
+                          ) : (
+                            rooms.map((room) => (
+                              <div
+                                onClick={() => setCurrentRoom(room)}
+                                key={room._id}
+                              >
+                                <Rooms chatroom={room} loggedUser={user} currentRoom={currentRoom} />
+                              </div>
+                            ))
+                          )
+                        ) : (
+                          <p>no conversations yet...</p>
+                        )}
+                      </MDBTypography>
+                    </MDBCardBody>
+                  </MDBCard>
+                </Tab>
 
-              {/* REGISTERED USERS TAB */}
-              <Tab eventKey='allUsers' title='Users'>
-                <MDBCard>
-                  <MDBCardBody>
-                    <MDBTypography listUnStyled className='mb-0'>
-                      {registeredUsers.map((registeredUser) => (
-                        <RegisteredUsers
-                          registeredUser={registeredUser}
-                          rooms={rooms}
-                          onNewConversation={newRoomHandler}
-                          isOnline={onlineUsers.some(
-                            (onlineUser) =>
-                              onlineUser.userId === registeredUser._id
-                          )}
-                          key={registeredUser._id}
-                        />
-                      ))}
-                    </MDBTypography>
-                  </MDBCardBody>
-                </MDBCard>
-              </Tab>
-            </Tabs>
+                {/* REGISTERED USERS TAB */}
+                <Tab eventKey='allUsers' title='Users'>
+                  <MDBCard>
+                    <MDBCardBody>
+                      <MDBTypography listUnStyled className='mb-0'>
+                        {registeredUsers.map((registeredUser) => (
+                          <RegisteredUsers
+                            registeredUser={registeredUser}
+                            rooms={rooms}
+                            onNewConversation={newRoomHandler}
+                            isOnline={onlineUsers.some(
+                              (onlineUser) =>
+                                onlineUser.userId === registeredUser._id
+                            )}
+                            key={registeredUser._id}
+                          />
+                        ))}
+                      </MDBTypography>
+                    </MDBCardBody>
+                  </MDBCard>
+                </Tab>
+              </Tabs>
 
-            {/* <h5 className='font-weight-bold mb-3 text-center text-lg-start'>
+              {/* <h5 className='font-weight-bold mb-3 text-center text-lg-start'>
               CONVERSATIONS
             </h5> */}
-          </MDBCol>
+            </MDBCol>
 
-          {/* CHAT WINDOW */}
-          <MDBCol className='chat-window-container'>
-            <MDBTypography listUnStyled>
-              {currentRoom ? (
-                <>
-                  <div id='message'>
-                    {messages.map((msg, index) => (
-                      <div key={index} ref={scrollToEnd}>
-                        <Messages
-                          message={msg}
-                          sentByMe={msg.senderId === user._id}
-                        />
-                      </div>
-                    ))}
-                  </div>
+            {/* CHAT WINDOW */}
+            <MDBCol className='chat-window-container'>
+              <MDBTypography listUnStyled>
+                {currentRoom ? (
+                  <>
+                    <div id='message'>
+                      {/* !messages.length ? setMessages(messages[messages.length-1]) : */}
+                      {!messages.length
+                        ? <p>Nothing to show... Initiate a chat!</p>
+                        : messages.map((msg, index) => (
+                            <div key={index} ref={scrollToEnd}>
+                              <Messages
+                                message={msg}
+                                sentByMe={msg.senderId === user._id}
+                              />
+                            </div>
+                          ))}
+                    </div>
 
-                  {/* INPUTS */}
-                  <li id='chat-window-inputs' className='bg-white mb-3'>
-                    {/* TEXT FIELD */}
-                    <MDBTextArea
-                      label='Message'
-                      id='textAreaExample'
-                      rows={4}
-                      value={newMessage}
-                      onChange={(event) => setNewMessage(event.target.value)}
-                    />
-                    {/* SEND BUTTON */}
-                    <MDBBtn
-                      onClick={submitMessageHandler}
-                      color='info'
-                      rounded
-                      className='float-end mt-2'
-                    >
-                      Send
-                    </MDBBtn>
-                  </li>
-                </>
-              ) : (
-                <p>select room</p>
-              )}
-            </MDBTypography>
-          </MDBCol>
-        </MDBRow>
-      </MDBContainer>
-    </div>
+                    {/* INPUTS */}
+                    <li id='chat-window-inputs' className='bg-white mb-3'>
+                      {/* TEXT FIELD */}
+                      <MDBTextArea
+                        label='Message'
+                        id='textAreaExample'
+                        rows={4}
+                        value={newMessage}
+                        onChange={(event) => setNewMessage(event.target.value)}
+                      />
+                      {/* SEND BUTTON */}
+                      <MDBBtn
+                        onClick={submitMessageHandler}
+                        color='info'
+                        rounded
+                        className='float-end mt-2'
+                      >
+                        Send
+                      </MDBBtn>
+                    </li>
+                  </>
+                ) : (
+                  <p>select room</p>
+                )}
+              </MDBTypography>
+            </MDBCol>
+          </MDBRow>
+        </MDBContainer>
+      </div>
     </>
   );
 };
