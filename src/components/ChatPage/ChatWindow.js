@@ -13,9 +13,7 @@ const ChatWindow = ({ onUserChangeState }) => {
   const [rooms, setRooms] = useState([]);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
   const [instantMessage, setInstantMessage] = useState(null);
-  const [registeredUsers, setRegisteredUsers] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
 
@@ -46,16 +44,6 @@ const ChatWindow = ({ onUserChangeState }) => {
     socket.current.on("getOnlineUsers", (users) => {
       setOnlineUsers(users);
     });
-
-    //get all registered users from database
-    const getRegisteredUsers = async () => {
-      const { data } = await axios.get(
-        "http://localhost:8000/user/getRegisteredUsers"
-      );
-
-      setRegisteredUsers(data);
-    };
-    getRegisteredUsers();
   }, [user._id]);
 
   //TRIGGERED WHEN INSTANT MESSAGE ARRIVES OR USER SELECTS A ROOM
@@ -84,7 +72,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     getRooms();
   }, [user._id, instantMessage]);
 
-  //TRIGGERED WHEN USER SELECTS A ROOM
+  //GET DATA FROM SELECTED ROOM
   useEffect(() => {
     const getMessages = async () => {
       try {
@@ -101,7 +89,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     getMessages();
   }, [currentRoom]);
 
-  //CREATE NEW CHATROOM TO INITIATE CONVERSATION WITH SELECTED USER
+  //ON USER ROOM SELECTION, CREATE NEW CHATROOM
   const newRoomHandler = async (selectedUserId) => {
     //prevent the user from starting a conversation with himself
     if (selectedUserId === user._id) {
@@ -173,7 +161,6 @@ const ChatWindow = ({ onUserChangeState }) => {
             >
               <SideBar
                 loggedUser={user}
-                registeredUsers={registeredUsers}
                 onlineUsers={onlineUsers}
                 rooms={rooms}
                 currentRoom={currentRoom}
@@ -201,7 +188,6 @@ const ChatWindow = ({ onUserChangeState }) => {
                         onNewMessage={(data) =>
                           setMessages([...messages, data])
                         }
-                        newMessage={newMessage}
                         onTyping={typingHandler}
                       />
                     </li>

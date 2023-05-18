@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import RegisteredUsers from "./RegisteredUsers/RegisteredUsers";
@@ -8,14 +9,29 @@ import { MDBCard, MDBCardBody, MDBTypography } from "mdb-react-ui-kit";
 const SideBar = ({
   rooms,
   currentRoom,
-  registeredUsers,
+
+  onGetRegisteredUsers,
   onlineUsers,
   onSelectRoom,
   onNewRoom,
   loggedUser,
 }) => {
+  const [registeredUsers, setRegisteredUsers] = useState([]);
   const [tab, setTab] = useState("conversations");
 
+  //GET REGISTERED USERS LIST
+  useEffect(()=>{
+    const getRegisteredUsers = async () => {
+      const { data } = await axios.get(
+        "http://localhost:8000/user/getRegisteredUsers"
+      );
+
+      setRegisteredUsers(data)
+    };
+    getRegisteredUsers();
+  },[loggedUser._id,onGetRegisteredUsers])
+
+  //SET LAST CONVERSATION AS CURRENT TO DISPLAY IT ON LOAD
   useEffect(() => {
     if (!currentRoom && rooms.length > 0) {
       onSelectRoom(rooms[rooms.length - 1]);
