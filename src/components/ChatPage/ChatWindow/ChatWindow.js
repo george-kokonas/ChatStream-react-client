@@ -27,15 +27,18 @@ const ChatWindow = ({ onUserChangeState }) => {
   const [instantMessage, setInstantMessage] = useState(null);
   const [registeredUsers, setRegisteredUsers] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [isTyping, setIsTyping] = useState(false);
   const [tab, setTab] = useState("conversations");
 
   const user = JSON.parse(localStorage.getItem("user"));
   const socket = useRef();
   const scrollToEnd = useRef();
 
+  let typingTimer;
+  const typingTimeout = 1000;
+
   //TRIGGERED WHEN COMPONENT IS MOUNTED
   useEffect(() => {
-    //initialize socket
     initiateSocket();
     socket.current = getSocket();
 
@@ -80,7 +83,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     }
   }, [instantMessage, currentRoom]);
 
-  //TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES TO OPEN A  NEW ROOM
+  //TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES AND OPEN A NEW ROOM
   useEffect(() => {
     const getRooms = async () => {
       try {
@@ -124,6 +127,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     if (selectedUserId === user._id) {
       return;
     }
+
     const room = {
       senderId: user._id,
       receiverId: selectedUserId,
@@ -144,6 +148,27 @@ const ChatWindow = ({ onUserChangeState }) => {
   // TRIGGERED WHEN USER LOGS OUT TO UPDATE ONLINE USERS ARRAY
   const disconnectSocketHandler = () => {
     socket.current.emit("logout", socket.current.id);
+  };
+
+  //TRIGGERED WHEN USER IS TYPING A NEW MESSAGE
+  const isTypingHandler = () => {
+    const receiverId = currentRoom.members.find(
+      (member) => member !== user._id
+    );
+
+    clearTimeout(typingTimer);
+
+    socket.current.on("isTyping", (data) => {
+      setIsTyping(true);
+      setTimeout(() => {
+        setIsTyping(false);
+      }, typingTimeout);
+    });
+
+    socket.current.emit("userTyping", {
+      senderId: user._id,
+      receiverId: receiverId,
+    });
   };
 
   //SUBMIT MESSAGE
@@ -180,10 +205,6 @@ const ChatWindow = ({ onUserChangeState }) => {
       alert("Unable to send message...");
     }
   };
-
-  // console.log("current room : " , currentRoom);
-  console.log("rooms : " , rooms);
-  // console.log("message : ", messages);
 
   return (
     <>
@@ -222,7 +243,11 @@ const ChatWindow = ({ onUserChangeState }) => {
                                 onClick={() => setCurrentRoom(room)}
                                 key={room._id}
                               >
-                                <Rooms chatroom={room} loggedUser={user} currentRoom={currentRoom} />
+                                <Rooms
+                                  chatroom={room}
+                                  loggedUser={user}
+                                  currentRoom={currentRoom}
+                                />
                               </div>
                             ))
                           )
@@ -269,20 +294,23 @@ const ChatWindow = ({ onUserChangeState }) => {
                   <>
                     <div id='message'>
                       {/* !messages.length ? setMessages(messages[messages.length-1]) : */}
-                      {!messages.length
-                        ? <p>Nothing to show... Initiate a chat!</p>
-                        : messages.map((msg, index) => (
-                            <div key={index} ref={scrollToEnd}>
-                              <Messages
-                                message={msg}
-                                sentByMe={msg.senderId === user._id}
-                              />
-                            </div>
-                          ))}
+                      {!messages.length ? (
+                        <p>Nothing to show... Initiate a chat!</p>
+                      ) : (
+                        messages.map((msg, index) => (
+                          <div key={index} ref={scrollToEnd}>
+                            <Messages
+                              message={msg}
+                              sentByMe={msg.senderId === user._id}
+                            />
+                          </div>
+                        ))
+                      )}
                     </div>
 
                     {/* INPUTS */}
                     <li id='chat-window-inputs' className='bg-white mb-3'>
+                      {isTyping && <p>user is typing...</p>}
                       {/* TEXT FIELD */}
                       <MDBTextArea
                         label='Message'
@@ -290,6 +318,7 @@ const ChatWindow = ({ onUserChangeState }) => {
                         rows={4}
                         value={newMessage}
                         onChange={(event) => setNewMessage(event.target.value)}
+                        onKeyDown={isTypingHandler}
                       />
                       {/* SEND BUTTON */}
                       <MDBBtn
