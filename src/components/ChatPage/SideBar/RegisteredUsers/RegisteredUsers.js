@@ -5,7 +5,7 @@ const RegisteredUsers = ({
   registeredUser,
   isOnline,
   rooms,
-  onNewConversation,
+  onNewRoom,
 }) => {
   const selectedUserHandler = () => {
     //only allow chat with users that haven't started converstation yet(inluding yourself)
@@ -14,7 +14,7 @@ const RegisteredUsers = ({
     }
     //create a room with the selected user
     const selectedUserId = registeredUser._id;
-    onNewConversation(selectedUserId);
+    onNewRoom(selectedUserId);
   };
 
   return (

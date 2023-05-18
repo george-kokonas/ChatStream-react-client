@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
-import Index from "./components/Home/Index/Index";
-import ChatWindow from "./components/ChatPage/ChatWindow/ChatWindow";
+import Index from "./components/HomePage/Index/Index";
+import ChatWindow from "./components/ChatPage/ChatWindow";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
