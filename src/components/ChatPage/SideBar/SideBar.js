@@ -11,19 +11,21 @@ const SideBar = ({
   onlineUsers,
   rooms,
   currentRoom,
+  messages,
+  instantMessage,
   onSelectRoom,
   onNewRoom,
 }) => {
   const [registeredUsers, setRegisteredUsers] = useState([]);
-  const [tab, setTab] = useState("conversations");
-  
+  const [tab, setTab] = useState(rooms.length ? "conversations" : "users");
+
   //SET LAST CONVERSATION AS CURRENT TO DISPLAY IT ON LOAD
-  useEffect(() => {
-    if (!currentRoom && rooms.length > 0) {
-      onSelectRoom(rooms[rooms.length - 1]);
-    }
-  }, [currentRoom, rooms, onSelectRoom]);
-  
+  // useEffect(() => {
+  //   if (!currentRoom && rooms.length > 0) {
+  //     onSelectRoom(rooms[rooms.length - 1]);
+  //   }
+  // }, [currentRoom, rooms, onSelectRoom]);
+
   //GET REGISTERED USERS LIST
   useEffect(() => {
     const getRegisteredUsers = async () => {
@@ -34,7 +36,6 @@ const SideBar = ({
     };
     getRegisteredUsers();
   }, [loggedUser._id]);
-
 
   return (
     <>
@@ -56,6 +57,8 @@ const SideBar = ({
                         chatroom={room}
                         loggedUser={loggedUser}
                         currentRoom={currentRoom}
+                        messages={messages}
+                        instantMessage={instantMessage}
                       />
                     </div>
                   ))
@@ -68,13 +71,13 @@ const SideBar = ({
         </Tab>
 
         {/* REGISTERED USERS TAB */}
-        <Tab eventKey='allUsers' title='Users'>
+        <Tab eventKey='users' title='Users'>
           <MDBCard>
             <MDBCardBody>
               <MDBTypography listUnStyled className='mb-0'>
                 {registeredUsers.map((registeredUser) => (
                   <RegisteredUsers
-                    loggedUser = {loggedUser}
+                    loggedUser={loggedUser}
                     registeredUser={registeredUser}
                     rooms={rooms}
                     onNewRoom={onNewRoom}
