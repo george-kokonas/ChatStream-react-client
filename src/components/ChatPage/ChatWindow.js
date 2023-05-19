@@ -56,7 +56,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     }
   }, [instantMessage, currentRoom]);
 
-  //TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES AND OPEN A NEW ROOM
+  //TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES TO OPEN A NEW ROOM
   useEffect(() => {
     const getRooms = async () => {
       try {
@@ -72,7 +72,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     getRooms();
   }, [user._id, instantMessage]);
 
-  //GET DATA FROM SELECTED ROOM
+  //GET MESSAGES FROM SELECTED ROOM
   useEffect(() => {
     const getMessages = async () => {
       try {
@@ -129,7 +129,6 @@ const ChatWindow = ({ onUserChangeState }) => {
           <MDBRow>
             {/*LEFT-SIDE BAR  */}
             <MDBCol
-              id='left-bar-container'
               md='6'
               lg='5'
               xl='4'
@@ -151,6 +150,7 @@ const ChatWindow = ({ onUserChangeState }) => {
                 {currentRoom ? (
                   <>
                     <Messages loggedUser={user} messages={messages} />
+
                     {isTyping && <p>user is typing...</p>}
 
                     <li id='chat-window-inputs' className='bg-white mb-3'>

@@ -1,4 +1,8 @@
-.rooms-container{
-  display: flex;
-  align-items: center;
+
+.currentRoom{
+  background-color: rgb(156, 211, 232);
+}
+
+.room{
+  background-color: #eee;
 }
