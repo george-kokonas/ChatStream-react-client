@@ -89,6 +89,8 @@ const ChatWindow = ({ onUserChangeState }) => {
     getMessages();
   }, [currentRoom]);
 
+  // console.log(messages);
+
   //TRIGGERED WHEN USER IS TYPING A NEW MESSAGE
   const typingHandler = () => {
     const typingTimeout = 1000;

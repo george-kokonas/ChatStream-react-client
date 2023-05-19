@@ -16,34 +16,49 @@ const Rooms = ({
       ? "currentRoom p-2 border-bottom"
       : "room p-2 border-bottom";
 
-  const proccessMessage = (data) => {
-    if (data.length === 0) {
+  //HELPER FUNCTION TO PROCESS LAST MESSAGE
+  const proccessMessage = (array) => {
+    if (array.length === 0) {
       setLastMessage("No conversation yet...");
       return;
     }
-
-    let message = data[data.length - 1].text;
+    //render first 25 characters of the last message in the array
+    let message = array[array.length - 1].text;
     message = message.slice(0, 25);
     setLastMessage(message);
   };
 
+  //WHEN USER SENDS MESSAGE ,UPDATE THE MESSAGE IN CONVERSATIONS CARD
+  useEffect(() => {
+    if (messages.length && currentRoom.members?.includes(friend?._id)) {
+      proccessMessage(messages);
+    }
+  }, [messages, currentRoom?.members, friend?._id]);
+
+  //WHEN USER RECEIVES MESSAGE, UPDATE THE MESSAGE IN CONVERSATIONS CARD
+  useEffect(() => {
+    if (instantMessage?.sender === friend?._id) {
+      instantMessage && setLastMessage(instantMessage.text);
+    }
+  }, [instantMessage, friend?._id]);
+
+  //ON FIRST LOAD, UPDATE THE MESSAGE IN CONVERSATIONS CARD
   useEffect(() => {
     const getMessages = async () => {
       try {
         const { data } = await axios.get(
           `http://localhost:8000/chat/getMessages/${chatroom?._id}`
         );
-
         proccessMessage(data);
       } catch (error) {
         alert("Error fetching data");
         console.log(error);
       }
     };
-
     getMessages();
-  }, [chatroom?._id, messages, instantMessage]);
+  }, [chatroom?._id]);
 
+  //FIND DATA OF THE OTHER PARTICIPANT TO RENDER USERNAME IN CONVERSATIONS CARD
   useEffect(() => {
     const friendId = chatroom.members.find(
       (memberId) => memberId !== loggedUser._id
