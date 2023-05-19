@@ -89,35 +89,6 @@ const ChatWindow = ({ onUserChangeState }) => {
     getMessages();
   }, [currentRoom]);
 
-  //ON USER ROOM SELECTION, CREATE NEW CHATROOM
-  const newRoomHandler = async (selectedUserId) => {
-    //prevent the user from starting a conversation with himself
-    if (selectedUserId === user._id) {
-      return;
-    }
-
-    const room = {
-      senderId: user._id,
-      receiverId: selectedUserId,
-    };
-
-    try {
-      const { data } = await axios.post(
-        "http://localhost:8000/chat/createChatRoom/",
-        room
-      );
-      setRooms([...rooms, data]);
-    } catch (error) {
-      console.log(error);
-      alert("Unable to start new conversation...");
-    }
-  };
-
-  // TRIGGERED WHEN USER LOGS OUT TO UPDATE ONLINE USERS ARRAY
-  const disconnectSocketHandler = () => {
-    socket.current.emit("logout", socket.current.id);
-  };
-
   //TRIGGERED WHEN USER IS TYPING A NEW MESSAGE
   const typingHandler = () => {
     const typingTimeout = 1000;
@@ -140,6 +111,11 @@ const ChatWindow = ({ onUserChangeState }) => {
       senderId: user._id,
       receiverId: receiverId,
     });
+  };
+
+  // TRIGGERED WHEN USER LOGS OUT TO UPDATE ONLINE USERS ARRAY
+  const disconnectSocketHandler = () => {
+    socket.current.emit("logout", socket.current.id);
   };
 
   return (
@@ -165,7 +141,7 @@ const ChatWindow = ({ onUserChangeState }) => {
                 rooms={rooms}
                 currentRoom={currentRoom}
                 onSelectRoom={(room) => setCurrentRoom(room)}
-                onNewRoom={newRoomHandler}
+                onNewRoom={(room) => setRooms([...rooms, room])}
               />
             </MDBCol>
 
@@ -174,12 +150,8 @@ const ChatWindow = ({ onUserChangeState }) => {
               <MDBTypography listUnStyled>
                 {currentRoom ? (
                   <>
-                    <Messages
-                      loggedUser={user}
-                      messages={messages}
-                      currentRoom={currentRoom}
-                      />
-                      {isTyping && <p>user is typing...</p>}
+                    <Messages loggedUser={user} messages={messages} />
+                    {isTyping && <p>user is typing...</p>}
 
                     <li id='chat-window-inputs' className='bg-white mb-3'>
                       <Inputs

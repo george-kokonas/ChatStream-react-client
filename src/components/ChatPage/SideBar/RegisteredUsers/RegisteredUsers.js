@@ -1,20 +1,41 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircle } from "@fortawesome/free-solid-svg-icons";
 
 const RegisteredUsers = ({
+  loggedUser,
   registeredUser,
   isOnline,
   rooms,
   onNewRoom,
 }) => {
-  const selectedUserHandler = () => {
-    //only allow chat with users that haven't started converstation yet(inluding yourself)
+  //CREATE NEW ROOM WITH SELECTED USER FROM REGISTERED USERS LIST
+  const newRoomHandler = async () => {
+    //only allow chat with users that haven't started converstation yet
     for (let i = 0; i < rooms.length; i++) {
       if (rooms[i].members.includes(registeredUser._id)) return;
     }
-    //create a room with the selected user
-    const selectedUserId = registeredUser._id;
-    onNewRoom(selectedUserId);
+
+    //prevent the user from starting a conversation with himself
+    if (registeredUser._id === loggedUser._id) {
+      return;
+    }
+
+    const room = {
+      senderId: loggedUser._id,
+      receiverId: registeredUser._id,
+    };
+
+    try {
+      const { data } = await axios.post(
+        "http://localhost:8000/chat/createChatRoom/",
+        room
+      );
+      onNewRoom(data);
+    } catch (error) {
+      console.log(error);
+      alert("Unable to start new conversation...");
+    }
   };
 
   return (
@@ -27,17 +48,18 @@ const RegisteredUsers = ({
             className='rounded-circle d-flex align-self-center me-3 shadow-1-strong'
             width='60'
           />
-          <div onClick={selectedUserHandler} className='pt-1'>
+          <div onClick={newRoomHandler} className='pt-1'>
             <p className='fw-bold mb-0'>{registeredUser.username}</p>
             <p className='small text-muted'>some user info maybe...</p>
           </div>
         </div>
         <div className='pt-1'>
           <p className='small text-muted mb-1'>
-          <FontAwesomeIcon
-        icon={faCircle}
-        style={isOnline ? { color: 'green' } : { color: '#AA0000' }}
-      />{' '}          </p>
+            <FontAwesomeIcon
+              icon={faCircle}
+              style={isOnline ? { color: "green" } : { color: "#AA0000" }}
+            />{" "}
+          </p>
           {/* <span className="badge bg-danger float-end">1</span> */}
         </div>
       </a>
