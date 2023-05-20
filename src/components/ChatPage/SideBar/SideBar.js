@@ -13,7 +13,6 @@ const SideBar = ({
   messages,
   instantMessage,
   onSelectRoom,
-  onNewRoom,
 }) => {
   const [registeredUsers, setRegisteredUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
@@ -34,6 +33,7 @@ const SideBar = ({
           `http://localhost:8000/chat/getChatRoom/${loggedUser._id}`
         );
         setRooms(data);
+
       } catch (error) {
         console.log(error);
         alert("Error fetching data");
@@ -41,7 +41,7 @@ const SideBar = ({
     };
     getRooms();
   }, [loggedUser._id, instantMessage]);
-  console.log(rooms);
+
   //GET REGISTERED USERS LIST
   useEffect(() => {
     const getRegisteredUsers = async () => {

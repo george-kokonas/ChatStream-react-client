@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import CustomTimeAgo from "../../../CustomTimeAgo/CustomTimeAgo";
 import "./rooms.css";
+
 const Rooms = ({
   loggedUser,
   chatroom,
@@ -9,36 +11,44 @@ const Rooms = ({
   instantMessage,
 }) => {
   const [friend, setFriend] = useState(null);
-  const [lastMessage, setLastMessage] = useState("");
+  const [lastMessage, setLastMessage] = useState([]);
 
   const listItemClassname =
     currentRoom?._id === chatroom?._id
       ? "currentRoom p-2 border-bottom"
       : "room p-2 border-bottom";
 
+  // console.log(lastMessage);
+  // console.log(messages);
+
   //HELPER FUNCTION TO PROCESS LAST MESSAGE
   const proccessMessage = (array) => {
     if (array.length === 0) {
-      setLastMessage("No conversation yet...");
+      setLastMessage({message: "No conversation yet...", createdAt: "" });
       return;
     }
-    //render first 25 characters of the last message in the array
-    let message = array[array.length - 1].text;
-    message = message.slice(0, 25);
-    setLastMessage(message);
-  };
 
+    // render first 25 characters of the last message in the array
+    const message = array[array.length - 1].text.slice(0, 25);
+    const createdAt = array[array.length - 1].createdAt;
+  
+    setLastMessage({
+      message: message,
+      createdAt: createdAt,
+    });
+  };
+  
   //WHEN USER SENDS MESSAGE ,UPDATE THE MESSAGE IN CONVERSATIONS CARD
   useEffect(() => {
     if (messages.length && currentRoom.members?.includes(friend?._id)) {
       proccessMessage(messages);
     }
   }, [messages, currentRoom?.members, friend?._id]);
-
+  console.log(chatroom);
   //WHEN USER RECEIVES MESSAGE, UPDATE THE MESSAGE IN CONVERSATIONS CARD
   useEffect(() => {
     if (instantMessage?.sender === friend?._id) {
-      instantMessage && setLastMessage(instantMessage.text);
+      instantMessage && proccessMessage([instantMessage]);
     }
   }, [instantMessage, friend?._id]);
 
@@ -90,12 +100,14 @@ const Rooms = ({
               width='60'
             />
             <div className='pt-1'>
-              <p className='fw-bold mb-0'>{friend && friend.username}</p>
-              <p className='small text-muted'>{lastMessage}</p>
+              <p className='fw-bold mb-0'>{friend?.username}</p>
+              <p className='small text-muted'>{lastMessage?.message}</p>
             </div>
           </div>
           <div className='pt-1'>
-            <p className='small text-muted mb-1'>Just now</p>
+            <p className='small text-muted mb-1'>
+              <CustomTimeAgo date={lastMessage?.createdAt} />
+            </p>
             <span className='badge bg-danger float-end'>1</span>
           </div>
         </a>
