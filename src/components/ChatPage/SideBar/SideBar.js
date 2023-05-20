@@ -9,7 +9,6 @@ import { MDBCard, MDBCardBody, MDBTypography } from "mdb-react-ui-kit";
 const SideBar = ({
   loggedUser,
   onlineUsers,
-  rooms,
   currentRoom,
   messages,
   instantMessage,
@@ -17,6 +16,7 @@ const SideBar = ({
   onNewRoom,
 }) => {
   const [registeredUsers, setRegisteredUsers] = useState([]);
+  const [rooms, setRooms] = useState([]);
   const [tab, setTab] = useState(rooms.length ? "conversations" : "users");
 
   //SET LAST CONVERSATION AS CURRENT TO DISPLAY IT ON LOAD
@@ -26,6 +26,22 @@ const SideBar = ({
   //   }
   // }, [currentRoom, rooms, onSelectRoom]);
 
+  //TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES TO OPEN A NEW ROOM
+  useEffect(() => {
+    const getRooms = async () => {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:8000/chat/getChatRoom/${loggedUser._id}`
+        );
+        setRooms(data);
+      } catch (error) {
+        console.log(error);
+        alert("Error fetching data");
+      }
+    };
+    getRooms();
+  }, [loggedUser._id, instantMessage]);
+  console.log(rooms);
   //GET REGISTERED USERS LIST
   useEffect(() => {
     const getRegisteredUsers = async () => {
@@ -80,7 +96,7 @@ const SideBar = ({
                     loggedUser={loggedUser}
                     registeredUser={registeredUser}
                     rooms={rooms}
-                    onNewRoom={onNewRoom}
+                    onNewRoom={(room) => setRooms([...rooms, room])}
                     isOnline={onlineUsers.some(
                       (onlineUser) => onlineUser.userId === registeredUser._id
                     )}

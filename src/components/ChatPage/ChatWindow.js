@@ -10,7 +10,6 @@ import { MDBContainer, MDBRow, MDBCol, MDBTypography } from "mdb-react-ui-kit";
 import "./chatWindow.css";
 
 const ChatWindow = ({ onUserChangeState }) => {
-  const [rooms, setRooms] = useState([]);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [instantMessage, setInstantMessage] = useState(null);
@@ -55,22 +54,6 @@ const ChatWindow = ({ onUserChangeState }) => {
       setMessages((prev) => [...prev, instantMessage]);
     }
   }, [instantMessage, currentRoom]);
-
-  //TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES TO OPEN A NEW ROOM
-  useEffect(() => {
-    const getRooms = async () => {
-      try {
-        const { data } = await axios.get(
-          `http://localhost:8000/chat/getChatRoom/${user._id}`
-        );
-        setRooms(data);
-      } catch (error) {
-        console.log(error);
-        alert("Error fetching data");
-      }
-    };
-    getRooms();
-  }, [user._id, instantMessage]);
 
   //GET MESSAGES FROM SELECTED ROOM
   useEffect(() => {
@@ -134,12 +117,10 @@ const ChatWindow = ({ onUserChangeState }) => {
               <SideBar
                 loggedUser={user}
                 onlineUsers={onlineUsers}
-                rooms={rooms}
                 currentRoom={currentRoom}
+                onSelectRoom={(room) => setCurrentRoom(room)}
                 messages={messages}
                 instantMessage={instantMessage}
-                onSelectRoom={(room) => setCurrentRoom(room)}
-                onNewRoom={(room) => setRooms([...rooms, room])}
               />
             </MDBCol>
 
