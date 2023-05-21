@@ -9,6 +9,7 @@ const RegisteredUsers = ({
   rooms,
   onNewRoom,
 }) => {
+  
   //CREATE NEW ROOM WITH SELECTED USER FROM REGISTERED USERS LIST
   const newRoomHandler = async () => {
     //only allow chat with users that haven't started converstation yet

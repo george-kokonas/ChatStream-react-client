@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+
 import Topbar from "./Topbar/Topbar";
 import SideBar from "./SideBar/SideBar";
 import Messages from "./Messages/Messages";
 import Inputs from "./Inputs/Inputs";
-
 import { initiateSocket, getSocket } from "./socket/Socket";
+
 import { MDBContainer, MDBRow, MDBCol, MDBTypography } from "mdb-react-ui-kit";
 import "./chatWindow.css";
 
@@ -27,7 +28,9 @@ const ChatWindow = ({ onUserChangeState }) => {
     //executed when new instant message arrives
     socket.current.on("getMessage", (data) => {
       setInstantMessage({
+        roomId : data.roomId,
         sender: data.senderId,
+        receiverId: data.receiverId,
         text: data.text,
         createdAt: Date.now(),
       });
@@ -71,8 +74,6 @@ const ChatWindow = ({ onUserChangeState }) => {
 
     getMessages();
   }, [currentRoom]);
-
-  // console.log(messages);
 
   //TRIGGERED WHEN USER IS TYPING A NEW MESSAGE
   const typingHandler = () => {

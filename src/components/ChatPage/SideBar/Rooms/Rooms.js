@@ -5,72 +5,66 @@ import "./rooms.css";
 
 const Rooms = ({
   loggedUser,
-  chatroom,
+  room,
   currentRoom,
-  messages,
+  userMessages,
   instantMessage,
 }) => {
   const [friend, setFriend] = useState(null);
   const [lastMessage, setLastMessage] = useState([]);
 
   const listItemClassname =
-    currentRoom?._id === chatroom?._id
+    currentRoom?._id === room?._id
       ? "currentRoom p-2 border-bottom"
       : "room p-2 border-bottom";
 
-  // console.log(lastMessage);
-  // console.log(messages);
-
   //HELPER FUNCTION TO PROCESS LAST MESSAGE
   const proccessMessage = (array) => {
-    if (array.length === 0) {
-      setLastMessage({message: "No conversation yet...", createdAt: "" });
-      return;
-    }
+    // get the first 25 characters of the last message in the array
+    let message = array[array.length - 1]?.text;
+    message.length > 20 && (message = message.slice(0, 20) + "...");
 
-    // render first 25 characters of the last message in the array
-    const message = array[array.length - 1].text.slice(0, 25);
     const createdAt = array[array.length - 1].createdAt;
-  
+
     setLastMessage({
-      message: message,
-      createdAt: createdAt,
+      message,
+      createdAt,
     });
   };
-  
-  //WHEN USER SENDS MESSAGE ,UPDATE THE MESSAGE IN CONVERSATIONS CARD
-  useEffect(() => {
-    if (messages.length && currentRoom.members?.includes(friend?._id)) {
-      proccessMessage(messages);
-    }
-  }, [messages, currentRoom?.members, friend?._id]);
-  console.log(chatroom);
-  //WHEN USER RECEIVES MESSAGE, UPDATE THE MESSAGE IN CONVERSATIONS CARD
-  useEffect(() => {
-    if (instantMessage?.sender === friend?._id) {
-      instantMessage && proccessMessage([instantMessage]);
-    }
-  }, [instantMessage, friend?._id]);
 
-  //ON FIRST LOAD, UPDATE THE MESSAGE IN CONVERSATIONS CARD
+  // ON FIRST LOAD, UPDATE THE MESSAGE IN CONVERSATIONS CARD
   useEffect(() => {
     const getMessages = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/chat/getMessages/${chatroom?._id}`
+          `http://localhost:8000/chat/getMessages/${room?._id}`
         );
-        proccessMessage(data);
+        data.length && proccessMessage(data);
       } catch (error) {
         alert("Error fetching data");
         console.log(error);
       }
     };
     getMessages();
-  }, [chatroom?._id]);
+  }, [room]);
+
+  // WHEN USER SENDS MESSAGE ,UPDATE THE MESSAGE IN CONVERSATIONS CARD
+  useEffect(() => {
+    if (userMessages.length && currentRoom._id === room._id) {
+      proccessMessage(userMessages);
+    }
+  }, [userMessages, currentRoom?._id, room?._id]);
+
+  // WHEN USER RECEIVES INSTANT MESSAGE, UPDATE THE MESSAGE IN CONVERSATIONS CARD
+  useEffect(() => {
+    if (!instantMessage) return;
+    instantMessage.roomId === room._id && proccessMessage([instantMessage]);
+  }, [instantMessage, room]);
 
   //FIND DATA OF THE OTHER PARTICIPANT TO RENDER USERNAME IN CONVERSATIONS CARD
   useEffect(() => {
-    const friendId = chatroom.members.find(
+    if (room.length === 0) return;
+    const friendId = room.members.find(
       (memberId) => memberId !== loggedUser._id
     );
 
@@ -86,7 +80,7 @@ const Rooms = ({
       }
     };
     getFriend();
-  }, [loggedUser, chatroom]);
+  }, [loggedUser, room]);
 
   return (
     <div className={listItemClassname}>
@@ -101,7 +95,11 @@ const Rooms = ({
             />
             <div className='pt-1'>
               <p className='fw-bold mb-0'>{friend?.username}</p>
-              <p className='small text-muted'>{lastMessage?.message}</p>
+              <p className='small text-muted'>
+                {lastMessage.message
+                  ? lastMessage.message
+                  : "no messages yet.."}
+              </p>
             </div>
           </div>
           <div className='pt-1'>

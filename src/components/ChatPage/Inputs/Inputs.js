@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { initiateSocket, getSocket } from "../socket/Socket";
 import axios from "axios";
+import { initiateSocket, getSocket } from "../socket/Socket";
 import { MDBTextArea, MDBBtn } from "mdb-react-ui-kit";
 
 const Inputs = ({ loggedUser, currentRoom, onNewMessage, onTyping }) => {
@@ -27,9 +27,11 @@ const Inputs = ({ loggedUser, currentRoom, onNewMessage, onTyping }) => {
 
     //executed when instant message is sent
     socket.current.emit("sendMessage", {
+      roomId : currentRoom._id,
       senderId: loggedUser._id,
       receiverId: receiverId,
       text: newMessage,
+      createdAt : Date.now()
     });
 
     //send message to server

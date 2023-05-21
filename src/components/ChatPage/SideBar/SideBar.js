@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tabs";
+
 import RegisteredUsers from "./RegisteredUsers/RegisteredUsers";
 import Rooms from "./Rooms/Rooms";
+
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
 import { MDBCard, MDBCardBody, MDBTypography } from "mdb-react-ui-kit";
 
 const SideBar = ({
@@ -16,16 +18,11 @@ const SideBar = ({
 }) => {
   const [registeredUsers, setRegisteredUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
-  const [tab, setTab] = useState(rooms.length ? "conversations" : "users");
+  
+  const [tab, setTab] = useState(rooms.length ? "users": "conversations" );
 
-  //SET LAST CONVERSATION AS CURRENT TO DISPLAY IT ON LOAD
-  // useEffect(() => {
-  //   if (!currentRoom && rooms.length > 0) {
-  //     onSelectRoom(rooms[rooms.length - 1]);
-  //   }
-  // }, [currentRoom, rooms, onSelectRoom]);
+ 
 
-  //TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES TO OPEN A NEW ROOM
   useEffect(() => {
     const getRooms = async () => {
       try {
@@ -33,7 +30,6 @@ const SideBar = ({
           `http://localhost:8000/chat/getChatRoom/${loggedUser._id}`
         );
         setRooms(data);
-
       } catch (error) {
         console.log(error);
         alert("Error fetching data");
@@ -70,10 +66,10 @@ const SideBar = ({
                   rooms.map((room) => (
                     <div onClick={() => onSelectRoom(room)} key={room._id}>
                       <Rooms
-                        chatroom={room}
                         loggedUser={loggedUser}
+                        room={room}
                         currentRoom={currentRoom}
-                        messages={messages}
+                        userMessages={messages.filter(message => message.roomId === currentRoom?._id)}
                         instantMessage={instantMessage}
                       />
                     </div>
@@ -113,3 +109,12 @@ const SideBar = ({
 };
 
 export default SideBar;
+
+//SET LAST CONVERSATION AS CURRENT TO DISPLAY IT ON LOAD
+// useEffect(() => {
+//   if (!currentRoom && rooms.length > 0) {
+//     onSelectRoom(rooms[rooms.length - 1]);
+//   }
+// }, [currentRoom, rooms, onSelectRoom]);
+
+//TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES TO OPEN A NEW ROOM
