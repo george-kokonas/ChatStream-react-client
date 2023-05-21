@@ -28,7 +28,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     //executed when new instant message arrives
     socket.current.on("getMessage", (data) => {
       setInstantMessage({
-        roomId : data.roomId,
+        roomId: data.roomId,
         sender: data.senderId,
         receiverId: data.receiverId,
         text: data.text,

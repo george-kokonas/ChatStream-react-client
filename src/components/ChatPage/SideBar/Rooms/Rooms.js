@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CustomTimeAgo from "../../../CustomTimeAgo/CustomTimeAgo";
+import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
+
 import "./rooms.css";
 
 const Rooms = ({
@@ -12,6 +13,7 @@ const Rooms = ({
 }) => {
   const [friend, setFriend] = useState(null);
   const [lastMessage, setLastMessage] = useState([]);
+  const [unreadCounter, setUnreadCounter] = useState(0);
 
   const listItemClassname =
     currentRoom?._id === room?._id
@@ -31,6 +33,24 @@ const Rooms = ({
       createdAt,
     });
   };
+
+  //UNREAD MESSAGES INCREMENT
+  useEffect(() => {
+    if (room._id === instantMessage?.roomId) {
+      setUnreadCounter((prevCounter) => prevCounter + 1);
+    }
+  }, [instantMessage, room._id]);
+
+  //UNREAD MESSAGES RESET
+  useEffect(() => {
+    //reset counter when user enters a room or he is already in the room that received instant message
+    if (
+      room?._id === currentRoom?._id ||
+      currentRoom?._id === instantMessage?.roomId
+    ) {
+      setUnreadCounter(0);
+    }
+  }, [room?._id, currentRoom?._id, instantMessage]);
 
   // ON FIRST LOAD, UPDATE THE MESSAGE IN CONVERSATIONS CARD
   useEffect(() => {
@@ -106,7 +126,9 @@ const Rooms = ({
             <p className='small text-muted mb-1'>
               <CustomTimeAgo date={lastMessage?.createdAt} />
             </p>
-            <span className='badge bg-danger float-end'>1</span>
+            <span className='badge bg-danger float-end'>
+              {unreadCounter === 0 ? "" : unreadCounter}
+            </span>
           </div>
         </a>
       </li>

@@ -1,10 +1,9 @@
 import React from "react";
 import { MDBCard, MDBCardBody, MDBIcon } from "mdb-react-ui-kit";
-import CustomTimeAgo from "../../../CustomTimeAgo/CustomTimeAgo";
+import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
 import "./message.css";
 
 const Messages = ({ message, sentByMe }) => {
-  
   let messageOutput = sentByMe ? (
     <li className='d-flex flex-row-reverse mb-3'>
       <img
@@ -42,12 +41,11 @@ const Messages = ({ message, sentByMe }) => {
       </MDBCard>
     </li>
   );
-{/* <MDBCardHeader className='d-flex justify-content-between p-3'>
-<p className='fw-bold mb-0'>{}</p>
-</MDBCardHeader> */}
   return <>{messageOutput}</>;
 };
 
 export default Messages;
 
-
+/* <MDBCardHeader className='d-flex justify-content-between p-3'>
+<p className='fw-bold mb-0'>{}</p>
+</MDBCardHeader> */

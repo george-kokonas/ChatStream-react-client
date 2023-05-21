@@ -18,10 +18,7 @@ const SideBar = ({
 }) => {
   const [registeredUsers, setRegisteredUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
-  
-  const [tab, setTab] = useState(rooms.length ? "users": "conversations" );
-
- 
+  const [tab, setTab] = useState(rooms.length ? "users" : "conversations");
 
   useEffect(() => {
     const getRooms = async () => {
@@ -69,7 +66,9 @@ const SideBar = ({
                         loggedUser={loggedUser}
                         room={room}
                         currentRoom={currentRoom}
-                        userMessages={messages.filter(message => message.roomId === currentRoom?._id)}
+                        userMessages={messages.filter(
+                          (message) => message.roomId === currentRoom?._id
+                        )}
                         instantMessage={instantMessage}
                       />
                     </div>
