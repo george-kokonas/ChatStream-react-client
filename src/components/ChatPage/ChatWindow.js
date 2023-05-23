@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
-import Topbar from "./Topbar/Topbar";
+import NavigationBar from "./NavigationBar/NavigationBar";
 import SideBar from "./SideBar/SideBar";
 import Messages from "./Messages/Messages";
 import Inputs from "./Inputs/Inputs";
@@ -79,7 +79,7 @@ const ChatWindow = ({ onUserChangeState }) => {
 
   //TRIGGERED WHEN USER IS TYPING A NEW MESSAGE
   const typingHandler = () => {
-    const typingTimeout = 1000;
+    const typingTimeout = 4000;
     let typingTimer;
 
     const receiverId = currentRoom.members.find(
@@ -108,10 +108,6 @@ const ChatWindow = ({ onUserChangeState }) => {
 
   return (
     <>
-      <Topbar
-        onUserChangeState={onUserChangeState}
-        onDisconnectSocket={disconnectSocketHandler}
-      />
       <div className='chat-container'>
         <MDBContainer fluid className='py-4'>
           <MDBRow>
@@ -131,12 +127,12 @@ const ChatWindow = ({ onUserChangeState }) => {
             {/* CHAT WINDOW */}
             <MDBCol className='chat-window-container'>
               <MDBTypography listUnStyled>
-                {currentRoom ? (
+                {pageContent === "conversations" ? (
                   <>
-                    {pageContent !== "users" && (
+                    {currentRoom ? (
                       <>
                         <Messages loggedUser={user} messages={messages} />
-                        {isTyping && <p>user is typing...</p>}
+                        {isTyping ? <p className="typing-indicator">user is typing...</p> : " "}
                         <li id='chat-window-inputs' className='bg-white mb-3'>
                           <Inputs
                             loggedUser={user}
@@ -148,10 +144,21 @@ const ChatWindow = ({ onUserChangeState }) => {
                           />
                         </li>
                       </>
+                    ) : (
+                      <p>select room</p>
                     )}
                   </>
                 ) : (
-                  <p>select room</p>
+                  <div>
+                    {" "}
+                    <NavigationBar
+                      onUserChangeState={onUserChangeState}
+                      onDisconnectSocket={disconnectSocketHandler}
+                      user={user}
+                    />
+
+
+                  </div>
                 )}
               </MDBTypography>
             </MDBCol>

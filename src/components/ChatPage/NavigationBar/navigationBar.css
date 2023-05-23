@@ -1,0 +1,7 @@
+.navbar{
+    background-color: #363f4a;
+}
+
+#navbar-logo , #navbar-username , #navbar-logout{
+    color: #E0F4F1;
+}

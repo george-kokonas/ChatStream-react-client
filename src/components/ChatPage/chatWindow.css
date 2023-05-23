@@ -1,6 +1,9 @@
 .chat-container {
-  height: calc(100vh - 70px);
+  /* height: calc(100vh - 70px); */
+  height: 100vh;
   display: flex;
+  background-color: rgba(234, 160, 12, 0.789);
+  background-repeat: repeat;
 }
 
 .chat-window-container {
@@ -8,4 +11,12 @@
   height: 90vh;
   overflow-y : scroll;
   overflow-x: hidden;
+}
+
+.typing-indicator{
+  position:absolute;
+  bottom: 27vh;
+  color: black;
+  font-style: italic;
+  opacity: 70%;
 }

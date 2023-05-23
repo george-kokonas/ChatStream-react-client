@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { initiateSocket, getSocket } from "../socket/Socket";
 import { MDBTextArea, MDBBtn } from "mdb-react-ui-kit";
@@ -16,16 +16,16 @@ const Inputs = ({ loggedUser, currentRoom, onNewMessage, onTyping }) => {
   const submitMessageHandler = async (event) => {
     event.preventDefault();
 
-    const messageId= uuidv4();
+    const messageId = uuidv4();
 
     const receiverId = currentRoom.members.find(
       (member) => member !== loggedUser._id
     );
     const message = {
-      _id : messageId,
+      _id: messageId,
       roomId: currentRoom._id,
       senderId: loggedUser._id,
-      receiverId :receiverId,
+      receiverId: receiverId,
       text: newMessage,
       isSeen: false,
       createdAt: Date.now(),

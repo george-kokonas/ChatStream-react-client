@@ -7,6 +7,7 @@ import Rooms from "./Rooms/Rooms";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { MDBCard, MDBCardBody, MDBTypography } from "mdb-react-ui-kit";
+import "./sidebar.css";
 
 const SideBar = ({
   loggedUser,
@@ -17,14 +18,13 @@ const SideBar = ({
   onSelectRoom,
   onSelectTab,
 }) => {
-  
   const [registeredUsers, setRegisteredUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
-  const [tab, setTab] = useState(rooms.length ?"conversations" :  "users"  );
+  const [tab, setTab] = useState(rooms.length ? "conversations" : "users");
 
-  useEffect(()=>{
-    onSelectTab(tab)
-  },[onSelectTab,tab])
+  useEffect(() => {
+    onSelectTab(tab);
+  }, [onSelectTab, tab]);
 
   useEffect(() => {
     const getRooms = async () => {
@@ -52,19 +52,26 @@ const SideBar = ({
     getRegisteredUsers();
   }, [loggedUser._id]);
 
+  // SET LAST CONVERSATION AS CURRENT TO DISPLAY IT ON LOAD
+  useEffect(() => {
+    if (!currentRoom && rooms.length > 0) {
+      onSelectRoom(rooms[rooms.length - 1]);
+    }
+  }, [currentRoom, rooms, onSelectRoom]);
+
   return (
     <>
       <Tabs
-        id='controlled-tab-example'
         activeKey={tab}
         onSelect={(selectedTab) => setTab(selectedTab)}
         className='mb-3'
       >
         {/* CONVERSATIONS TAB */}
-        <Tab eventKey='conversations' title='Conversations' >
+  
+        <Tab eventKey='conversations' title='Conversations'>
           <MDBCard>
-            <MDBCardBody>
-              <MDBTypography listUnStyled className='mb-0'>
+            <MDBCardBody >
+              <MDBTypography listUnStyled className='mb-0' >
                 {rooms.length ? (
                   rooms.map((room) => (
                     <div onClick={() => onSelectRoom(room)} key={room._id}>
@@ -114,12 +121,5 @@ const SideBar = ({
 };
 
 export default SideBar;
-
-//SET LAST CONVERSATION AS CURRENT TO DISPLAY IT ON LOAD
-// useEffect(() => {
-//   if (!currentRoom && rooms.length > 0) {
-//     onSelectRoom(rooms[rooms.length - 1]);
-//   }
-// }, [currentRoom, rooms, onSelectRoom]);
 
 //TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES TO OPEN A NEW ROOM
