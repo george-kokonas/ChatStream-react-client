@@ -16,6 +16,7 @@ const ChatWindow = ({ onUserChangeState }) => {
   const [instantMessage, setInstantMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [pageContent, setPageContent] = useState("users");
 
   const user = JSON.parse(localStorage.getItem("user"));
   const socket = useRef();
@@ -28,11 +29,13 @@ const ChatWindow = ({ onUserChangeState }) => {
     //executed when new instant message arrives
     socket.current.on("getMessage", (data) => {
       setInstantMessage({
+        _id: data._id,
         roomId: data.roomId,
-        sender: data.senderId,
+        senderId: data.senderId,
         receiverId: data.receiverId,
         text: data.text,
-        createdAt: Date.now(),
+        isSeen: data.isSeen,
+        createdAt: data.createdAt,
       });
     });
   }, []);
@@ -52,7 +55,7 @@ const ChatWindow = ({ onUserChangeState }) => {
   useEffect(() => {
     if (
       instantMessage &&
-      currentRoom?.members.includes(instantMessage.sender)
+      currentRoom?.members.includes(instantMessage.senderId)
     ) {
       setMessages((prev) => [...prev, instantMessage]);
     }
@@ -71,7 +74,6 @@ const ChatWindow = ({ onUserChangeState }) => {
         console.log(error);
       }
     };
-
     getMessages();
   }, [currentRoom]);
 
@@ -119,9 +121,10 @@ const ChatWindow = ({ onUserChangeState }) => {
                 loggedUser={user}
                 onlineUsers={onlineUsers}
                 currentRoom={currentRoom}
-                onSelectRoom={(room) => setCurrentRoom(room)}
                 messages={messages}
                 instantMessage={instantMessage}
+                onSelectRoom={(room) => setCurrentRoom(room)}
+                onSelectTab={(tab) => setPageContent(tab)}
               />
             </MDBCol>
 
@@ -130,20 +133,22 @@ const ChatWindow = ({ onUserChangeState }) => {
               <MDBTypography listUnStyled>
                 {currentRoom ? (
                   <>
-                    <Messages loggedUser={user} messages={messages} />
-
-                    {isTyping && <p>user is typing...</p>}
-
-                    <li id='chat-window-inputs' className='bg-white mb-3'>
-                      <Inputs
-                        loggedUser={user}
-                        currentRoom={currentRoom}
-                        onNewMessage={(data) =>
-                          setMessages([...messages, data])
-                        }
-                        onTyping={typingHandler}
-                      />
-                    </li>
+                    {pageContent !== "users" && (
+                      <>
+                        <Messages loggedUser={user} messages={messages} />
+                        {isTyping && <p>user is typing...</p>}
+                        <li id='chat-window-inputs' className='bg-white mb-3'>
+                          <Inputs
+                            loggedUser={user}
+                            currentRoom={currentRoom}
+                            onNewMessage={(data) =>
+                              setMessages([...messages, data])
+                            }
+                            onTyping={typingHandler}
+                          />
+                        </li>
+                      </>
+                    )}
                   </>
                 ) : (
                   <p>select room</p>

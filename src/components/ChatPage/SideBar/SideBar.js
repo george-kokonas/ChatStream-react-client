@@ -15,10 +15,16 @@ const SideBar = ({
   messages,
   instantMessage,
   onSelectRoom,
+  onSelectTab,
 }) => {
+  
   const [registeredUsers, setRegisteredUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
-  const [tab, setTab] = useState(rooms.length ? "users" : "conversations");
+  const [tab, setTab] = useState(rooms.length ?"conversations" :  "users"  );
+
+  useEffect(()=>{
+    onSelectTab(tab)
+  },[onSelectTab,tab])
 
   useEffect(() => {
     const getRooms = async () => {
@@ -55,7 +61,7 @@ const SideBar = ({
         className='mb-3'
       >
         {/* CONVERSATIONS TAB */}
-        <Tab eventKey='conversations' title='Conversations'>
+        <Tab eventKey='conversations' title='Conversations' >
           <MDBCard>
             <MDBCardBody>
               <MDBTypography listUnStyled className='mb-0'>

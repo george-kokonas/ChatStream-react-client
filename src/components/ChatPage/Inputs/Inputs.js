@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import axios from "axios";
 import { initiateSocket, getSocket } from "../socket/Socket";
 import { MDBTextArea, MDBBtn } from "mdb-react-ui-kit";
@@ -15,24 +16,23 @@ const Inputs = ({ loggedUser, currentRoom, onNewMessage, onTyping }) => {
   const submitMessageHandler = async (event) => {
     event.preventDefault();
 
-    const message = {
-      roomId: currentRoom._id,
-      senderId: loggedUser._id,
-      text: newMessage,
-    };
+    const messageId= uuidv4();
 
     const receiverId = currentRoom.members.find(
       (member) => member !== loggedUser._id
     );
+    const message = {
+      _id : messageId,
+      roomId: currentRoom._id,
+      senderId: loggedUser._id,
+      receiverId :receiverId,
+      text: newMessage,
+      isSeen: false,
+      createdAt: Date.now(),
+    };
 
     //executed when instant message is sent
-    socket.current.emit("sendMessage", {
-      roomId : currentRoom._id,
-      senderId: loggedUser._id,
-      receiverId: receiverId,
-      text: newMessage,
-      createdAt : Date.now()
-    });
+    socket.current.emit("sendMessage", message);
 
     //send message to server
     try {
