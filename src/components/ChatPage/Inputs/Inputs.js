@@ -2,7 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { initiateSocket, getSocket } from "../socket/Socket";
+
 import { MDBTextArea, MDBBtn } from "mdb-react-ui-kit";
+import "./inputs.css";
 
 const Inputs = ({ loggedUser, currentRoom, onNewMessage, onTyping }) => {
   const [newMessage, setNewMessage] = useState("");
@@ -49,11 +51,10 @@ const Inputs = ({ loggedUser, currentRoom, onNewMessage, onTyping }) => {
   };
 
   return (
-    <>
+    <div className='inputs-container'>
       <MDBTextArea
         label='Message'
-        id='textAreaExample'
-        rows={4}
+        rows={3}
         value={newMessage}
         onChange={(event) => setNewMessage(event.target.value)}
         onKeyDown={onTyping}
@@ -67,7 +68,7 @@ const Inputs = ({ loggedUser, currentRoom, onNewMessage, onTyping }) => {
       >
         Send
       </MDBBtn>
-    </>
+    </div>
   );
 };
 export default Inputs;

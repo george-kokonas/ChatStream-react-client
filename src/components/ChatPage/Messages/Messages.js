@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 
 import Message from "./Message/Message";
-import "./messages.css"
 
 const Messages = ({ loggedUser, messages }) => {
   const scrollToEnd = useRef();
@@ -12,7 +11,7 @@ const Messages = ({ loggedUser, messages }) => {
   }, [messages]);
 
   return (
-    <div className='messages'>
+    <div>
       {!messages.length ? (
         <p>Nothing to show... Initiate a chat!</p>
       ) : (

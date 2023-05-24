@@ -9,7 +9,7 @@ const Messages = ({ message, sentByMe }) => {
       <img
         src='https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp'
         alt='avatar'
-        className='rounded-circle d-flex align-self-start me-3 shadow-1-strong'
+        className='rounded-circle d-flex align-self-start me-2 shadow-1-strong'
         width='60'
       />
       <MDBCard className='my-message-card'>

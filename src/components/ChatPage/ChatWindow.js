@@ -16,7 +16,6 @@ const ChatWindow = ({ onUserChangeState }) => {
   const [instantMessage, setInstantMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [pageContent, setPageContent] = useState("users");
 
   const user = JSON.parse(localStorage.getItem("user"));
   const socket = useRef();
@@ -79,7 +78,9 @@ const ChatWindow = ({ onUserChangeState }) => {
 
   //TRIGGERED WHEN USER IS TYPING A NEW MESSAGE
   const typingHandler = () => {
-    const typingTimeout = 4000;
+    // console.log(currentRoom);
+    // console.log(messages);
+    const typingTimeout = 1500;
     let typingTimer;
 
     const receiverId = currentRoom.members.find(
@@ -88,7 +89,8 @@ const ChatWindow = ({ onUserChangeState }) => {
 
     clearTimeout(typingTimer);
 
-    socket.current.on("isTyping", () => {
+    socket.current.on("isTyping", (data) => {
+      console.log(data);
       setIsTyping(true);
       setTimeout(() => {
         setIsTyping(false);
@@ -98,6 +100,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     socket.current.emit("userTyping", {
       senderId: user._id,
       receiverId: receiverId,
+      currentRoomId: currentRoom._id,
     });
   };
 
@@ -109,10 +112,15 @@ const ChatWindow = ({ onUserChangeState }) => {
   return (
     <>
       <div className='chat-container'>
-        <MDBContainer fluid className='py-4'>
+        <MDBContainer fluid className='py-0'>
           <MDBRow>
+            <NavigationBar
+              onUserChangeState={onUserChangeState}
+              onDisconnectSocket={disconnectSocketHandler}
+              user={user}
+            />
             {/*LEFT-SIDE BAR  */}
-            <MDBCol md='6' lg='5' xl='4' className='mb-4 mb-md-0'>
+            <MDBCol md='6' lg='5' xl='4' className='mb-0 md-0'>
               <SideBar
                 loggedUser={user}
                 onlineUsers={onlineUsers}
@@ -120,45 +128,32 @@ const ChatWindow = ({ onUserChangeState }) => {
                 messages={messages}
                 instantMessage={instantMessage}
                 onSelectRoom={(room) => setCurrentRoom(room)}
-                onSelectTab={(tab) => setPageContent(tab)}
               />
             </MDBCol>
 
             {/* CHAT WINDOW */}
             <MDBCol className='chat-window-container'>
               <MDBTypography listUnStyled>
-                {pageContent === "conversations" ? (
+                {currentRoom ? (
                   <>
-                    {currentRoom ? (
-                      <>
-                        <Messages loggedUser={user} messages={messages} />
-                        {isTyping ? <p className="typing-indicator">user is typing...</p> : " "}
-                        <li id='chat-window-inputs' className='bg-white mb-3'>
-                          <Inputs
-                            loggedUser={user}
-                            currentRoom={currentRoom}
-                            onNewMessage={(data) =>
-                              setMessages([...messages, data])
-                            }
-                            onTyping={typingHandler}
-                          />
-                        </li>
-                      </>
-                    ) : (
-                      <p>select room</p>
-                    )}
+                    <Messages loggedUser={user} messages={messages} />
+                    <MDBContainer fluid className='py-0'>
+                      {isTyping ? (
+                        <p className='typing-indicator'>user is typing...</p>
+                      ) : (
+                        " "
+                      )}
+                    </MDBContainer>
+
+                    <Inputs
+                      loggedUser={user}
+                      currentRoom={currentRoom}
+                      onNewMessage={(data) => setMessages([...messages, data])}
+                      onTyping={typingHandler}
+                    />
                   </>
                 ) : (
-                  <div>
-                    {" "}
-                    <NavigationBar
-                      onUserChangeState={onUserChangeState}
-                      onDisconnectSocket={disconnectSocketHandler}
-                      user={user}
-                    />
-
-
-                  </div>
+                  <p>select room</p>
                 )}
               </MDBTypography>
             </MDBCol>
