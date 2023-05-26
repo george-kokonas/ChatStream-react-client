@@ -15,6 +15,9 @@ const Inputs = ({ loggedUser, currentRoom, onNewMessage, onTyping }) => {
   const submitMessageHandler = async (event) => {
     event.preventDefault();
 
+    const enteredMessage = newMessage.trim();
+    if (!enteredMessage) return;
+
     const messageId = uuidv4();
 
     const receiverId = currentRoom.members.find(

@@ -111,9 +111,8 @@ const ChatWindow = ({ onUserChangeState }) => {
 
   return (
     <>
-     
       <div className={styles.container}>
-      <NavigationBar
+        <NavigationBar
           className={styles.navbar}
           onUserChangeState={onUserChangeState}
           onDisconnectSocket={disconnectSocketHandler}
@@ -135,33 +134,29 @@ const ChatWindow = ({ onUserChangeState }) => {
 
             {/* CHAT WINDOW */}
             <MDBCol className={styles.chatWrapper}>
-              <MDBTypography listUnStyled>
-                <MDBRow className={styles.conversation}>
-                  {/* {currentRoom ? ( */}
-                  <>
-                    <Messages loggedUser={user} messages={messages} />
-                  </>
-                </MDBRow>
-              <MDBRow  className={styles.typingIndicator} >
-                {isTyping ? (
-                  <p >user is typing...</p>
-                ) : (
-                  " "
-                )}
-              </MDBRow>
-              </MDBTypography>
+              {currentRoom ? (
+                <>
+                  <MDBTypography listUnStyled>
+                    <MDBRow className={styles.conversation}>
+                      <Messages loggedUser={user} messages={messages} />
+                    </MDBRow>
+                    <MDBRow className={styles.typingIndicator}>
+                      {isTyping ? <p>user is typing...</p> : " "}
+                    </MDBRow>
+                  </MDBTypography>
 
-              <MDBRow className={styles.inputs}>
-                <Inputs
-                  loggedUser={user}
-                  currentRoom={currentRoom}
-                  onNewMessage={(data) => setMessages([...messages, data])}
-                  onTyping={typingHandler}
-                />
-              </MDBRow>
-              {/* ) : (
-                  <p>select room</p>
-                )} */}
+                  <MDBRow className={styles.inputs}>
+                    <Inputs
+                      loggedUser={user}
+                      currentRoom={currentRoom}
+                      onNewMessage={(data) => setMessages([...messages, data])}
+                      onTyping={typingHandler}
+                    />
+                  </MDBRow>
+                </>
+              ) : (
+                <p style={{ color: "white" }}>select a room</p>
+              )}
             </MDBCol>
           </MDBRow>
         </MDBContainer>

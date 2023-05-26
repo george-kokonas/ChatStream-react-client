@@ -12,7 +12,7 @@ const Messages = ({ loggedUser, messages }) => {
   return (
     <div>
       {!messages.length ? (
-        <p>Nothing to show... Initiate a chat!</p>
+        <p style={{ color: "white" }}>Nothing to show... Initiate a chat!</p>
       ) : (
         messages.map((msg, index) => (
           <div key={index} ref={scrollToEnd}>

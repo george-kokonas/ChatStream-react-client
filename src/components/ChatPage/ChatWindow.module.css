@@ -34,7 +34,7 @@
 .typingIndicator {
   /* background-color: aliceblue; */
   height: 25px;
-  color: black;
+  color:  #fbfbfb;
   font-style: italic;
   opacity: 70%;
 }
