@@ -40,7 +40,7 @@ const RegisteredUsers = ({
   };
 
   return (
-    <li className='p-2 border-bottom' style={{ backgroundColor: "#eee" }}>
+    <li className='p-2 mb-1' style={{ backgroundColor: "#eee" }}>
       <a href='#!' className='d-flex justify-content-between'>
         <div className='d-flex flex-row'>
           <img

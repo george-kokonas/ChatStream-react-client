@@ -58,12 +58,12 @@ const Inputs = ({ loggedUser, currentRoom, onNewMessage, onTyping }) => {
           className='form-control form-control-lg'
           placeholder='Type message'
         />
-        <a className='ms-3 text-muted' href='#!'>
+        {/* <a className='ms-3 text-muted' href='#!'>
           <i className='fas fa-smile'></i>
-        </a>
+        </a> */}
         <button
           type='submit'
-          className='btn btn-link ms-'
+          className='btn btn-link ms=0'
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <i className='fas fa-paper-plane'></i>

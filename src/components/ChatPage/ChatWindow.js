@@ -111,8 +111,9 @@ const ChatWindow = ({ onUserChangeState }) => {
 
   return (
     <>
+     
       <div className={styles.container}>
-        <NavigationBar
+      <NavigationBar
           className={styles.navbar}
           onUserChangeState={onUserChangeState}
           onDisconnectSocket={disconnectSocketHandler}

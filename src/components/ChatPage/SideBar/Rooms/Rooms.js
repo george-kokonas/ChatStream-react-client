@@ -15,9 +15,8 @@ const Rooms = ({
   const [lastMessage, setLastMessage] = useState([]);
   const [unreadCounter, setUnreadCounter] = useState(0);
 
-  const listItemClassname = currentRoom?._id === room?._id
-  ? `${styles.currentRoom} p-2 borderBottom`
-  : `${styles.room} p-2 borderBottom`;
+  const listItemClassname =
+    currentRoom?._id === room?._id ? `${styles.currentRoom}` : `${styles.room}`;
 
   //HELPER FUNCTION TO PROCESS LAST MESSAGE
   const proccessMessage = (array) => {
@@ -103,7 +102,7 @@ const Rooms = ({
 
   return (
     <div className={listItemClassname}>
-      <li>
+      <li className='p-2 mb-1'>
         <a href='#!' className='d-flex justify-content-between'>
           <div className='d-flex flex-row'>
             <img
