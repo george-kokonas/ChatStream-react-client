@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-
 import Message from "./Message/Message";
 
 const Messages = ({ loggedUser, messages }) => {

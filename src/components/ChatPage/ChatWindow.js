@@ -8,7 +8,7 @@ import Inputs from "./Inputs/Inputs";
 import { initiateSocket, getSocket } from "./socket/Socket";
 
 import { MDBContainer, MDBRow, MDBCol, MDBTypography } from "mdb-react-ui-kit";
-import "./chatWindow.css";
+import styles from "./ChatWindow.module.css";
 
 const ChatWindow = ({ onUserChangeState }) => {
   const [currentRoom, setCurrentRoom] = useState(null);
@@ -111,16 +111,17 @@ const ChatWindow = ({ onUserChangeState }) => {
 
   return (
     <>
-      <div className='chat-container'>
+      <div className={styles.container}>
+        <NavigationBar
+          className={styles.navbar}
+          onUserChangeState={onUserChangeState}
+          onDisconnectSocket={disconnectSocketHandler}
+          user={user}
+        />
         <MDBContainer fluid className='py-0'>
           <MDBRow>
-            <NavigationBar
-              onUserChangeState={onUserChangeState}
-              onDisconnectSocket={disconnectSocketHandler}
-              user={user}
-            />
-            {/*LEFT-SIDE BAR  */}
-            <MDBCol md='6' lg='5' xl='4' className='mb-0 md-0'>
+            {/*LEFT-SIDE BAR  `mb-0 md-0`  */}
+            <MDBCol md='6' lg='5' xl='4' xxl='3' className={styles.sidebar}>
               <SideBar
                 loggedUser={user}
                 onlineUsers={onlineUsers}
@@ -132,30 +133,34 @@ const ChatWindow = ({ onUserChangeState }) => {
             </MDBCol>
 
             {/* CHAT WINDOW */}
-            <MDBCol className='chat-window-container'>
+            <MDBCol className={styles.chatWrapper}>
               <MDBTypography listUnStyled>
-                {currentRoom ? (
+                <MDBRow className={styles.conversation}>
+                  {/* {currentRoom ? ( */}
                   <>
                     <Messages loggedUser={user} messages={messages} />
-                    <MDBContainer fluid className='py-0'>
-                      {isTyping ? (
-                        <p className='typing-indicator'>user is typing...</p>
-                      ) : (
-                        " "
-                      )}
-                    </MDBContainer>
-
-                    <Inputs
-                      loggedUser={user}
-                      currentRoom={currentRoom}
-                      onNewMessage={(data) => setMessages([...messages, data])}
-                      onTyping={typingHandler}
-                    />
                   </>
+                </MDBRow>
+              <MDBRow  className={styles.typingIndicator} >
+                {isTyping ? (
+                  <p >user is typing...</p>
                 ) : (
-                  <p>select room</p>
+                  " "
                 )}
+              </MDBRow>
               </MDBTypography>
+
+              <MDBRow className={styles.inputs}>
+                <Inputs
+                  loggedUser={user}
+                  currentRoom={currentRoom}
+                  onNewMessage={(data) => setMessages([...messages, data])}
+                  onTyping={typingHandler}
+                />
+              </MDBRow>
+              {/* ) : (
+                  <p>select room</p>
+                )} */}
             </MDBCol>
           </MDBRow>
         </MDBContainer>

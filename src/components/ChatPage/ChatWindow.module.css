@@ -1,0 +1,40 @@
+.container {
+  height: 95vh;
+  margin: 20px;
+  /* background-color: rgba(153, 153, 153, 0.457); */
+}
+
+.navbar {
+}
+
+.sidebar {
+  height: 83vh;
+  /* background-color: antiquewhite; */
+}
+
+.chatWrapper {
+  height: 76vh;
+  margin-top: 60px;
+  /* background-color: aqua; */
+  
+}
+.conversation {
+  height: 68vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* background-color: blue; */
+}
+
+.inputs {
+  position: sticky;
+  bottom: 63px;
+  width: 100%;
+}
+
+.typingIndicator {
+  /* background-color: aliceblue; */
+  height: 25px;
+  color: black;
+  font-style: italic;
+  opacity: 70%;
+}

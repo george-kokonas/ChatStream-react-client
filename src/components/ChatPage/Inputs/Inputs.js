@@ -3,9 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { initiateSocket, getSocket } from "../socket/Socket";
 
-import { MDBTextArea, MDBBtn } from "mdb-react-ui-kit";
-import "./inputs.css";
-
 const Inputs = ({ loggedUser, currentRoom, onNewMessage, onTyping }) => {
   const [newMessage, setNewMessage] = useState("");
   const socket = useRef();
@@ -51,24 +48,30 @@ const Inputs = ({ loggedUser, currentRoom, onNewMessage, onTyping }) => {
   };
 
   return (
-    <div className='inputs-container'>
-      <MDBTextArea
-        label='Message'
-        rows={3}
-        value={newMessage}
-        onChange={(event) => setNewMessage(event.target.value)}
-        onKeyDown={onTyping}
-      />
-
-      <MDBBtn
-        onClick={submitMessageHandler}
-        color='info'
-        rounded
-        className='float-end mt-2'
-      >
-        Send
-      </MDBBtn>
-    </div>
+    <form onSubmit={submitMessageHandler}>
+      <div className='text-muted d-flex justify-content-start align-items-center'>
+        <input
+          onChange={(event) => setNewMessage(event.target.value)}
+          onKeyDown={onTyping}
+          type='text'
+          value={newMessage}
+          className='form-control form-control-lg'
+          placeholder='Type message'
+        />
+        <a className='ms-3 text-muted' href='#!'>
+          <i className='fas fa-smile'></i>
+        </a>
+        <button
+          type='submit'
+          className='btn btn-link ms-'
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <i className='fas fa-paper-plane'></i>
+        </button>
+      </div>
+    </form>
   );
 };
 export default Inputs;
+
+<button type='submit'></button>;

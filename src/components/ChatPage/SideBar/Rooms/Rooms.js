@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
 
-import "./rooms.css";
+import styles from "./Rooms.module.css";
 
 const Rooms = ({
   loggedUser,
@@ -15,10 +15,9 @@ const Rooms = ({
   const [lastMessage, setLastMessage] = useState([]);
   const [unreadCounter, setUnreadCounter] = useState(0);
 
-  const listItemClassname =
-    currentRoom?._id === room?._id
-      ? "currentRoom p-2 border-bottom"
-      : "room p-2 border-bottom";
+  const listItemClassname = currentRoom?._id === room?._id
+  ? `${styles.currentRoom} p-2 borderBottom`
+  : `${styles.room} p-2 borderBottom`;
 
   //HELPER FUNCTION TO PROCESS LAST MESSAGE
   const proccessMessage = (array) => {

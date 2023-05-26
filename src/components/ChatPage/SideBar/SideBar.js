@@ -7,7 +7,7 @@ import Rooms from "./Rooms/Rooms";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { MDBCard, MDBCardBody, MDBTypography } from "mdb-react-ui-kit";
-import "./sidebar.css";
+import styles from "./Sidebar.module.css";
 
 const SideBar = ({
   loggedUser,
@@ -20,6 +20,16 @@ const SideBar = ({
   const [registeredUsers, setRegisteredUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [tab, setTab] = useState("conversations");
+
+  //TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES TO OPEN A NEW ROOM
+
+// SET LAST CONVERSATION AS CURRENT TO DISPLAY IT ON LOAD
+useEffect(() => {
+  if (!currentRoom && rooms.length > 0) {
+    onSelectRoom(rooms[rooms.length - 1]);
+  }
+}, [currentRoom, rooms, onSelectRoom]);
+
 
   useEffect(() => {
     const getRooms = async () => {
@@ -54,10 +64,10 @@ const SideBar = ({
       className='mb-2 mt-1'
     >
       {/* CONVERSATIONS TAB */}
-      <Tab eventKey='conversations' title='Conversations'>
-          <MDBCard className='sidebar'>
+      <Tab eventKey='conversations' title='Conversations' >
+          <MDBCard className={styles.cards}>
             <MDBCardBody>
-              <MDBTypography listUnStyled className='mb-0'>
+              <MDBTypography listUnStyled className='mb-1'>
                 {rooms.length ? (
                   rooms.map((room) => (
                     <div onClick={() => onSelectRoom(room)} key={room._id}>
@@ -82,7 +92,7 @@ const SideBar = ({
 
       {/* REGISTERED USERS TAB */}
       <Tab eventKey='users' title='Users'>
-        <MDBCard className='sidebar'>
+        <MDBCard className={styles.cards}>
           <MDBCardBody>
             <MDBTypography listUnStyled className='mb-0'>
               {registeredUsers.map((registeredUser) => (
@@ -107,11 +117,3 @@ const SideBar = ({
 
 export default SideBar;
 
-//TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES TO OPEN A NEW ROOM
-
-// SET LAST CONVERSATION AS CURRENT TO DISPLAY IT ON LOAD
-// useEffect(() => {
-//   if (!currentRoom && rooms.length > 0) {
-//     onSelectRoom(rooms[rooms.length - 1]);
-//   }
-// }, [currentRoom, rooms, onSelectRoom]);
