@@ -32,16 +32,16 @@ const RegisteredUsers = ({
       const { data } = await axios.post(
         "http://localhost:8000/chat/createChatRoom/",
         room
-      );
-      onNewRoom(data);
-    } catch (error) {
-      console.log(error);
-      alert("Unable to start new conversation...");
-    }
-  };
+        );
+        onNewRoom(data);
+      } catch (error) {
+        console.log(error);
+        alert("Unable to start new conversation...");
+      }
+    };
 
-  return (
-    <li className='p-2 mb-1' style={{ backgroundColor: "#eee" }}>
+    return (
+      <li className='p-2 mb-1' style={{ backgroundColor: "#eee" }}>
       <a href='#!' className='d-flex justify-content-between'>
         <div className='d-flex flex-row'>
           <img
@@ -53,7 +53,7 @@ const RegisteredUsers = ({
           />
           <div onClick={newRoomHandler} className='pt-1'>
             <p className='fw-bold mb-0'>{registeredUser.username}</p>
-            <p className='small text-muted'>some user info maybe...</p>
+            <p className='small text-muted'>{loggedUser.profileInfo}</p>
           </div>
         </div>
         <div className='pt-1'>

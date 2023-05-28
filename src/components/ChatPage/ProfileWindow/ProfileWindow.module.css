@@ -27,3 +27,18 @@
   right: 5vw;
   transform: translate(-100%, 0%);
 }
+
+.userInfoContainer{
+  margin-top: 7vh;
+}
+
+.userInfoInput{
+  text-align: center;
+  width : 40vw;
+  height: 7vh;
+};
+
+.userInfoInput:focus{
+  border-color: #28a745;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+};
