@@ -5,7 +5,7 @@ import NavigationBar from "./NavigationBar/NavigationBar";
 import SideBar from "./SideBar/SideBar";
 import Messages from "./Messages/Messages";
 import Inputs from "./Inputs/Inputs";
-import ProfilePage from "./ProfilePage/ProfilePage";
+import ProfilePage from "./ProfileWindow/ProfileWindow";
 import { initiateSocket, getSocket } from "./socket/Socket";
 
 import { MDBContainer, MDBRow, MDBCol, MDBTypography } from "mdb-react-ui-kit";
@@ -90,7 +90,6 @@ const ChatWindow = ({ onUserChangeState }) => {
     clearTimeout(typingTimer);
 
     socket.current.on("isTyping", (data) => {
-      console.log(data);
       setIsTyping(true);
       setTimeout(() => {
         setIsTyping(false);
@@ -109,7 +108,6 @@ const ChatWindow = ({ onUserChangeState }) => {
     socket.current.emit("logout", socket.current.id);
   };
 
-
   return (
     <>
       <div className={styles.container}>
@@ -117,7 +115,7 @@ const ChatWindow = ({ onUserChangeState }) => {
           className={styles.navbar}
           onUserChangeState={onUserChangeState}
           onDisconnectSocket={disconnectSocketHandler}
-          onSetProfileWindow={() => setProfileWindow(!profileWindow)}
+          onSetProfileWindow={() => setProfileWindow(true)}
           user={user}
         />
         <MDBContainer fluid className='py-0'>
@@ -136,7 +134,7 @@ const ChatWindow = ({ onUserChangeState }) => {
 
             {/* CHAT WINDOW */}
             <MDBCol className={styles.chatWrapper}>
-              {profileWindow ? (
+              {!profileWindow ? (
                 <>
                   {currentRoom ? (
                     <>
@@ -161,12 +159,15 @@ const ChatWindow = ({ onUserChangeState }) => {
                       </MDBRow>
                     </>
                   ) : (
-                  
-                      <p style={{ color: "white" }}>select a room</p>
-                   
+                    <p style={{ color: "white" }}>select a room</p>
                   )}
                 </>
-              ) : <ProfilePage user={user}/>}
+              ) : (
+                <ProfilePage
+                  user={user}
+                  onSetProfileWindow={() => setProfileWindow(false)}
+                />
+              )}
             </MDBCol>
           </MDBRow>
         </MDBContainer>

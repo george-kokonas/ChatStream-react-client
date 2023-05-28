@@ -3,6 +3,7 @@ import axios from "axios";
 import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
 
 import styles from "./Rooms.module.css";
+import noUserImage from "../../../../assets/noUserImage.jpg";
 
 const Rooms = ({
   loggedUser,
@@ -106,7 +107,7 @@ const Rooms = ({
         <a href='#!' className='d-flex justify-content-between'>
           <div className='d-flex flex-row'>
             <img
-              src={friend?.profileImage}
+              src={friend?.profileImage || noUserImage}
               alt='avatar'
               className='rounded-circle d-flex align-self-center me-3 shadow-1-strong'
               width='50'

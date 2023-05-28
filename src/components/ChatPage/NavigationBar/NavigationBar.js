@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "./navigationBar.css";
+import noUserImage from "../../../assets/noUserImage.jpg";
 import {
   MDBNavbarItem,
   MDBDropdown,
@@ -12,8 +13,13 @@ import {
   MDBDropdownLink,
 } from "mdb-react-ui-kit";
 
-const NavigationBar = ({ onUserChangeState, onDisconnectSocket,onSetProfileWindow, user }) => {
- 
+const NavigationBar = ({
+  onUserChangeState,
+  onDisconnectSocket,
+  onSetProfileWindow,
+  user,
+}) => {
+
   const navigate = useNavigate();
 
   const logoutHandler = () => {
@@ -41,11 +47,11 @@ const NavigationBar = ({ onUserChangeState, onDisconnectSocket,onSetProfileWindo
                   style={{ color: "white" }}
                 >
                   <img
-                    src={user.profileImage}
+                    src={user.profileImage || noUserImage}
                     alt='avatar'
                     className='rounded-circle d-flex align-self-center me-1 shadow-1-strong'
                     width='32'
-                    height="32"
+                    height='32'
                     loading='lazy'
                   />
                 </MDBDropdownToggle>
@@ -56,10 +62,7 @@ const NavigationBar = ({ onUserChangeState, onDisconnectSocket,onSetProfileWindo
                     </MDBDropdownLink>
                   </MDBDropdownItem>
                   <MDBDropdownItem>
-                    <MDBDropdownLink
-                      onClick={() => onSetProfileWindow()}
-                      href='#'
-                    >
+                    <MDBDropdownLink onClick={() => onSetProfileWindow()}>
                       Set Profile
                     </MDBDropdownLink>
                   </MDBDropdownItem>
@@ -69,7 +72,6 @@ const NavigationBar = ({ onUserChangeState, onDisconnectSocket,onSetProfileWindo
           </Nav>
         </Container>
       </Navbar>
-     
     </>
   );
 };

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import noUserImage from "../../../../assets/noUserImage.jpg";
 
 const RegisteredUsers = ({
   loggedUser,
@@ -44,7 +45,7 @@ const RegisteredUsers = ({
       <a href='#!' className='d-flex justify-content-between'>
         <div className='d-flex flex-row'>
           <img
-            src={registeredUser.profileImage}
+            src={registeredUser.profileImage || noUserImage}
             alt='avatar'
             className='rounded-circle d-flex align-self-center me-3 shadow-1-strong'
             width='50'

@@ -1,0 +1,29 @@
+.profileWindowContainer {
+  /* background-color: rgb(109, 77, 139); */
+  border: 2px solid  #E0F4F1;
+  border-radius: 10px;
+  height: inherit;
+}
+
+.imagePreview{
+  margin-top: 5vh;
+}
+
+.imagePreview :hover{
+    cursor: pointer;   
+}
+
+.uploadBtn{
+    /* background-color: rgb(254, 140, 46); */
+}
+
+.uploadBtn:hover{
+  cursor: pointer;  
+  /* background-color: rgb(254, 140, 46); */
+}
+.closeBtnContainer{
+  position: absolute;
+  top: 20vh;
+  right: 5vw;
+  transform: translate(-100%, 0%);
+}
