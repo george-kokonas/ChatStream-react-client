@@ -12,8 +12,10 @@ import {
   MDBDropdownLink,
 } from "mdb-react-ui-kit";
 
-const NavigationBar = ({ onUserChangeState, onDisconnectSocket, user }) => {
+const NavigationBar = ({ onUserChangeState, onDisconnectSocket,onSetProfileWindow, user }) => {
+ 
   const navigate = useNavigate();
+
   const logoutHandler = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -21,6 +23,7 @@ const NavigationBar = ({ onUserChangeState, onDisconnectSocket, user }) => {
     navigate("/");
     onUserChangeState(false);
   };
+
   return (
     <>
       <Navbar className='navbar'>
@@ -38,10 +41,11 @@ const NavigationBar = ({ onUserChangeState, onDisconnectSocket, user }) => {
                   style={{ color: "white" }}
                 >
                   <img
-                    src='https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-8.webp'
+                    src={user.profileImage}
                     alt='avatar'
                     className='rounded-circle d-flex align-self-center me-1 shadow-1-strong'
-                    width='35'
+                    width='32'
+                    height="32"
                     loading='lazy'
                   />
                 </MDBDropdownToggle>
@@ -52,15 +56,20 @@ const NavigationBar = ({ onUserChangeState, onDisconnectSocket, user }) => {
                     </MDBDropdownLink>
                   </MDBDropdownItem>
                   <MDBDropdownItem>
-                    <MDBDropdownLink href='#'>Set Avatar</MDBDropdownLink>
+                    <MDBDropdownLink
+                      onClick={() => onSetProfileWindow()}
+                      href='#'
+                    >
+                      Set Profile
+                    </MDBDropdownLink>
                   </MDBDropdownItem>
-                  <MDBDropdownItem></MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
             </MDBNavbarItem>
           </Nav>
         </Container>
       </Navbar>
+     
     </>
   );
 };

@@ -106,10 +106,11 @@ const Rooms = ({
         <a href='#!' className='d-flex justify-content-between'>
           <div className='d-flex flex-row'>
             <img
-              src='https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-8.webp'
+              src={friend?.profileImage}
               alt='avatar'
               className='rounded-circle d-flex align-self-center me-3 shadow-1-strong'
-              width='60'
+              width='50'
+              height="50"
             />
             <div className='pt-1'>
               <p className='fw-bold mb-0'>{friend?.username}</p>

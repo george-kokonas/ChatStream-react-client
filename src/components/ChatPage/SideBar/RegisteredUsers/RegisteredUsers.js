@@ -9,7 +9,7 @@ const RegisteredUsers = ({
   rooms,
   onNewRoom,
 }) => {
-  
+
   //CREATE NEW ROOM WITH SELECTED USER FROM REGISTERED USERS LIST
   const newRoomHandler = async () => {
     //only allow chat with users that haven't started converstation yet
@@ -44,10 +44,11 @@ const RegisteredUsers = ({
       <a href='#!' className='d-flex justify-content-between'>
         <div className='d-flex flex-row'>
           <img
-            src='https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-8.webp'
+            src={registeredUser.profileImage}
             alt='avatar'
             className='rounded-circle d-flex align-self-center me-3 shadow-1-strong'
-            width='60'
+            width='50'
+            height='50'
           />
           <div onClick={newRoomHandler} className='pt-1'>
             <p className='fw-bold mb-0'>{registeredUser.username}</p>
