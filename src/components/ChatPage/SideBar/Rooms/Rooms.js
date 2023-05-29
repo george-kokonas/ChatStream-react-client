@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
+import API_URL from "../../../helpers/config";
 import getAuthHeaders from "../../../helpers/authHeaders";
 
 import styles from "./Rooms.module.css";
@@ -57,7 +58,7 @@ const Rooms = ({
     const getMessages = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/chat/getMessages/${room?._id}`,
+          `${API_URL}/chat/getMessages/${room?._id}`,
           getAuthHeaders()
         );
         data.length && proccessMessage(data);
@@ -92,7 +93,7 @@ const Rooms = ({
     const getFriend = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/user/getUser/${friendId}`,
+          `${API_URL}/user/getUser/${friendId}`,
           getAuthHeaders()
         );
         setFriend(data);

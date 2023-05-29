@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 
 import getAuthHeaders from "../../helpers/authHeaders";
+import API_URL from "../../helpers/config";
 import { initiateSocket, getSocket } from "../socket/Socket";
 
 const Inputs = ({ currentUser, currentRoom, onNewMessage }) => {
@@ -56,7 +57,7 @@ const Inputs = ({ currentUser, currentRoom, onNewMessage }) => {
     //send message to server
     try {
       const { data } = await axios.post(
-        "http://localhost:8000/chat/createMessage/",
+        `${API_URL}/chat/createMessage/`,
         message,
         getAuthHeaders()
       );

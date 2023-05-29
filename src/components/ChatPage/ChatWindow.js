@@ -7,6 +7,7 @@ import Messages from "./Messages/Messages";
 import Inputs from "./Inputs/Inputs";
 import ProfileWindow from "./ProfileWindow/ProfileWindow";
 import getAuthHeaders from "../helpers/authHeaders";
+import API_URL from "../helpers/config"
 import { initiateSocket, getSocket } from "./socket/Socket";
 
 import { MDBContainer, MDBRow, MDBCol, MDBTypography } from "mdb-react-ui-kit";
@@ -36,7 +37,7 @@ const ChatWindow = ({ onUserChangeState }) => {
       if (token) {
         try {
           const { data } = await axios.get(
-            `http://localhost:8000/user/getUser/${user._id}`,
+            `${API_URL}/user/getUser/${user._id}`,
             getAuthHeaders()
           );
           setCurrentUser(data);
@@ -56,7 +57,8 @@ const ChatWindow = ({ onUserChangeState }) => {
   useEffect(() => {
     const getAllUsers = async () => {
       const { data } = await axios.get(
-        "http://localhost:8000/user/getRegisteredUsers",
+        `${API_URL}/user/getRegisteredUsers`
+       ,
         getAuthHeaders()
       );
       setAllUsers(data);
@@ -109,7 +111,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     const getMessages = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/chat/getMessages/${currentRoom._id}`,
+          `${API_URL}/chat/getMessages/${currentRoom._id}`,
           getAuthHeaders()
         );
         setMessages(data);
@@ -128,7 +130,7 @@ const ChatWindow = ({ onUserChangeState }) => {
       if (!currentRoom || currentRoomId !== currentRoom?._id) return;
 
       //set timer interval
-      const typingTimeout = 1000;
+      const typingTimeout = 1400;
       let typingTimer;
 
       clearTimeout(typingTimer);

@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 
+import API_URL from "../../helpers/config";
 import getAuthHeaders from "../../helpers/authHeaders";
 
 import styles from "./ProfileWindow.module.css";
@@ -37,7 +38,7 @@ const ProfileWindow = ({ currentUser, onSetProfileWindow }) => {
 
     try {
       await axios.post(
-        "http://localhost:8000/profile/setImage/",
+        `${API_URL}/profile/setImage/`,
         { userId: currentUser._id, profileImage: image },
         {
           headers: {
@@ -62,7 +63,7 @@ const ProfileWindow = ({ currentUser, onSetProfileWindow }) => {
 
     try {
       await axios.post(
-        "http://localhost:8000/profile/setInfo/",
+        `${API_URL}/profile/setInfo/`,
         {
           userId: currentUser._id,
           userInfo,

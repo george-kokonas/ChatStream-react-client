@@ -1,4 +1,5 @@
 import axios from "axios";
+import API_URL from "../../../helpers/config";
 import getAuthHeaders from "../../../helpers/authHeaders";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -32,7 +33,7 @@ const RegisteredUsers = ({
 
     try {
       const { data } = await axios.post(
-        "http://localhost:8000/chat/createChatRoom/",
+        `${API_URL}/chat/createChatRoom/`,
         room, getAuthHeaders()
         );
         onNewRoom(data);
