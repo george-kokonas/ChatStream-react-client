@@ -107,20 +107,32 @@ const ChatWindow = ({ onUserChangeState }) => {
     currentRoom && getMessages();
   }, [currentRoom]);
 
-  //TRIGGERED WHEN USER IS TYPING A NEW MESSAGE
+  //TRIGGERED WHEN USER IS TYPING
   useEffect(() => {
-    const typingTimeout = 1500;
-    let typingTimer;
+    const handleIsTyping = ({ currentRoomId }) => {
+      //check that isTyping indicator appears in the correct room
+      if (!currentRoom || currentRoomId !== currentRoom?._id) return;
 
+      //set timer interval
+      const typingTimeout = 1000;
+      let typingTimer;
+
+      setIsTyping(true);
       clearTimeout(typingTimer);
-      
-      socket.current.on("isTyping", () => {
-        setIsTyping(true);
-        setTimeout(() => {
-          setIsTyping(false);
-        }, typingTimeout);
-      });
-  },[])
+
+      //set indicator state to false at chosen interval
+      typingTimer = setTimeout(() => {
+        setIsTyping(false);
+      }, typingTimeout);
+    };
+
+    socket.current.on("isTyping", handleIsTyping);
+
+    //turn off the socket when current room changes or component unmounts
+    return () => {
+      socket.current.off("isTyping", handleIsTyping);
+    };
+  }, [currentRoom]);
 
   // TRIGGERED WHEN USER LOGS OUT TO UPDATE ONLINE USERS ARRAY
   const disconnectSocketHandler = () => {
