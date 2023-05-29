@@ -6,6 +6,7 @@ import SideBar from "./SideBar/SideBar";
 import Messages from "./Messages/Messages";
 import Inputs from "./Inputs/Inputs";
 import ProfileWindow from "./ProfileWindow/ProfileWindow";
+import getAuthHeaders from "../helpers/authHeaders";
 import { initiateSocket, getSocket } from "./socket/Socket";
 
 import { MDBContainer, MDBRow, MDBCol, MDBTypography } from "mdb-react-ui-kit";
@@ -18,36 +19,45 @@ const ChatWindow = ({ onUserChangeState }) => {
   const [messages, setMessages] = useState([]);
   const [instantMessage, setInstantMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [profileWindow, setProfileWindow] = useState(false);
   const [isTyping, setIsTyping] = useState({
     typingNow: false,
     username: "",
   });
-  const [profileWindow, setProfileWindow] = useState(false);
 
+  const token = localStorage.getItem("token");
   const socket = useRef();
 
   //GET CURRENT USER
   useEffect(() => {
     const getUserData = async () => {
-      const user = await JSON.parse(localStorage.getItem("user"));
-      try {
-        const { data } = await axios.get(
-          `http://localhost:8000/user/getUser/${user._id}`
-        );
-        setCurrentUser(data);
-      } catch (error) {
-        console.log(error);
-        alert("Error fetching users...");
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      if (token) {
+        try {
+          const { data } = await axios.get(
+            `http://localhost:8000/user/getUser/${user._id}`,
+            getAuthHeaders()
+          );
+          setCurrentUser(data);
+        } catch (error) {
+          console.log(error);
+          alert("Error fetching user data...");
+        }
+      } else {
+        alert("Token not found. Please log in first...");
       }
     };
+
     getUserData();
-  }, []);
+  }, [token]);
 
   //GET REGISTERED USERS LIST
   useEffect(() => {
     const getAllUsers = async () => {
       const { data } = await axios.get(
-        "http://localhost:8000/user/getRegisteredUsers"
+        "http://localhost:8000/user/getRegisteredUsers",
+        getAuthHeaders()
       );
       setAllUsers(data);
     };
@@ -99,7 +109,8 @@ const ChatWindow = ({ onUserChangeState }) => {
     const getMessages = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/chat/getMessages/${currentRoom._id}`
+          `http://localhost:8000/chat/getMessages/${currentRoom._id}`,
+          getAuthHeaders()
         );
         setMessages(data);
       } catch (error) {
@@ -115,7 +126,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     const handleIsTyping = ({ currentRoomId, senderUsername }) => {
       //check that typing indicator appears in the correct room
       if (!currentRoom || currentRoomId !== currentRoom?._id) return;
- 
+
       //set timer interval
       const typingTimeout = 1000;
       let typingTimer;

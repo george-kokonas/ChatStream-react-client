@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
+
+import getAuthHeaders from "../../helpers/authHeaders";
 import { initiateSocket, getSocket } from "../socket/Socket";
 
 const Inputs = ({ currentUser, currentRoom, onNewMessage }) => {
@@ -55,7 +57,8 @@ const Inputs = ({ currentUser, currentRoom, onNewMessage }) => {
     try {
       const { data } = await axios.post(
         "http://localhost:8000/chat/createMessage/",
-        message
+        message,
+        getAuthHeaders()
       );
       onNewMessage(data);
       setNewMessage("");

@@ -3,6 +3,7 @@ import axios from "axios";
 
 import RegisteredUsers from "./RegisteredUsers/RegisteredUsers";
 import Rooms from "./Rooms/Rooms";
+import getAuthHeaders from "../../helpers/authHeaders";
 
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
@@ -35,7 +36,7 @@ const SideBar = ({
     const getRooms = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/chat/getChatRoom/${currentUser._id}`
+          `http://localhost:8000/chat/getChatRoom/${currentUser._id}`,getAuthHeaders()
         );
         setRooms(data);
       } catch (error) {

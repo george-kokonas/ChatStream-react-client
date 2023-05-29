@@ -1,4 +1,6 @@
 import axios from "axios";
+import getAuthHeaders from "../../../helpers/authHeaders";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
@@ -31,7 +33,7 @@ const RegisteredUsers = ({
     try {
       const { data } = await axios.post(
         "http://localhost:8000/chat/createChatRoom/",
-        room
+        room, getAuthHeaders()
         );
         onNewRoom(data);
       } catch (error) {

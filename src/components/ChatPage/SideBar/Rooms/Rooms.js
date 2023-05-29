@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
+import getAuthHeaders from "../../../helpers/authHeaders";
 
 import styles from "./Rooms.module.css";
 import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
@@ -56,7 +57,8 @@ const Rooms = ({
     const getMessages = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/chat/getMessages/${room?._id}`
+          `http://localhost:8000/chat/getMessages/${room?._id}`,
+          getAuthHeaders()
         );
         data.length && proccessMessage(data);
       } catch (error) {
@@ -90,7 +92,8 @@ const Rooms = ({
     const getFriend = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/user/getUser/${friendId}`
+          `http://localhost:8000/user/getUser/${friendId}`,
+          getAuthHeaders()
         );
         setFriend(data);
       } catch (error) {
@@ -111,7 +114,7 @@ const Rooms = ({
               alt='avatar'
               className='rounded-circle d-flex align-self-center me-3 shadow-1-strong'
               width='50'
-              height="50"
+              height='50'
             />
             <div className='pt-1'>
               <p className='fw-bold mb-0'>{friend?.username}</p>

@@ -1,12 +1,12 @@
 import { useState, useRef } from "react";
 import axios from "axios";
+
+import getAuthHeaders from "../../helpers/authHeaders";
+
 import styles from "./ProfileWindow.module.css";
 import addProfilePic from "../../../assets/addProfileImage.jpg";
 
-const ProfileWindow = ({
-  currentUser,
-  onSetProfileWindow,
-}) => { 
+const ProfileWindow = ({ currentUser, onSetProfileWindow }) => {
   const [image, setImage] = useState("");
   const [userInfo, setUserInfo] = useState("");
   const imageInputRef = useRef(null);
@@ -36,19 +36,24 @@ const ProfileWindow = ({
     if (!image) return;
 
     try {
-   await axios.post(
+      await axios.post(
         "http://localhost:8000/profile/setImage/",
         { userId: currentUser._id, profileImage: image },
         {
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            ...getAuthHeaders().headers,
+            "Content-Type": "application/json",
+          },
         }
       );
-
-      setImage("");
+      alert(
+        "Profile Updated Successfully! Refresh the page to see the changes..."
+      );
     } catch (error) {
       console.error(error);
       alert("Unable to upload Image...");
     }
+    setImage("");
   };
 
   const submitInfoHandler = async (event) => {
@@ -58,7 +63,14 @@ const ProfileWindow = ({
     try {
       await axios.post(
         "http://localhost:8000/profile/setInfo/",
-        { userId: currentUser._id, userInfo }
+        {
+          userId: currentUser._id,
+          userInfo,
+        },
+        getAuthHeaders()
+      );
+      alert(
+        "Profile Updated Successfully! Refresh the page to see the changes..."
       );
     } catch (error) {
       alert("Unable to Update User Info...");
