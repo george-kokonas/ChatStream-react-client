@@ -22,24 +22,24 @@ const ChatWindow = ({ onUserChangeState }) => {
   const [profileWindow, setProfileWindow] = useState(false);
 
   const socket = useRef();
-  
+
   //GET CURRENT USER
-    useEffect(() => {
-      const getUserData = async () => {
-        const user = await JSON.parse(localStorage.getItem("user"));
-        try {
-          const { data } = await axios.get(
-            `http://localhost:8000/user/getUser/${user._id}`
-          );
-          setCurrentUser(data);
-        } catch (error) {
-          console.log(error);
-          alert("Error fetching users...");
-        }
-      };
-      getUserData();
-    }, []);
-  
+  useEffect(() => {
+    const getUserData = async () => {
+      const user = await JSON.parse(localStorage.getItem("user"));
+      try {
+        const { data } = await axios.get(
+          `http://localhost:8000/user/getUser/${user._id}`
+        );
+        setCurrentUser(data);
+      } catch (error) {
+        console.log(error);
+        alert("Error fetching users...");
+      }
+    };
+    getUserData();
+  }, []);
+
   //GET REGISTERED USERS LIST
   useEffect(() => {
     const getAllUsers = async () => {
@@ -96,7 +96,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     const getMessages = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/chat/getMessages/${currentRoom?._id}`
+          `http://localhost:8000/chat/getMessages/${currentRoom._id}`
         );
         setMessages(data);
       } catch (error) {
@@ -104,33 +104,23 @@ const ChatWindow = ({ onUserChangeState }) => {
         console.log(error);
       }
     };
-    getMessages();
+    currentRoom && getMessages();
   }, [currentRoom]);
 
   //TRIGGERED WHEN USER IS TYPING A NEW MESSAGE
-  const typingHandler = () => {
+  useEffect(() => {
     const typingTimeout = 1500;
     let typingTimer;
 
-    const receiverId = currentRoom.members.find(
-      (member) => member !== currentUser._id
-    );
-
-    clearTimeout(typingTimer);
-
-    socket.current.on("isTyping", (data) => {
-      setIsTyping(true);
-      setTimeout(() => {
-        setIsTyping(false);
-      }, typingTimeout);
-    });
-
-    socket.current.emit("userTyping", {
-      senderId: currentUser._id,
-      receiverId: receiverId,
-      currentRoomId: currentRoom._id,
-    });
-  };
+      clearTimeout(typingTimer);
+      
+      socket.current.on("isTyping", () => {
+        setIsTyping(true);
+        setTimeout(() => {
+          setIsTyping(false);
+        }, typingTimeout);
+      });
+  },[])
 
   // TRIGGERED WHEN USER LOGS OUT TO UPDATE ONLINE USERS ARRAY
   const disconnectSocketHandler = () => {
@@ -190,7 +180,6 @@ const ChatWindow = ({ onUserChangeState }) => {
                             onNewMessage={(data) =>
                               setMessages([...messages, data])
                             }
-                            onTyping={typingHandler}
                           />
                         </MDBRow>
                       </>

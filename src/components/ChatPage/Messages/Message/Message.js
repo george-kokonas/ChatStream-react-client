@@ -27,7 +27,7 @@ const Messages = ({ message, sentByMe , currentUser, friend }) => {
   ) : (
     <li className='d-flex justify-content mb-3'>
       <img
-        src={friend.profileImage || defaultUserIcon}
+        src={friend?.profileImage || defaultUserIcon}
         alt='avatar'
         className='rounded-circle d-flex align-self-start ms-3 shadow-1-strong'
         width='60'
