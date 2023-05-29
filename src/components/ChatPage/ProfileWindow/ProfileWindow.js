@@ -6,7 +6,7 @@ import addProfilePic from "../../../assets/addProfileImage.jpg";
 const ProfileWindow = ({
   currentUser,
   onSetProfileWindow,
-}) => {
+}) => { 
   const [image, setImage] = useState("");
   const [userInfo, setUserInfo] = useState("");
   const imageInputRef = useRef(null);
