@@ -18,7 +18,10 @@ const ChatWindow = ({ onUserChangeState }) => {
   const [messages, setMessages] = useState([]);
   const [instantMessage, setInstantMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const [isTyping, setIsTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState({
+    typingNow: false,
+    username: "",
+  });
   const [profileWindow, setProfileWindow] = useState(false);
 
   const socket = useRef();
@@ -109,16 +112,26 @@ const ChatWindow = ({ onUserChangeState }) => {
 
   //TRIGGERED WHEN USER IS TYPING
   useEffect(() => {
-    const handleIsTyping = ({ currentRoomId }) => {
-      //check that isTyping indicator appears in the correct room
+    const handleIsTyping = ({ currentRoomId, senderUsername }) => {
+      //check that typing indicator appears in the correct room
       if (!currentRoom || currentRoomId !== currentRoom?._id) return;
-
+ 
       //set timer interval
       const typingTimeout = 1000;
       let typingTimer;
 
-      setIsTyping(true);
       clearTimeout(typingTimer);
+
+      //update isTyping state
+      setIsTyping((prevState) => ({
+        ...prevState,
+        typingNow: true,
+      }));
+
+      setIsTyping((prevState) => ({
+        ...prevState,
+        username: senderUsername,
+      }));
 
       //set indicator state to false at chosen interval
       typingTimer = setTimeout(() => {
@@ -128,7 +141,7 @@ const ChatWindow = ({ onUserChangeState }) => {
 
     socket.current.on("isTyping", handleIsTyping);
 
-    //turn off the socket when current room changes or component unmounts
+    //close socket when current room changes or component unmounts
     return () => {
       socket.current.off("isTyping", handleIsTyping);
     };
@@ -181,7 +194,11 @@ const ChatWindow = ({ onUserChangeState }) => {
                             />
                           </MDBRow>
                           <MDBRow className={styles.typingIndicator}>
-                            {isTyping ? <p>user is typing...</p> : " "}
+                            {isTyping.typingNow ? (
+                              <p>{isTyping.username} is typing...</p>
+                            ) : (
+                              " "
+                            )}
                           </MDBRow>
                         </MDBTypography>
 

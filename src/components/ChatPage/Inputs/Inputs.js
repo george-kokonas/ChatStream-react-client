@@ -24,7 +24,7 @@ const Inputs = ({ currentUser, currentRoom, onNewMessage }) => {
 
     //emmit user is typing signal
     socket.current.emit("userTyping", {
-      senderId: currentUser._id,
+      senderUsername: currentUser.username,
       receiverId: receiverId,
       currentRoomId: currentRoom._id,
     });
