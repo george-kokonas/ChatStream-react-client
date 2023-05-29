@@ -1,6 +1,6 @@
-import React from "react";
-import axios from "axios";
 import { useState } from "react";
+import axios from "axios";
+import API_URL from "../../helpers/config";
 import { MDBContainer, MDBInput, MDBBtn } from "mdb-react-ui-kit";
 import "./login.css";
 
@@ -39,14 +39,11 @@ const Login = ({ onUserChangeState }) => {
       };
 
       try {
-        const { data } = await axios.post(
-          "http://localhost:8000/auth/login",
-          userData
-        );
+        const { data } = await axios.post(`${API_URL}/auth/login`, userData);
 
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        
+
         alert("Logged in Successfully");
         onUserChangeState(true);
       } catch (error) {

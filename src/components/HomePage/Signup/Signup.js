@@ -1,10 +1,10 @@
-import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import API_URL from "../../helpers/config";
 import "./signup.css";
 import { MDBContainer, MDBInput, MDBBtn } from "mdb-react-ui-kit";
 
-const SignUp = ({onUserChangeState}) => {
+const SignUp = ({ onUserChangeState }) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -48,17 +48,16 @@ const SignUp = ({onUserChangeState}) => {
         password,
       };
       try {
-        const { data } = await axios.post(
-          "http://localhost:8000/auth/register",
-          userData
-        );
+        const { data } = await axios.post(`${API_URL}/auth/register`, userData);
+
         localStorage.setItem("token", data);
         localStorage.setItem("user", JSON.stringify(data.user));
-        alert("WELCOME ONBOARD!");
+
+        alert("WELCOME ONBOARD!");      
         setEmail("");
         setUsername("");
         setPassword("");
-        onUserChangeState(true)
+        onUserChangeState(true);
       } catch (error) {
         const { message } = error.response.data;
         message.includes("Email")
