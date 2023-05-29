@@ -1,8 +1,17 @@
-import { useEffect, useRef } from "react";
+import { useState , useEffect, useRef } from "react";
 import Message from "./Message/Message";
 
-const Messages = ({ loggedUser, messages }) => {
+const Messages = ({ currentUser,allUsers,currentRoom, messages }) => {
+  const [friend, setFriend] = useState(null);
   const scrollToEnd = useRef();
+
+  useEffect(()=>{
+    const membersIds = currentRoom.members;
+    const friendId = membersIds.find(memberId => memberId !== currentUser._id);
+    const friend = allUsers.find(user => user._id === friendId )
+    setFriend(friend)
+  },[currentRoom.members , currentUser._id, allUsers])
+
 
   //SCROLL TO THE END OF PAGE WHEN A NEW MESSAGE ARRIVES
   useEffect(() => {
@@ -16,7 +25,13 @@ const Messages = ({ loggedUser, messages }) => {
       ) : (
         messages.map((msg, index) => (
           <div key={index} ref={scrollToEnd}>
-            <Message message={msg} sentByMe={msg.senderId === loggedUser._id} />
+            <Message
+              currentUser={currentUser}
+              friend={friend}
+              allUsers={allUsers}
+              message={msg}
+              sentByMe={msg.senderId === currentUser._id}
+            />
           </div>
         ))
       )}

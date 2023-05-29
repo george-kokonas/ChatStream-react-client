@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { initiateSocket, getSocket } from "../socket/Socket";
 
-const Inputs = ({ loggedUser, currentRoom, onNewMessage, onTyping }) => {
+const Inputs = ({ currentUser, currentRoom, onNewMessage, onTyping }) => {
   const [newMessage, setNewMessage] = useState("");
   const socket = useRef();
 
@@ -21,12 +21,12 @@ const Inputs = ({ loggedUser, currentRoom, onNewMessage, onTyping }) => {
     const messageId = uuidv4();
 
     const receiverId = currentRoom.members.find(
-      (member) => member !== loggedUser._id
+      (member) => member !== currentUser._id
     );
     const message = {
       _id: messageId,
       roomId: currentRoom._id,
-      senderId: loggedUser._id,
+      senderId: currentUser._id,
       receiverId: receiverId,
       text: newMessage,
       isSeen: false,
@@ -76,5 +76,3 @@ const Inputs = ({ loggedUser, currentRoom, onNewMessage, onTyping }) => {
   );
 };
 export default Inputs;
-
-<button type='submit'></button>;

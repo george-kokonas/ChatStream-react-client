@@ -3,7 +3,10 @@ import axios from "axios";
 import styles from "./ProfileWindow.module.css";
 import addProfilePic from "../../../assets/addProfileImage.jpg";
 
-const ProfilePage = ({ user, onSetProfileWindow }) => {
+const ProfileWindow = ({
+  currentUser,
+  onSetProfileWindow,
+}) => {
   const [image, setImage] = useState("");
   const [userInfo, setUserInfo] = useState("");
   const imageInputRef = useRef(null);
@@ -33,13 +36,14 @@ const ProfilePage = ({ user, onSetProfileWindow }) => {
     if (!image) return;
 
     try {
-      await axios.post(
+   await axios.post(
         "http://localhost:8000/profile/setImage/",
-        { userId: user._id, profileImage: image },
+        { userId: currentUser._id, profileImage: image },
         {
           headers: { "Content-Type": "application/json" },
         }
       );
+
       setImage("");
     } catch (error) {
       console.error(error);
@@ -52,9 +56,12 @@ const ProfilePage = ({ user, onSetProfileWindow }) => {
     if (!userInfo) return;
 
     try {
-      await axios.post("http://localhost:8000/profile/setInfo/", {userId: user._id, userInfo });
+      await axios.post(
+        "http://localhost:8000/profile/setInfo/",
+        { userId: currentUser._id, userInfo }
+      );
     } catch (error) {
-      alert("Unable to Update User Info...")
+      alert("Unable to Update User Info...");
       console.log(error);
     }
     setUserInfo("");
@@ -161,4 +168,4 @@ const ProfilePage = ({ user, onSetProfileWindow }) => {
   );
 };
 
-export default ProfilePage;
+export default ProfileWindow;

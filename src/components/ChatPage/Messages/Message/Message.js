@@ -1,16 +1,18 @@
 import React from "react";
 import { MDBCard, MDBCardBody, MDBIcon } from "mdb-react-ui-kit";
 import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
+import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
 import "./message.css";
 
-const Messages = ({ message, sentByMe }) => {
+const Messages = ({ message, sentByMe , currentUser, friend }) => {
   let messageOutput = sentByMe ? (
     <li className='d-flex flex-row-reverse mb-3'>
       <img
-        src='https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp'
+        src={currentUser.profileImage || defaultUserIcon}
         alt='avatar'
         className='rounded-circle d-flex align-self-start me-2 shadow-1-strong'
         width='60'
+        height="60"
       />
       <MDBCard className='my-message-card'>
         <MDBCardBody className='message-card'>
@@ -25,10 +27,11 @@ const Messages = ({ message, sentByMe }) => {
   ) : (
     <li className='d-flex justify-content mb-3'>
       <img
-        src='https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp'
+        src={friend.profileImage || defaultUserIcon}
         alt='avatar'
         className='rounded-circle d-flex align-self-start ms-3 shadow-1-strong'
         width='60'
+        height="60"
       />
       <MDBCard className='friend-message-card'>
         <MDBCardBody className='message-card'>

@@ -6,19 +6,19 @@ import Rooms from "./Rooms/Rooms";
 
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import { MDBCard,MDBTypography } from "mdb-react-ui-kit";
+import { MDBCard, MDBTypography } from "mdb-react-ui-kit";
 import styles from "./Sidebar.module.css";
-import "./Tabs.css"
+import "./Tabs.css";
 
 const SideBar = ({
-  loggedUser,
+  currentUser,
+  allUsers,
   onlineUsers,
   currentRoom,
   messages,
   instantMessage,
   onSelectRoom,
 }) => {
-  const [registeredUsers, setRegisteredUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [tab, setTab] = useState("conversations");
 
@@ -35,7 +35,7 @@ const SideBar = ({
     const getRooms = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/chat/getChatRoom/${loggedUser._id}`
+          `http://localhost:8000/chat/getChatRoom/${currentUser._id}`
         );
         setRooms(data);
       } catch (error) {
@@ -44,39 +44,23 @@ const SideBar = ({
       }
     };
     getRooms();
-  }, [loggedUser._id, instantMessage]);
-
-  //GET REGISTERED USERS LIST
-  useEffect(() => {
-    const getRegisteredUsers = async () => {
-      const { data } = await axios.get(
-        "http://localhost:8000/user/getRegisteredUsers"
-      );
-      setRegisteredUsers(data);
-    };
-    getRegisteredUsers();
-  }, [loggedUser._id]);
+  }, [currentUser._id, instantMessage]);
 
   return (
     <Tabs
       activeKey={tab}
       onSelect={(selectedTab) => setTab(selectedTab)}
-      className="mt-3"
+      className='mt-3'
     >
       {/* CONVERSATIONS TAB */}
-      <Tab
-        eventKey='conversations'
-        title='Conversations'
-        className="mt-2 mb-1"
-      >
+      <Tab eventKey='conversations' title='Conversations' className='mt-2 mb-1'>
         <MDBCard className={styles.cards}>
-          {/* <MDBCardBody> */}
           <MDBTypography listUnStyled className='mb-0'>
             {rooms.length ? (
               rooms.map((room) => (
                 <div onClick={() => onSelectRoom(room)} key={room._id}>
                   <Rooms
-                    loggedUser={loggedUser}
+                    currentUser={currentUser}
                     room={room}
                     currentRoom={currentRoom}
                     userMessages={messages.filter(
@@ -90,29 +74,26 @@ const SideBar = ({
               <p>no conversations yet...</p>
             )}
           </MDBTypography>
-          {/* </MDBCardBody> */}
         </MDBCard>
       </Tab>
 
       {/* REGISTERED USERS TAB */}
-      <Tab eventKey='users' title='Users' className="mt-2 mb-1" >
+      <Tab eventKey='users' title='Users' className='mt-2 mb-1'>
         <MDBCard className={styles.cards}>
-          {/* <MDBCardBody> */}
           <MDBTypography listUnStyled className='mb-0'>
-            {registeredUsers.map((registeredUser) => (
+            {allUsers?.map((user) => (
               <RegisteredUsers
-                loggedUser={loggedUser}
-                registeredUser={registeredUser}
+                currentUser={currentUser}
+                user={user}
                 rooms={rooms}
                 onNewRoom={(room) => setRooms([...rooms, room])}
                 isOnline={onlineUsers.some(
-                  (onlineUser) => onlineUser.userId === registeredUser._id
+                  (onlineUser) => onlineUser.userId === user._id
                 )}
-                key={registeredUser._id}
+                key={user._id}
               />
             ))}
           </MDBTypography>
-          {/* </MDBCardBody> */}
         </MDBCard>
       </Tab>
     </Tabs>

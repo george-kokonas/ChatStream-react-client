@@ -5,13 +5,15 @@ import NavigationBar from "./NavigationBar/NavigationBar";
 import SideBar from "./SideBar/SideBar";
 import Messages from "./Messages/Messages";
 import Inputs from "./Inputs/Inputs";
-import ProfilePage from "./ProfileWindow/ProfileWindow";
+import ProfileWindow from "./ProfileWindow/ProfileWindow";
 import { initiateSocket, getSocket } from "./socket/Socket";
 
 import { MDBContainer, MDBRow, MDBCol, MDBTypography } from "mdb-react-ui-kit";
 import styles from "./ChatWindow.module.css";
 
 const ChatWindow = ({ onUserChangeState }) => {
+  const [currentUser, setCurrentUser] = useState(null);
+  const [allUsers, setAllUsers] = useState(null);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [instantMessage, setInstantMessage] = useState(null);
@@ -19,8 +21,35 @@ const ChatWindow = ({ onUserChangeState }) => {
   const [isTyping, setIsTyping] = useState(false);
   const [profileWindow, setProfileWindow] = useState(false);
 
-  const user = JSON.parse(localStorage.getItem("user"));
   const socket = useRef();
+  
+  //GET CURRENT USER
+    useEffect(() => {
+      const getUserData = async () => {
+        const user = await JSON.parse(localStorage.getItem("user"));
+        try {
+          const { data } = await axios.get(
+            `http://localhost:8000/user/getUser/${user._id}`
+          );
+          setCurrentUser(data);
+        } catch (error) {
+          console.log(error);
+          alert("Error fetching users...");
+        }
+      };
+      getUserData();
+    }, []);
+  
+  //GET REGISTERED USERS LIST
+  useEffect(() => {
+    const getAllUsers = async () => {
+      const { data } = await axios.get(
+        "http://localhost:8000/user/getRegisteredUsers"
+      );
+      setAllUsers(data);
+    };
+    getAllUsers();
+  }, []);
 
   //TRIGGERED WHEN COMPONENT IS MOUNTED
   useEffect(() => {
@@ -44,13 +73,13 @@ const ChatWindow = ({ onUserChangeState }) => {
   //TRIGGERED ON USER LOGIN
   useEffect(() => {
     //add user to onlineUsers array on socket server
-    socket.current.emit("addUser", user._id);
+    socket.current.emit("addUser", currentUser?._id);
 
     //get online users
     socket.current.on("getOnlineUsers", (users) => {
       setOnlineUsers(users);
     });
-  }, [user._id]);
+  }, [currentUser?._id]);
 
   //TRIGGERED WHEN INSTANT MESSAGE ARRIVES OR USER SELECTS A ROOM
   useEffect(() => {
@@ -84,7 +113,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     let typingTimer;
 
     const receiverId = currentRoom.members.find(
-      (member) => member !== user._id
+      (member) => member !== currentUser._id
     );
 
     clearTimeout(typingTimer);
@@ -97,7 +126,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     });
 
     socket.current.emit("userTyping", {
-      senderId: user._id,
+      senderId: currentUser._id,
       receiverId: receiverId,
       currentRoomId: currentRoom._id,
     });
@@ -110,68 +139,79 @@ const ChatWindow = ({ onUserChangeState }) => {
 
   return (
     <>
-      <div className={styles.container}>
-        <NavigationBar
-          className={styles.navbar}
-          onUserChangeState={onUserChangeState}
-          onDisconnectSocket={disconnectSocketHandler}
-          onSetProfileWindow={() => setProfileWindow(true)}
-          user={user}
-        />
-        <MDBContainer fluid className='py-0'>
-          <MDBRow>
-            {/*LEFT-SIDE BAR  `mb-0 md-0`  */}
-            <MDBCol md='6' lg='5' xl='4' xxl='3' className={styles.sidebar}>
-              <SideBar
-                loggedUser={user}
-                onlineUsers={onlineUsers}
-                currentRoom={currentRoom}
-                messages={messages}
-                instantMessage={instantMessage}
-                onSelectRoom={(room) => setCurrentRoom(room)}
-              />
-            </MDBCol>
-
-            {/* CHAT WINDOW */}
-            <MDBCol className={styles.chatWrapper}>
-              {!profileWindow ? (
-                <>
-                  {currentRoom ? (
-                    <>
-                      <MDBTypography listUnStyled>
-                        <MDBRow className={styles.conversation}>
-                          <Messages loggedUser={user} messages={messages} />
-                        </MDBRow>
-                        <MDBRow className={styles.typingIndicator}>
-                          {isTyping ? <p>user is typing...</p> : " "}
-                        </MDBRow>
-                      </MDBTypography>
-
-                      <MDBRow className={styles.inputs}>
-                        <Inputs
-                          loggedUser={user}
-                          currentRoom={currentRoom}
-                          onNewMessage={(data) =>
-                            setMessages([...messages, data])
-                          }
-                          onTyping={typingHandler}
-                        />
-                      </MDBRow>
-                    </>
-                  ) : (
-                    <p style={{ color: "white" }}>select a room</p>
-                  )}
-                </>
-              ) : (
-                <ProfilePage
-                  user={user}
-                  onSetProfileWindow={() => setProfileWindow(false)}
+      {currentUser && (
+        <div className={styles.container}>
+          <NavigationBar
+            className={styles.navbar}
+            onUserChangeState={onUserChangeState}
+            onDisconnectSocket={disconnectSocketHandler}
+            onSetProfileWindow={() => setProfileWindow(true)}
+            currentUser={currentUser}
+          />
+          <MDBContainer fluid className='py-0'>
+            <MDBRow>
+              {/*LEFT-SIDE BAR */}
+              <MDBCol md='6' lg='5' xl='4' xxl='3' className={styles.sidebar}>
+                <SideBar
+                  currentUser={currentUser}
+                  allUsers={allUsers}
+                  onlineUsers={onlineUsers}
+                  currentRoom={currentRoom}
+                  messages={messages}
+                  instantMessage={instantMessage}
+                  onSelectRoom={(room) => setCurrentRoom(room)}
                 />
-              )}
-            </MDBCol>
-          </MDBRow>
-        </MDBContainer>
-      </div>
+              </MDBCol>
+
+              {/* CHAT WINDOW */}
+              <MDBCol className={styles.chatWrapper}>
+                {!profileWindow ? (
+                  <>
+                    {currentRoom ? (
+                      <>
+                        <MDBTypography listUnStyled>
+                          <MDBRow className={styles.conversation}>
+                            <Messages
+                              currentUser={currentUser}
+                              allUsers={allUsers}
+                              currentRoom={currentRoom}
+                              messages={messages}
+                            />
+                          </MDBRow>
+                          <MDBRow className={styles.typingIndicator}>
+                            {isTyping ? <p>user is typing...</p> : " "}
+                          </MDBRow>
+                        </MDBTypography>
+
+                        <MDBRow className={styles.inputs}>
+                          <Inputs
+                            currentUser={currentUser}
+                            currentRoom={currentRoom}
+                            onNewMessage={(data) =>
+                              setMessages([...messages, data])
+                            }
+                            onTyping={typingHandler}
+                          />
+                        </MDBRow>
+                      </>
+                    ) : (
+                      <p style={{ color: "white" }}>select a room</p>
+                    )}
+                  </>
+                ) : (
+                  <ProfileWindow
+                    currentUser={currentUser}
+                    onSetProfileWindow={() => setProfileWindow(false)}
+                    onUpdateUserProfile={(updatedProfile) =>
+                      setCurrentUser(updatedProfile)
+                    }
+                  />
+                )}
+              </MDBCol>
+            </MDBRow>
+          </MDBContainer>
+        </div>
+      )}
     </>
   );
 };

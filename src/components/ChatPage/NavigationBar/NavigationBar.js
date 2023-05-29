@@ -3,7 +3,8 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "./navigationBar.css";
-import noUserImage from "../../../assets/noUserImage.jpg";
+import defaultUserIcon from "../../../assets/defaultUserIcon.png";
+
 import {
   MDBNavbarItem,
   MDBDropdown,
@@ -17,7 +18,7 @@ const NavigationBar = ({
   onUserChangeState,
   onDisconnectSocket,
   onSetProfileWindow,
-  user,
+  currentUser,
 }) => {
 
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const NavigationBar = ({
         <Container>
           <Navbar.Brand id='navbar-logo'>ChatStream</Navbar.Brand>
           <Nav className='d-flex flex-row mb-0'>
-            <Navbar.Brand id='navbar-username'>{`Hello ${user.username}!`}</Navbar.Brand>
+            <Navbar.Brand id='navbar-username'>{`Hello ${currentUser?.username}!`}</Navbar.Brand>
 
             <MDBNavbarItem>
               <MDBDropdown>
@@ -47,7 +48,7 @@ const NavigationBar = ({
                   style={{ color: "white" }}
                 >
                   <img
-                    src={user.profileImage || noUserImage}
+                    src={currentUser?.profileImage || defaultUserIcon}
                     alt='avatar'
                     className='rounded-circle d-flex align-self-center me-1 shadow-1-strong'
                     width='32'

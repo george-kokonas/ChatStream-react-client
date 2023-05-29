@@ -3,10 +3,10 @@ import axios from "axios";
 import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
 
 import styles from "./Rooms.module.css";
-import noUserImage from "../../../../assets/noUserImage.jpg";
+import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
 
 const Rooms = ({
-  loggedUser,
+  currentUser,
   room,
   currentRoom,
   userMessages,
@@ -84,7 +84,7 @@ const Rooms = ({
   useEffect(() => {
     if (room.length === 0) return;
     const friendId = room.members.find(
-      (memberId) => memberId !== loggedUser._id
+      (memberId) => memberId !== currentUser._id
     );
 
     const getFriend = async () => {
@@ -99,7 +99,7 @@ const Rooms = ({
       }
     };
     getFriend();
-  }, [loggedUser, room]);
+  }, [currentUser, room]);
 
   return (
     <div className={listItemClassname}>
@@ -107,7 +107,7 @@ const Rooms = ({
         <a href='#!' className='d-flex justify-content-between'>
           <div className='d-flex flex-row'>
             <img
-              src={friend?.profileImage || noUserImage}
+              src={friend?.profileImage || defaultUserIcon}
               alt='avatar'
               className='rounded-circle d-flex align-self-center me-3 shadow-1-strong'
               width='50'
