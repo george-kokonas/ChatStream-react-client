@@ -22,13 +22,13 @@ const App = () => {
 
   return (
     <>
-      <div >
+      <div   className="main" >
         {!isLoggedIn ? (
           <>
             <Index onUserChangeState={userChangeStateHandler} />
           </>
         ) : (
-          <div  className="main">
+          <div>
             <ChatWindow onUserChangeState={userChangeStateHandler} />
           </div>
         )}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { MDBTabs, MDBTabsItem, MDBTabsLink } from "mdb-react-ui-kit";
+import "./Tabs.css"
 
 const Tabs = ({ onSelection }) => {
   const navigate = useNavigate();
@@ -29,8 +30,8 @@ const Tabs = ({ onSelection }) => {
   return (
     <>
       {/* SIGN UP TAB */}
-      <MDBTabs pills className='mb-3'>
-        <MDBTabsItem>
+      <MDBTabs pills className='tabs mb-3'>
+        <MDBTabsItem >
           <MDBTabsLink
             onClick={() => handleUserClick("signup")}
             active={activeTab === "signup"}

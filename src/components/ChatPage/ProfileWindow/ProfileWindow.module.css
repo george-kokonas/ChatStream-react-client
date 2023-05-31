@@ -14,12 +14,12 @@
 }
 
 .uploadBtn{
-    /* background-color: rgb(254, 140, 46); */
+    background-color: rgb(254, 140, 46);
 }
 
 .uploadBtn:hover{
   cursor: pointer;  
-  /* background-color: rgb(254, 140, 46); */
+  background-color: rgb(254, 140, 46);
 }
 .closeBtnContainer{
   position: absolute;

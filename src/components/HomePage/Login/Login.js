@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import API_URL from "../../helpers/config";
 import { MDBContainer, MDBInput, MDBBtn } from "mdb-react-ui-kit";
-import "./login.css";
+import "../globalStyles/formStyles.css"
 
 const Login = ({ onUserChangeState }) => {
   const [email, setEmail] = useState("");
@@ -68,11 +68,11 @@ const Login = ({ onUserChangeState }) => {
         value={email}
         onChange={(event) => setEmail(event.target.value)}
       />
-      {emailError && <span className='error-msg-login'>{emailError}</span>}
+      {emailError && <span className='error-msg'>{emailError}</span>}
 
       {/* PASSWORD INPUT FIELD */}
       <MDBInput
-        wrapperClass='mt-3 mb-1'
+        wrapperClass='mt-3 mb-1 pl-4'
         label='Password'
         id='form2'
         type='password'
@@ -81,11 +81,11 @@ const Login = ({ onUserChangeState }) => {
         onChange={(event) => setPassword(event.target.value)}
       />
       {passwordError && (
-        <span className='error-msg-login'>{passwordError}</span>
+        <span className='error-msg'>{passwordError}</span>
       )}
 
       {/* SUBMIT BUTTON */}
-      <MDBBtn className='mt-3 mb-3' type='submit' onClick={submitHandler}>
+      <MDBBtn className='submit-btn mt-5 mb-3' type='submit' onClick={submitHandler}>
         LOG IN
       </MDBBtn>
 

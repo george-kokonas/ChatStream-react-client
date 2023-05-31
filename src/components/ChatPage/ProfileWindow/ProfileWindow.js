@@ -114,7 +114,7 @@ const ProfileWindow = ({ currentUser, onSetProfileWindow }) => {
           </div>
 
           {/* upload button */}
-          <div className={` d-flex justify-content-center`}>
+          <div className= "d-flex justify-content-center">
             <div className={` ${styles.uploadBtn} btn btn-warning btn-rounded`}>
               <label
                 className={`${styles.uploadBtn} form-label text-white m-1 `}

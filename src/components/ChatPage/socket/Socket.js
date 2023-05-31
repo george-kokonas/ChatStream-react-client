@@ -3,7 +3,8 @@ import { io } from "socket.io-client";
 let socket;
 
 export const initiateSocket = () => {
-  socket = io("http://localhost:8080");
+  // socket = io("http://localhost:8080");
+  socket = io("https://chatapp-socket-avrl.onrender.com");
 };
 
 export const getSocket = () => {

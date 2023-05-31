@@ -6,7 +6,7 @@ import SignUp from "../Signup/Signup";
 import About from "../About/About";
 import {
   MDBContainer,
-  MDBCard,
+  // MDBCard,
   MDBCol,
   MDBRow,
   MDBBtn,
@@ -14,7 +14,7 @@ import {
 } from "mdb-react-ui-kit";
 import "./index.css";
 
-const Index = ({onUserChangeState}) => {
+const Index = ({ onUserChangeState }) => {
   const [selection, setSelection] = useState("log in");
 
   const handleSelection = (choice) => {
@@ -22,20 +22,13 @@ const Index = ({onUserChangeState}) => {
   };
 
   return (
-    <MDBContainer fluid className='p-3 my-5 h-custom'>
-      <MDBCard>
-        <MDBRow>
-          {/* LEFT-SIDE PHOTO */}
-          <MDBCol col='10' md='6'>
-            <img
-              src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp'
-              className='img-fluid'
-              alt='Sample'
-            />
-          </MDBCol>
+    <div className='index-container'>
+      <MDBContainer fluid>
+        <MDBRow className='top-container'>
 
           {/* TABS NAVIGATION */}
-          <MDBCol col='4' md='6'>
+
+          <MDBCol className='form-container'>
             <div className='d-flex flex-row align-items-center justify-content-center'>
               <Tabs onSelection={handleSelection} />
             </div>
@@ -49,51 +42,61 @@ const Index = ({onUserChangeState}) => {
 
             <Routes>
               <Route path='/' element={<Navigate to='/login' replace />} />
-              <Route path='/login' element={<Login onUserChangeState={onUserChangeState}/>} />
-              <Route exact path='/signup' element={<SignUp onUserChangeState={onUserChangeState} />} />
+              <Route
+                path='/login'
+                element={<Login onUserChangeState={onUserChangeState} />}
+              />
+              <Route
+                exact
+                path='/signup'
+                element={<SignUp onUserChangeState={onUserChangeState} />}
+              />
               <Route exact path='/about' element={<About />} />
             </Routes>
           </MDBCol>
         </MDBRow>
 
-        {/* FOOTER */}
-        <div className='d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary'>
-          <div className='text-white mb-3 mb-md-0'>
-            Copyright © 2023. All rights reserved.
+        <MDBRow className='footer'>
+          {/* FOOTER */}
+
+          <div className='d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 footer'>
+            <div className='footer-text pb-3'>
+              ChatStream © 2023.
+            </div>
+
+            {/*RIGHT SIDE ICONS */}
+            <div className="pb-3">
+              <MDBBtn
+                tag='a'
+                color='none'
+                className='mx-3'
+                style={{ color: "white" }}
+              >
+                <MDBIcon fab icon='github' size='2x' />
+              </MDBBtn>
+
+              <MDBBtn
+                tag='a'
+                color='none'
+                className='mx-3'
+                style={{ color: "white" }}
+              >
+                <MDBIcon fab icon='linkedin-in' size='2x' />
+              </MDBBtn>
+
+              <MDBBtn
+                tag='a'
+                color='none'
+                className='mx-3'
+                style={{ color: "white" }}
+              >
+                <MDBIcon fab icon='google' size='2x' />
+              </MDBBtn>
+            </div>
           </div>
-
-          {/*RIGHT SIDE ICONS */}
-          <div>
-            <MDBBtn
-              tag='a'
-              color='none'
-              className='mx-3'
-              style={{ color: "white" }}
-            >
-              <MDBIcon fab icon='github' size='lg' />
-            </MDBBtn>
-
-            <MDBBtn
-              tag='a'
-              color='none'
-              className='mx-3'
-              style={{ color: "white" }}
-            >
-              <MDBIcon fab icon='linkedin-in' size='lg' />
-            </MDBBtn>
-
-            <MDBBtn
-              tag='a'
-              color='none'
-              className='mx-3'
-              style={{ color: "white" }}
-            >
-              <MDBIcon fab icon='google' size='lg' />
-            </MDBBtn>
-          </div>
-        </div>
-      </MDBCard>
-    </MDBContainer>
+        </MDBRow>
+      </MDBContainer>
+    </div>
   );
 };
 
