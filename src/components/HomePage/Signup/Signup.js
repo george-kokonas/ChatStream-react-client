@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+
 import API_URL from "../../helpers/config";
 import { MDBContainer, MDBInput, MDBBtn } from "mdb-react-ui-kit";
 import "../globalStyles/formStyles.css";
@@ -12,44 +13,50 @@ const SignUp = ({ onUserChangeState }) => {
   const [usernameError, setUsernameError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
-  const isValidEmail = (email) => {
+  const testEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
   };
 
-  const isValidUsername = (username) => {
+  const testUsername = (username) => {
     return username.length < 3 ? false : true;
   };
 
-  const isValidPassword = (password) => {
+  const testPassword = (password) => {
     return /^(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/.test(password);
+  };
+
+  const nullishErrors = () => {
+    setEmailError(null);
+    setUsernameError(null);
+    setPasswordError(null);
   };
 
   const submitHandler = async (event) => {
     event.preventDefault();
+    nullishErrors();
 
-    setEmailError(null);
-    setUsernameError(null);
-    setPasswordError(null);
+    const isValidEmail = testEmail(email) || setEmailError("Email is invalid");
 
-    isValidEmail(email) || setEmailError("Email is invalid");
-
-    isValidUsername(username) ||
+    const isValidUsername =
+      testUsername(username) ||
       setUsernameError("Username must be at least 3 characters");
 
-    isValidPassword(password) ||
+    const isValidPassword =
+      testPassword(password) ||
       setPasswordError(
         "Must contain at least one digit, one special character and be at least 6 characters."
       );
 
-    if (email && username && password) {
+    if (isValidEmail && isValidUsername && isValidPassword) {
       const userData = {
         email,
         username,
         password,
       };
+
       try {
         const { data } = await axios.post(`${API_URL}/auth/register`, userData);
-        
+
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
 
@@ -58,6 +65,7 @@ const SignUp = ({ onUserChangeState }) => {
         setUsername("");
         setPassword("");
         onUserChangeState(true);
+        
       } catch (error) {
         const { message } = error.response.data;
         message.includes("Email")

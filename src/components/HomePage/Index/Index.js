@@ -5,6 +5,7 @@ import Tabs from "../Tabs/Tabs";
 import Login from "../Login/Login";
 import SignUp from "../Signup/Signup";
 import About from "../About/About";
+import ChatWindow from "../../ChatPage/ChatWindow";
 
 import {
   MDBContainer,
@@ -40,9 +41,14 @@ const Index = ({ onUserChangeState }) => {
             </div>
 
             <Routes>
-              <Route exact path='/' element={<Navigate to='/login' replace />} />
               <Route
-                exact path='/login'
+                exact
+                path='/'
+                element={<Navigate to='/login' replace />}
+              />
+              <Route
+                exact
+                path='/login'
                 element={<Login onUserChangeState={onUserChangeState} />}
               />
               <Route
@@ -51,6 +57,7 @@ const Index = ({ onUserChangeState }) => {
                 element={<SignUp onUserChangeState={onUserChangeState} />}
               />
               <Route exact path='/about' element={<About />} />
+              <Route path='/chat' element={<ChatWindow />} />
             </Routes>
           </MDBCol>
         </MDBRow>
