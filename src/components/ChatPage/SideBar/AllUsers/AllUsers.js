@@ -40,7 +40,7 @@ const RegisteredUsers = ({ currentUser, user, isOnline, rooms, onNewRoom }) => {
   };
 
   return (
-    <li className='card p-2 mb-1'>
+    <li className='card p-2 mb-1'  style={{backgroundColor:"#fbfbfbed"}}>
       <a href='#!' className='d-flex justify-content-between '>
         <div className='d-flex flex-row'>
           <img

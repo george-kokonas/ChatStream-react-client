@@ -40,9 +40,9 @@ const Index = ({ onUserChangeState }) => {
             </div>
 
             <Routes>
-              <Route path='/' element={<Navigate to='/login' replace />} />
+              <Route exact path='/' element={<Navigate to='/login' replace />} />
               <Route
-                path='/login'
+                exact path='/login'
                 element={<Login onUserChangeState={onUserChangeState} />}
               />
               <Route
