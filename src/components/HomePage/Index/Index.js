@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+
 import Tabs from "../Tabs/Tabs";
 import Login from "../Login/Login";
 import SignUp from "../Signup/Signup";
 import About from "../About/About";
+
 import {
   MDBContainer,
-  // MDBCard,
   MDBCol,
   MDBRow,
   MDBBtn,
@@ -25,9 +26,7 @@ const Index = ({ onUserChangeState }) => {
     <div className='index-container'>
       <MDBContainer fluid>
         <MDBRow className='top-container'>
-
-          {/* TABS NAVIGATION */}
-
+          {/* NAVIGATION TABS */}
           <MDBCol className='form-container'>
             <div className='d-flex flex-row align-items-center justify-content-center'>
               <Tabs onSelection={handleSelection} />
@@ -56,16 +55,13 @@ const Index = ({ onUserChangeState }) => {
           </MDBCol>
         </MDBRow>
 
+        {/* FOOTER */}
         <MDBRow className='footer'>
-          {/* FOOTER */}
-
           <div className='d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 footer'>
-            <div className='footer-text pb-3'>
-              ChatStream © 2023.
-            </div>
+            <div className='footer-text pb-3'>ChatStream © 2023.</div>
 
             {/*RIGHT SIDE ICONS */}
-            <div className="pb-3">
+            <div className='pb-3'>
               <MDBBtn
                 tag='a'
                 color='none'

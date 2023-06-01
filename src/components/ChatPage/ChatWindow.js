@@ -6,8 +6,9 @@ import SideBar from "./SideBar/SideBar";
 import Messages from "./Messages/Messages";
 import Inputs from "./Inputs/Inputs";
 import ProfileWindow from "./ProfileWindow/ProfileWindow";
+
 import getAuthHeaders from "../helpers/authHeaders";
-import API_URL from "../helpers/config"
+import API_URL from "../helpers/config";
 import { initiateSocket, getSocket } from "./socket/Socket";
 
 import { MDBContainer, MDBRow, MDBCol, MDBTypography } from "mdb-react-ui-kit";
@@ -26,13 +27,13 @@ const ChatWindow = ({ onUserChangeState }) => {
     username: "",
   });
 
-  const token = localStorage.getItem("token");
   const socket = useRef();
 
   //GET CURRENT USER
   useEffect(() => {
     const getUserData = async () => {
       const user = JSON.parse(localStorage.getItem("user"));
+      const token = localStorage.getItem("token");
 
       if (token) {
         try {
@@ -51,14 +52,13 @@ const ChatWindow = ({ onUserChangeState }) => {
     };
 
     getUserData();
-  }, [token]);
+  }, []);
 
   //GET REGISTERED USERS LIST
   useEffect(() => {
     const getAllUsers = async () => {
       const { data } = await axios.get(
-        `${API_URL}/user/getRegisteredUsers`
-       ,
+        `${API_URL}/user/getRegisteredUsers`,
         getAuthHeaders()
       );
       setAllUsers(data);

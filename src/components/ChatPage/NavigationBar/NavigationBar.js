@@ -21,7 +21,6 @@ const NavigationBar = ({
   onSetProfileWindow,
   currentUser,
 }) => {
-
   const navigate = useNavigate();
 
   const logoutHandler = () => {
@@ -38,14 +37,13 @@ const NavigationBar = ({
         <Container>
           <Navbar.Brand id='navbar-logo'>ChatStream</Navbar.Brand>
           <Nav className='d-flex flex-row mb-0'>
-            <Navbar.Brand id='navbar-username'>{`Hello ${currentUser?.username}!`}</Navbar.Brand>
+            <Navbar.Brand id='navbar-username'>{`Hello, ${currentUser?.username}!`}</Navbar.Brand>
 
             <MDBNavbarItem>
               <MDBDropdown>
                 <MDBDropdownToggle
                   tag='a'
                   className='nav-link d-flex align-items-center'
-                  href='#'
                   style={{ color: "white" }}
                 >
                   <img
@@ -59,13 +57,13 @@ const NavigationBar = ({
                 </MDBDropdownToggle>
                 <MDBDropdownMenu>
                   <MDBDropdownItem>
-                    <MDBDropdownLink onClick={logoutHandler} href='#'>
-                      Logout
+                    <MDBDropdownLink onClick={() => onSetProfileWindow()}>
+                      Set Profile
                     </MDBDropdownLink>
                   </MDBDropdownItem>
                   <MDBDropdownItem>
-                    <MDBDropdownLink onClick={() => onSetProfileWindow()}>
-                      Set Profile
+                    <MDBDropdownLink onClick={logoutHandler}>
+                      Logout
                     </MDBDropdownLink>
                   </MDBDropdownItem>
                 </MDBDropdownMenu>

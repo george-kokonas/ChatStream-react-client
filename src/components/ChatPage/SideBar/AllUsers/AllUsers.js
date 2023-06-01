@@ -4,24 +4,19 @@ import getAuthHeaders from "../../../helpers/authHeaders";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import "./AllUsers.css";
+import userCard from "../Sidebar.module.css";
 import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
 
-const RegisteredUsers = ({
-  currentUser,
-  user,
-  isOnline,
-  rooms,
-  onNewRoom,
-}) => {
-
-  //CREATE NEW ROOM WITH SELECTED USER FROM REGISTERED USERS LIST
+const RegisteredUsers = ({ currentUser, user, isOnline, rooms, onNewRoom }) => {
+  //CREATE NEW ROOM WITH SELECTED USER FROM USERS LIST
   const newRoomHandler = async () => {
     //only allow chat with users that haven't started converstation yet
     for (let i = 0; i < rooms.length; i++) {
       if (rooms[i].members.includes(user._id)) return;
     }
 
-    //prevent the user from starting a conversation with himself
+    //prevent user from starting a conversation with himself
     if (user._id === currentUser._id) {
       return;
     }
@@ -34,18 +29,19 @@ const RegisteredUsers = ({
     try {
       const { data } = await axios.post(
         `${API_URL}/chat/createChatRoom/`,
-        room, getAuthHeaders()
-        );
-        onNewRoom(data);
-      } catch (error) {
-        console.log(error);
-        alert("Unable to start new conversation...");
-      }
-    };
+        room,
+        getAuthHeaders()
+      );
+      onNewRoom(data);
+    } catch (error) {
+      console.log(error);
+      alert("Unable to start new conversation...");
+    }
+  };
 
-    return (
-      <li className='p-2 mb-1' style={{ backgroundColor: "#eee" }}>
-      <a href='#!' className='d-flex justify-content-between'>
+  return (
+    <li className='card p-2 mb-1'>
+      <a href='#!' className='d-flex justify-content-between '>
         <div className='d-flex flex-row'>
           <img
             src={user.profileImage || defaultUserIcon}
@@ -55,7 +51,7 @@ const RegisteredUsers = ({
             height='50'
           />
           <div onClick={newRoomHandler} className='pt-1'>
-            <p className='fw-bold mb-0'>{user.username}</p>
+            <p className={userCard.card}>{user.username}</p>
             <p className='small text-muted'>{user.profileInfo}</p>
           </div>
         </div>
@@ -66,7 +62,6 @@ const RegisteredUsers = ({
               style={isOnline ? { color: "green" } : { color: "#AA0000" }}
             />{" "}
           </p>
-          {/* <span className="badge bg-danger float-end">1</span> */}
         </div>
       </a>
     </li>

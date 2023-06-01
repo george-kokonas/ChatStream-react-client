@@ -6,6 +6,8 @@ import getAuthHeaders from "../../helpers/authHeaders";
 import API_URL from "../../helpers/config";
 import { initiateSocket, getSocket } from "../socket/Socket";
 
+import "./Inputs.css"
+
 const Inputs = ({ currentUser, currentRoom, onNewMessage }) => {
   const [newMessage, setNewMessage] = useState("");
   const [receiverId, setReceiverId] = useState("");
@@ -76,7 +78,7 @@ const Inputs = ({ currentUser, currentRoom, onNewMessage }) => {
           onChange={(event) => inputChangeHandler(event)}
           type='text'
           value={newMessage}
-          className='form-control form-control-lg'
+          className='form-control form-control-lg msg-input'
           placeholder='Type message'
         />
         <button

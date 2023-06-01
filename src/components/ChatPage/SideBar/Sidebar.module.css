@@ -8,10 +8,18 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .cards {
-  min-height: 76vh;
-  max-height: 76vh;
+  min-height: 77.8vh;
+  max-height: 77.8vh;
+  border-radius: 23px;
   overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  background-color: rgb(251, 173, 113);
+  background-image: url("../../../assets/index-bg.jpg");
 } 
+
+.card{
+  margin-bottom: 0;
+  color: rgb(17, 22, 20);
+  font-size: 20px;
+  font-weight: bolder;
+}

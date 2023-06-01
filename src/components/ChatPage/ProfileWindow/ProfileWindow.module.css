@@ -1,44 +1,36 @@
 .profileWindowContainer {
-  /* background-color: rgb(109, 77, 139); */
-  border: 2px solid  #E0F4F1;
-  border-radius: 10px;
-  height: inherit;
+  height: auto;
 }
 
-.imagePreview{
-  margin-top: 5vh;
+.imagePreview {
+  margin-top: 12vh;
 }
 
-.imagePreview :hover{
-    cursor: pointer;   
+.imagePreview :hover {
+  cursor: pointer;
 }
 
-.uploadBtn{
-    background-color: rgb(254, 140, 46);
-}
-
-.uploadBtn:hover{
-  cursor: pointer;  
+.uploadBtn {
   background-color: rgb(254, 140, 46);
 }
-.closeBtnContainer{
+
+.uploadBtn:hover {
+  cursor: pointer;
+  background-color: rgb(237, 115, 16);
+}
+.closeBtnContainer {
   position: absolute;
   top: 20vh;
   right: 5vw;
   transform: translate(-100%, 0%);
 }
 
-.userInfoContainer{
+.userInfoContainer {
   margin-top: 7vh;
 }
 
-.userInfoInput{
+.userInfoInput {
   text-align: center;
-  width : 40vw;
+  width: 40vw;
   height: 7vh;
-};
-
-.userInfoInput:focus{
-  border-color: #28a745;
-  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-};
+}

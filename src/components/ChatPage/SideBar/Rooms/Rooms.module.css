@@ -1,7 +1,9 @@
 .currentRoom{
-  background-color: #c9e1f4;
+  background-color: #abceeb;
 }
 
 .room{
   background-color: #fbfbfb;
+  opacity: 0.92;
 }
+

@@ -1,35 +1,31 @@
 .container {
+  display: flex;
+  flex-direction: column;
   height: 95vh;
   margin: 20px;
-  background-color: #2F526B;
   border-radius: 30px;
+  background-color: #525282;
 }
 
 .sidebar {
-  height: 83vh;
-  /* background-color: antiquewhite; */
+  height: 84vh;
+  margin-top: 2vh;
 }
 
 .chatWrapper {
-  height: 76vh;
-  margin-top: 8vh;
-  /* background-color: aqua; */
-}
-.conversation {
-  height: 68vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  /* background-color: blue; */
+  height: 84vh;
+  margin-top: 2vh;
+  margin-right: 1vh;
+  border-radius: 23px;
 }
 
-.inputs {
-  position: sticky;
-  bottom: 58px;
-  /* width: 100%; */
+.conversation {
+  height: 74vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .typingIndicator {
-  /* background-color: aliceblue; */
   height: 25px;
   color:  #fbfbfb;
   font-style: italic;

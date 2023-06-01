@@ -150,7 +150,7 @@ const ProfileWindow = ({ currentUser, onSetProfileWindow }) => {
               type='text'
               className={`${styles.userInfoInput} form-control`}
               aria-describedby='user-info-input'
-              placeholder='Enter quote or description up to 50 characters... '
+              placeholder='Enter something you want to share with the world (quote,mood)... '
               value={userInfo}
               onChange={(event) => setUserInfo(event.target.value)}
             />

@@ -1,6 +1,8 @@
 import { useState , useEffect, useRef } from "react";
 import Message from "./Message/Message";
 
+import "./Messages.css"
+
 const Messages = ({ currentUser,allUsers,currentRoom, messages }) => {
   const [friend, setFriend] = useState(null);
   const scrollToEnd = useRef();
@@ -21,7 +23,7 @@ const Messages = ({ currentUser,allUsers,currentRoom, messages }) => {
   return (
     <div>
       {!messages.length ? (
-        <p style={{ color: "white" }}>Nothing to show... Initiate a chat!</p>
+        <p className="noChatText">Nothing to show... Initiate a chat with {friend?.username}!</p>
       ) : (
         messages.map((msg, index) => (
           <div key={index} ref={scrollToEnd}>

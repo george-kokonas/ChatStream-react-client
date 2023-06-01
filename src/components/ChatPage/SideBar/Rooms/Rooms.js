@@ -5,6 +5,7 @@ import API_URL from "../../../helpers/config";
 import getAuthHeaders from "../../../helpers/authHeaders";
 
 import styles from "./Rooms.module.css";
+import userCard from "../Sidebar.module.css"
 import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
 
 const Rooms = ({
@@ -118,7 +119,7 @@ const Rooms = ({
               height='50'
             />
             <div className='pt-1'>
-              <p className='fw-bold mb-0'>{friend?.username}</p>
+              <p className={`${styles.card} ${userCard.card}`}>{friend?.username}</p>
               <p className='small text-muted'>
                 {lastMessage.message
                   ? lastMessage.message

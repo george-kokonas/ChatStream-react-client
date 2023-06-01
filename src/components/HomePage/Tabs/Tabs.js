@@ -2,16 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { MDBTabs, MDBTabsItem, MDBTabsLink } from "mdb-react-ui-kit";
-import "./Tabs.css"
+import "./Tabs.css";
 
 const Tabs = ({ onSelection }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("login");
 
   const handleUserClick = (value) => {
-    if (value === activeTab) {
-      return;
-    }
+    if (value === activeTab) return;
 
     let dividerText;
 
@@ -31,7 +29,7 @@ const Tabs = ({ onSelection }) => {
     <>
       {/* SIGN UP TAB */}
       <MDBTabs pills className='tabs mb-3'>
-        <MDBTabsItem >
+        <MDBTabsItem>
           <MDBTabsLink
             onClick={() => handleUserClick("signup")}
             active={activeTab === "signup"}
