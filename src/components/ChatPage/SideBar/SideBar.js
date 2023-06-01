@@ -3,7 +3,7 @@ import axios from "axios";
 
 import AllUsers from "./AllUsers/AllUsers";
 import Rooms from "./Rooms/Rooms";
-import API_URL from "../../helpers/config"
+import API_URL from "../../helpers/config";
 import getAuthHeaders from "../../helpers/authHeaders";
 
 import Tab from "react-bootstrap/Tab";
@@ -24,20 +24,20 @@ const SideBar = ({
   const [rooms, setRooms] = useState([]);
   const [tab, setTab] = useState("conversations");
 
-  
   // SET LAST CONVERSATION AS CURRENT TO DISPLAY IT ON LOAD
   useEffect(() => {
     if (!currentRoom && rooms.length > 0) {
       onSelectRoom(rooms[rooms.length - 1]);
     }
   }, [currentRoom, rooms, onSelectRoom]);
-  
+
   //TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES TO OPEN A NEW ROOM
   useEffect(() => {
     const getRooms = async () => {
       try {
         const { data } = await axios.get(
-          `${API_URL}/chat/getChatRoom/${currentUser._id}`,getAuthHeaders()
+          `${API_URL}/chat/getChatRoom/${currentUser._id}`,
+          getAuthHeaders()
         );
         setRooms(data);
       } catch (error) {
@@ -49,15 +49,12 @@ const SideBar = ({
   }, [currentUser._id, instantMessage]);
 
   return (
-    <Tabs
-      activeKey={tab}
-      onSelect={(selectedTab) => setTab(selectedTab)}
-    >
+    <Tabs activeKey={tab} onSelect={(selectedTab) => setTab(selectedTab)}>
       {/* CONVERSATIONS TAB */}
       <Tab eventKey='conversations' title='Conversations' className='mt-2 mb-1'>
         <MDBCard className={styles.cards}>
           <MDBTypography listUnStyled className='mb-0'>
-            {rooms.length ? (
+            {rooms.length &&
               rooms.map((room) => (
                 <div onClick={() => onSelectRoom(room)} key={room._id}>
                   <Rooms
@@ -70,10 +67,7 @@ const SideBar = ({
                     instantMessage={instantMessage}
                   />
                 </div>
-              ))
-            ) : (
-              <p>no conversations yet...</p>
-            )}
+              ))}
           </MDBTypography>
         </MDBCard>
       </Tab>
@@ -83,16 +77,17 @@ const SideBar = ({
         <MDBCard className={styles.cards}>
           <MDBTypography listUnStyled className='mb-0'>
             {allUsers?.map((user) => (
-              <AllUsers
-                currentUser={currentUser}
-                user={user}
-                rooms={rooms}
-                onNewRoom={(room) => setRooms([...rooms, room])}
-                isOnline={onlineUsers.some(
-                  (onlineUser) => onlineUser.userId === user._id
-                )}
-                key={user._id}
-              />
+              <div onClick={() => setTab("conversations")} key={user._id}>
+                <AllUsers
+                  currentUser={currentUser}
+                  user={user}
+                  rooms={rooms}
+                  onNewRoom={(room) => setRooms([...rooms, room])}
+                  isOnline={onlineUsers.some(
+                    (onlineUser) => onlineUser.userId === user._id
+                  )}
+                />
+              </div>
             ))}
           </MDBTypography>
         </MDBCard>

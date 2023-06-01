@@ -17,19 +17,19 @@ import styles from "./ChatWindow.module.css";
 const ChatWindow = ({ onUserChangeState }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [allUsers, setAllUsers] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [instantMessage, setInstantMessage] = useState(null);
-  const [onlineUsers, setOnlineUsers] = useState([]);
   const [profileWindow, setProfileWindow] = useState(false);
   const [isTyping, setIsTyping] = useState({
     typingNow: false,
     username: "",
   });
-
+  
   const socket = useRef();
-
-  //GET CURRENT USER
+  
+  //GET CURRENT USER DATA
   useEffect(() => {
     const getUserData = async () => {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -64,7 +64,7 @@ const ChatWindow = ({ onUserChangeState }) => {
       setAllUsers(data);
     };
     getAllUsers();
-  }, []);
+  }, [onlineUsers]);
 
   //TRIGGERED WHEN COMPONENT IS MOUNTED
   useEffect(() => {
@@ -226,7 +226,10 @@ const ChatWindow = ({ onUserChangeState }) => {
                         </MDBRow>
                       </>
                     ) : (
-                      <p style={{ color: "white" }}>select a room</p>
+                      <p className={styles.noConversationsMessage}>
+                        Welcome to ChatStream {currentUser.username}! <br />
+                        Select a user from list and start chatting!
+                      </p>
                     )}
                   </>
                 ) : (

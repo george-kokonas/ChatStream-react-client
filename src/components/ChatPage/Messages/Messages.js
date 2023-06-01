@@ -1,19 +1,20 @@
-import { useState , useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Message from "./Message/Message";
 
-import "./Messages.css"
+import "./Messages.css";
 
-const Messages = ({ currentUser,allUsers,currentRoom, messages }) => {
+const Messages = ({ currentUser, allUsers, currentRoom, messages }) => {
   const [friend, setFriend] = useState(null);
   const scrollToEnd = useRef();
 
-  useEffect(()=>{
+  useEffect(() => {
     const membersIds = currentRoom.members;
-    const friendId = membersIds.find(memberId => memberId !== currentUser._id);
-    const friend = allUsers.find(user => user._id === friendId )
-    setFriend(friend)
-  },[currentRoom.members , currentUser._id, allUsers])
-
+    const friendId = membersIds.find(
+      (memberId) => memberId !== currentUser._id
+    );
+    const friend = allUsers.find((user) => user._id === friendId);
+    setFriend(friend);
+  }, [currentRoom.members, currentUser._id, allUsers]);
 
   //SCROLL TO THE END OF PAGE WHEN A NEW MESSAGE ARRIVES
   useEffect(() => {
@@ -23,7 +24,10 @@ const Messages = ({ currentUser,allUsers,currentRoom, messages }) => {
   return (
     <div>
       {!messages.length ? (
-        <p className="noChatText">Nothing to show... Initiate a chat with {friend?.username}!</p>
+        <p className='no-messages-message'>
+          Nothing to show... <br /> Initiate a chat <br /> with your new friend,{" "}
+          {friend?.username}!
+        </p>
       ) : (
         messages.map((msg, index) => (
           <div key={index} ref={scrollToEnd}>
