@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMessage } from "@fortawesome/free-solid-svg-icons";
 import defaultUserIcon from "../../../assets/defaultUserIcon.png";
 import "./navigationBar.css";
 
@@ -20,6 +23,8 @@ const NavigationBar = ({
   onDisconnectSocket,
   onSetProfileWindow,
   currentUser,
+  navUnreadMessages,
+  onExitRoom,
 }) => {
   const navigate = useNavigate();
 
@@ -36,6 +41,15 @@ const NavigationBar = ({
       <Navbar className='navbar'>
         <Container>
           <Navbar.Brand id='navbar-logo'>ChatStream</Navbar.Brand>
+
+          {navUnreadMessages && (
+            <FontAwesomeIcon
+              className='unread-msg-icon'
+              icon={faMessage}
+              size='xl'
+              bounce
+            />
+          )}
           <Nav className='d-flex flex-row mb-0'>
             <Navbar.Brand id='navbar-username'>{`Hello, ${currentUser?.username}!`}</Navbar.Brand>
 
@@ -57,7 +71,12 @@ const NavigationBar = ({
                 </MDBDropdownToggle>
                 <MDBDropdownMenu>
                   <MDBDropdownItem>
-                    <MDBDropdownLink onClick={() => onSetProfileWindow()}>
+                    <MDBDropdownLink
+                      onClick={() => {
+                        onSetProfileWindow();
+                        onExitRoom();
+                      }}
+                    >
                       Set Profile
                     </MDBDropdownLink>
                   </MDBDropdownItem>

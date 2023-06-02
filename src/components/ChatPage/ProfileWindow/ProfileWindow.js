@@ -5,10 +5,15 @@ import API_URL from "../../helpers/config";
 import getAuthHeaders from "../../helpers/authHeaders";
 
 import styles from "./ProfileWindow.module.css";
-import addProfilePic from "../../../assets/addProfileImage.jpg";
+import addProfilePic from "../../../assets/addProfileImage.png";
 import "../../Loader/Loader.css";
 
-const ProfileWindow = ({ currentUser, onSetProfileWindow, onSetLoading }) => {
+const ProfileWindow = ({
+  currentUser,
+  onSetProfileWindow,
+  onSetLoading,
+  onExitRoom,
+}) => {
   const [image, setImage] = useState("");
   const [userInfo, setUserInfo] = useState("");
   const imageInputRef = useRef(null);
@@ -51,13 +56,13 @@ const ProfileWindow = ({ currentUser, onSetProfileWindow, onSetLoading }) => {
       );
       alert(
         "Profile Updated Successfully! Refresh the page to see the changes..."
-        );
-      } catch (error) {
-        console.error(error);
-        alert("Unable to upload Image...");
-      }
-      setImage("");
-      onSetLoading(false);
+      );
+    } catch (error) {
+      console.error(error);
+      alert("Unable to upload Image...");
+    }
+    setImage("");
+    onSetLoading(false);
   };
 
   const submitInfoHandler = async (event) => {
@@ -76,13 +81,13 @@ const ProfileWindow = ({ currentUser, onSetProfileWindow, onSetLoading }) => {
       );
       alert(
         "Profile Updated Successfully! Refresh the page to see the changes..."
-        );
-      } catch (error) {
-        alert("Unable to Update User Info...");
-        console.log(error);
-      }
-      setUserInfo("");
-      onSetLoading(false);
+      );
+    } catch (error) {
+      alert("Unable to Update User Info...");
+      console.log(error);
+    }
+    setUserInfo("");
+    onSetLoading(false);
   };
 
   return (
@@ -97,7 +102,10 @@ const ProfileWindow = ({ currentUser, onSetProfileWindow, onSetLoading }) => {
               type='button'
               className='btn-close btn-close-white '
               aria-label='Close'
-              onClick={onSetProfileWindow}
+              onClick={() => {
+                onSetProfileWindow();
+                onExitRoom();
+              }}
             />
           </div>
 

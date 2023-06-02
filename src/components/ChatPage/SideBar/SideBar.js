@@ -20,16 +20,10 @@ const SideBar = ({
   messages,
   instantMessage,
   onSelectRoom,
+  navUnreadMessages,
 }) => {
   const [rooms, setRooms] = useState([]);
   const [tab, setTab] = useState("conversations");
-
-  // SET LAST CONVERSATION AS CURRENT TO DISPLAY IT ON LOAD
-  useEffect(() => {
-    if (!currentRoom && rooms.length > 0) {
-      onSelectRoom(rooms[rooms.length - 1]);
-    }
-  }, [currentRoom, rooms, onSelectRoom]);
 
   //TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES TO OPEN A NEW ROOM
   useEffect(() => {
@@ -65,6 +59,7 @@ const SideBar = ({
                       (message) => message.roomId === currentRoom?._id
                     )}
                     instantMessage={instantMessage}
+                    navUnreadMessages={navUnreadMessages}
                   />
                 </div>
               ))}

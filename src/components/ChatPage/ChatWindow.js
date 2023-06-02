@@ -19,10 +19,12 @@ const ChatWindow = ({ onUserChangeState }) => {
   const [allUsers, setAllUsers] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [currentRoom, setCurrentRoom] = useState(null);
+  const [lastVistitedRoom, setLastVisitedRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [instantMessage, setInstantMessage] = useState(null);
   const [profileWindow, setProfileWindow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [navUnreadMessages, setNavUnreadMessages] = useState(false);
   const [isTyping, setIsTyping] = useState({
     typingNow: false,
     username: "",
@@ -105,6 +107,7 @@ const ChatWindow = ({ onUserChangeState }) => {
       instantMessage &&
       currentRoom?.members.includes(instantMessage.senderId)
     ) {
+      setLastVisitedRoom(currentRoom);
       setMessages((prev) => [...prev, instantMessage]);
     }
   }, [instantMessage, currentRoom]);
@@ -179,6 +182,8 @@ const ChatWindow = ({ onUserChangeState }) => {
             onDisconnectSocket={disconnectSocketHandler}
             onSetProfileWindow={() => setProfileWindow(true)}
             currentUser={currentUser}
+            navUnreadMessages={navUnreadMessages}
+            onExitRoom={() => setCurrentRoom(null)}
           />
           <MDBContainer fluid className='py-0'>
             <MDBRow>
@@ -191,7 +196,11 @@ const ChatWindow = ({ onUserChangeState }) => {
                   currentRoom={currentRoom}
                   messages={messages}
                   instantMessage={instantMessage}
-                  onSelectRoom={(room) => setCurrentRoom(room)}
+                  onSelectRoom={(room) => {
+                    setCurrentRoom(room);
+                    setLastVisitedRoom(room);
+                  }}
+                  navUnreadMessages={(state) => setNavUnreadMessages(state)}
                 />
               </MDBCol>
 
@@ -244,6 +253,7 @@ const ChatWindow = ({ onUserChangeState }) => {
                       setCurrentUser(updatedProfile)
                     }
                     onSetLoading={(state) => setIsLoading(state)}
+                    onExitRoom={() => setCurrentRoom(lastVistitedRoom)}
                   />
                 )}
               </MDBCol>

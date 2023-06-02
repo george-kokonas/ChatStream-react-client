@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
 import API_URL from "../../../helpers/config";
 import getAuthHeaders from "../../../helpers/authHeaders";
 
 import styles from "./Rooms.module.css";
-import userCard from "../Sidebar.module.css"
+import userCard from "../Sidebar.module.css";
 import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
 
 const Rooms = ({
@@ -14,10 +14,13 @@ const Rooms = ({
   currentRoom,
   userMessages,
   instantMessage,
+  navUnreadMessages,
 }) => {
   const [friend, setFriend] = useState(null);
   const [lastMessage, setLastMessage] = useState([]);
   const [unreadCounter, setUnreadCounter] = useState(0);
+
+  const onNavUnreadMessagesRef = useRef(navUnreadMessages);
 
   const listItemClassname =
     currentRoom?._id === room?._id ? `${styles.currentRoom}` : `${styles.room}`;
@@ -35,6 +38,22 @@ const Rooms = ({
       createdAt,
     });
   };
+
+  useEffect(() => {
+    onNavUnreadMessagesRef.current = navUnreadMessages;
+  }, [navUnreadMessages]);
+
+  useEffect(() => {
+    if (unreadCounter) {
+      navUnreadMessages(true);
+    }
+  }, [navUnreadMessages, unreadCounter]);
+
+  useEffect(() => {
+    if (!unreadCounter) {
+      onNavUnreadMessagesRef.current(false);
+    }
+  }, [unreadCounter]);
 
   //UNREAD MESSAGES INCREMENT
   useEffect(() => {
@@ -119,7 +138,9 @@ const Rooms = ({
               height='50'
             />
             <div className='pt-1'>
-              <p className={`${styles.card} ${userCard.card}`}>{friend?.username}</p>
+              <p className={`${styles.card} ${userCard.card}`}>
+                {friend?.username}
+              </p>
               <p className='small text-muted'>
                 {lastMessage.message
                   ? lastMessage.message
