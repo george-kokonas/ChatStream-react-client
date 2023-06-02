@@ -1,9 +1,6 @@
-.main{
+.main {
   position: absolute;
-  /* background-color: #CB5F27;
-  background-color: #e5e8f9; */
-    background-color: #252525;
-    /* background-color: #1c153c; */
+  background-color: #252525;
   width: 100vw;
   height: 100vh;
 }

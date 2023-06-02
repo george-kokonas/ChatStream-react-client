@@ -1,9 +1,9 @@
-.index-container {
+.homepage-container {
   display: flex;
   height: 95vh;
   margin: 20px;
   border-radius: 30px;
-  background-image: url("../../../assets/index-bg.jpg");
+  background-image: url("../../assets/index-bg.jpg");
   background-color: #e8e8e7;
 }
 

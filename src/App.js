@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
 
-import Index from "./components/HomePage/Index/Index";
+import HomePage from "./components/HomePage/HomePage";
 import ChatWindow from "./components/ChatPage/ChatWindow";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -27,13 +28,9 @@ const App = () => {
     <>
       <div className='main'>
         {!isLoggedIn ? (
-          <>
-            <Index onUserChangeState={userChangeStateHandler} />
-          </>
+          <HomePage onUserChangeState={userChangeStateHandler} />
         ) : (
-          <div>
-            <ChatWindow onUserChangeState={userChangeStateHandler} />
-          </div>
+          <ChatWindow onUserChangeState={userChangeStateHandler} />
         )}
       </div>
     </>

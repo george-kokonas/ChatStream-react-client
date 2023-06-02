@@ -6,8 +6,9 @@ import getAuthHeaders from "../../helpers/authHeaders";
 
 import styles from "./ProfileWindow.module.css";
 import addProfilePic from "../../../assets/addProfileImage.jpg";
+import "../../Loader/Loader.css";
 
-const ProfileWindow = ({ currentUser, onSetProfileWindow }) => {
+const ProfileWindow = ({ currentUser, onSetProfileWindow, onSetLoading }) => {
   const [image, setImage] = useState("");
   const [userInfo, setUserInfo] = useState("");
   const imageInputRef = useRef(null);
@@ -37,6 +38,7 @@ const ProfileWindow = ({ currentUser, onSetProfileWindow }) => {
     if (!image) return;
 
     try {
+      onSetLoading(true);
       await axios.post(
         `${API_URL}/profile/setImage/`,
         { userId: currentUser._id, profileImage: image },
@@ -49,12 +51,13 @@ const ProfileWindow = ({ currentUser, onSetProfileWindow }) => {
       );
       alert(
         "Profile Updated Successfully! Refresh the page to see the changes..."
-      );
-    } catch (error) {
-      console.error(error);
-      alert("Unable to upload Image...");
-    }
-    setImage("");
+        );
+      } catch (error) {
+        console.error(error);
+        alert("Unable to upload Image...");
+      }
+      setImage("");
+      onSetLoading(false);
   };
 
   const submitInfoHandler = async (event) => {
@@ -62,6 +65,7 @@ const ProfileWindow = ({ currentUser, onSetProfileWindow }) => {
     if (!userInfo) return;
 
     try {
+      onSetLoading(true);
       await axios.post(
         `${API_URL}/profile/setInfo/`,
         {
@@ -72,12 +76,13 @@ const ProfileWindow = ({ currentUser, onSetProfileWindow }) => {
       );
       alert(
         "Profile Updated Successfully! Refresh the page to see the changes..."
-      );
-    } catch (error) {
-      alert("Unable to Update User Info...");
-      console.log(error);
-    }
-    setUserInfo("");
+        );
+      } catch (error) {
+        alert("Unable to Update User Info...");
+        console.log(error);
+      }
+      setUserInfo("");
+      onSetLoading(false);
   };
 
   return (
@@ -114,7 +119,7 @@ const ProfileWindow = ({ currentUser, onSetProfileWindow }) => {
           </div>
 
           {/* upload button */}
-          <div className= "d-flex justify-content-center">
+          <div className='d-flex justify-content-center'>
             <div className={` ${styles.uploadBtn} btn btn-warning btn-rounded`}>
               <label
                 className={`${styles.uploadBtn} form-label text-white m-1 `}

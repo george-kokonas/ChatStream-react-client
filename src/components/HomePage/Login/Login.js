@@ -2,9 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import API_URL from "../../helpers/config";
 import { MDBContainer, MDBInput, MDBBtn } from "mdb-react-ui-kit";
-import "../globalStyles/formStyles.css"
+import "../globalStyles/formStyles.css";
 
-const Login = ({ onUserChangeState }) => {
+const Login = ({ onUserChangeState, onSetLoading }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(null);
@@ -39,6 +39,7 @@ const Login = ({ onUserChangeState }) => {
       };
 
       try {
+        onSetLoading(true);
         const { data } = await axios.post(`${API_URL}/auth/login`, userData);
 
         localStorage.setItem("token", data.token);
@@ -53,6 +54,7 @@ const Login = ({ onUserChangeState }) => {
 
       setEmail("");
       setPassword("");
+      onSetLoading(false);
     }
   };
 
@@ -80,12 +82,14 @@ const Login = ({ onUserChangeState }) => {
         value={password}
         onChange={(event) => setPassword(event.target.value)}
       />
-      {passwordError && (
-        <span className='error-msg'>{passwordError}</span>
-      )}
+      {passwordError && <span className='error-msg'>{passwordError}</span>}
 
       {/* SUBMIT BUTTON */}
-      <MDBBtn className='submit-btn mt-5 mb-3' type='submit' onClick={submitHandler}>
+      <MDBBtn
+        className='submit-btn mt-5 mb-3'
+        type='submit'
+        onClick={submitHandler}
+      >
         LOG IN
       </MDBBtn>
 

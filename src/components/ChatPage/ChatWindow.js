@@ -22,13 +22,14 @@ const ChatWindow = ({ onUserChangeState }) => {
   const [messages, setMessages] = useState([]);
   const [instantMessage, setInstantMessage] = useState(null);
   const [profileWindow, setProfileWindow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState({
     typingNow: false,
     username: "",
   });
-  
+
   const socket = useRef();
-  
+
   //GET CURRENT USER DATA
   useEffect(() => {
     const getUserData = async () => {
@@ -37,11 +38,13 @@ const ChatWindow = ({ onUserChangeState }) => {
 
       if (token) {
         try {
+          setIsLoading(true);
           const { data } = await axios.get(
             `${API_URL}/user/getUser/${user._id}`,
             getAuthHeaders()
           );
           setCurrentUser(data);
+          setIsLoading(false);
         } catch (error) {
           console.log(error);
           alert("Error fetching user data...");
@@ -169,6 +172,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     <>
       {currentUser && (
         <div className={styles.container}>
+          {isLoading && <div className='loader-container' />}
           <NavigationBar
             className={styles.navbar}
             onUserChangeState={onUserChangeState}
@@ -228,7 +232,7 @@ const ChatWindow = ({ onUserChangeState }) => {
                     ) : (
                       <p className={styles.noConversationsMessage}>
                         Welcome to ChatStream {currentUser.username}! <br />
-                        Select a user from list and start chatting!
+                        Select a user from the list and start chatting!
                       </p>
                     )}
                   </>
@@ -239,6 +243,7 @@ const ChatWindow = ({ onUserChangeState }) => {
                     onUpdateUserProfile={(updatedProfile) =>
                       setCurrentUser(updatedProfile)
                     }
+                    onSetLoading={(state) => setIsLoading(state)}
                   />
                 )}
               </MDBCol>

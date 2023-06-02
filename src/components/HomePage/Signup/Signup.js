@@ -5,7 +5,7 @@ import API_URL from "../../helpers/config";
 import { MDBContainer, MDBInput, MDBBtn } from "mdb-react-ui-kit";
 import "../globalStyles/formStyles.css";
 
-const SignUp = ({ onUserChangeState }) => {
+const SignUp = ({ onUserChangeState, onSetLoading }) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -55,6 +55,8 @@ const SignUp = ({ onUserChangeState }) => {
       };
 
       try {
+        onSetLoading(true);
+
         const { data } = await axios.post(`${API_URL}/auth/register`, userData);
 
         localStorage.setItem("token", data.token);
@@ -65,7 +67,6 @@ const SignUp = ({ onUserChangeState }) => {
         setUsername("");
         setPassword("");
         onUserChangeState(true);
-        
       } catch (error) {
         const { message } = error.response.data;
         message.includes("Email")
@@ -74,6 +75,8 @@ const SignUp = ({ onUserChangeState }) => {
           ? setUsernameError(message)
           : alert(message);
       }
+
+      onSetLoading(false);
     }
   };
 
