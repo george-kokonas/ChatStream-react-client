@@ -94,11 +94,11 @@ const Login = ({ onUserChangeState, onSetLoading }) => {
       </MDBBtn>
 
       {/* TODO : LINK THE SIGN UP LINK WITH THE SIGN UP COMPONENT */}
-      <div className='text-center'>
+      {/* <div className='text-center'>
         <p>
           Not registered? <a href='#!'>Sign Up</a>
         </p>
-      </div>
+      </div> */}
     </MDBContainer>
   );
 };

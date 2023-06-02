@@ -1,0 +1,17 @@
+.about-header{
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+    color: rgb(208, 21, 21);
+    font-size: 40px;
+}
+
+.about-text{
+    text-align: center;
+    font-weight:800;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: rgb(51, 44, 44);
+    font-size: 24px;
+}

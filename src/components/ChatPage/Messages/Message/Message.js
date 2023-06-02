@@ -47,7 +47,3 @@ const Messages = ({ message, sentByMe , currentUser, friend }) => {
 };
 
 export default Messages;
-
-/* <MDBCardHeader className='d-flex justify-content-between p-3'>
-<p className='fw-bold mb-0'>{}</p>
-</MDBCardHeader> */

@@ -88,6 +88,9 @@ const HomePage = ({ onUserChangeState }) => {
                   color='none'
                   className='mx-3'
                   style={{ color: "white" }}
+                  href='https://github.com/george-kokonas'
+                  target='_blank'
+                  rel='noopener noreferrer'
                 >
                   <MDBIcon fab icon='github' size='2x' />
                 </MDBBtn>
@@ -97,6 +100,9 @@ const HomePage = ({ onUserChangeState }) => {
                   color='none'
                   className='mx-3'
                   style={{ color: "white" }}
+                  href='https://www.linkedin.com/in/george-k-swd/'
+                  target='_blank'
+                  rel='noopener noreferrer'
                 >
                   <MDBIcon fab icon='linkedin-in' size='2x' />
                 </MDBBtn>
@@ -106,8 +112,11 @@ const HomePage = ({ onUserChangeState }) => {
                   color='none'
                   className='mx-3'
                   style={{ color: "white" }}
+                  href={`mailto:g.kokwnas@gmail.com`}
+                  target='_blank'
+                  rel='noopener noreferrer'
                 >
-                  <MDBIcon fab icon='google' size='2x' />
+                  <MDBIcon far icon='envelope' size='2x' />
                 </MDBBtn>
               </div>
             </div>
