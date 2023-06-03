@@ -11,7 +11,7 @@ import "../../Loader/Loader.css";
 const ProfileWindow = ({
   currentUser,
   onSetProfileWindow,
-  onSetLoading,
+  onLoading,
   onExitRoom,
 }) => {
   const [image, setImage] = useState("");
@@ -43,7 +43,7 @@ const ProfileWindow = ({
     if (!image) return;
 
     try {
-      onSetLoading(true);
+      onLoading(true);
       await axios.post(
         `${API_URL}/profile/setImage/`,
         { userId: currentUser._id, profileImage: image },
@@ -62,7 +62,7 @@ const ProfileWindow = ({
       alert("Unable to upload Image...");
     }
     setImage("");
-    onSetLoading(false);
+    onLoading(false);
   };
 
   const submitInfoHandler = async (event) => {
@@ -70,7 +70,7 @@ const ProfileWindow = ({
     if (!userInfo) return;
 
     try {
-      onSetLoading(true);
+      onLoading(true);
       await axios.post(
         `${API_URL}/profile/setInfo/`,
         {
@@ -87,7 +87,7 @@ const ProfileWindow = ({
       console.log(error);
     }
     setUserInfo("");
-    onSetLoading(false);
+    onLoading(false);
   };
 
   return (

@@ -6,15 +6,16 @@ import SideBar from "./SideBar/SideBar";
 import Messages from "./Messages/Messages";
 import Inputs from "./Inputs/Inputs";
 import ProfileWindow from "./ProfileWindow/ProfileWindow";
+import TypingIndicator from "./TypingIndicator/TypingIndicator";
 
 import getAuthHeaders from "../helpers/authHeaders";
 import API_URL from "../helpers/config";
-import { initiateSocket, getSocket } from "./socket/Socket";
+import { initiateSocket, getSocket } from "../helpers/socket";
 
 import { MDBContainer, MDBRow, MDBCol, MDBTypography } from "mdb-react-ui-kit";
-import styles from "./ChatWindow.module.css";
+import styles from "./ChatPage.module.css";
 
-const ChatWindow = ({ onUserChangeState }) => {
+const ChatPage = ({ onUserChangeState }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [allUsers, setAllUsers] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -25,14 +26,57 @@ const ChatWindow = ({ onUserChangeState }) => {
   const [profileWindow, setProfileWindow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [navUnreadMessages, setNavUnreadMessages] = useState(false);
-  const [isTyping, setIsTyping] = useState({
-    typingNow: false,
-    username: "",
-  });
 
   const socket = useRef();
 
-  //GET CURRENT USER DATA
+  /* INITIATE SOCKET */
+  useEffect(() => {
+    initiateSocket();
+    socket.current = getSocket();
+
+    // clean up the socket when the component unmounts
+    return () => {
+      socket.current.disconnect();
+    };
+  }, []);
+
+  /*TRIGGERED ON USER LOGIN*/
+  useEffect(() => {
+    //add user to onlineUsers array on socket server
+    socket.current.emit("addUser", currentUser?._id);
+
+    //get online users
+    socket.current.on("getOnlineUsers", (users) => {
+      setOnlineUsers(users);
+    });
+
+    // unsubscribe from event
+    return () => {
+      socket.current.off("getOnlineUsers");
+    };
+  }, [currentUser?._id]);
+
+  /*TRIGGERED WHEN INSTANT MESSAGE ARRIVES*/
+  useEffect(() => {
+    socket.current.on("getMessage", (data) => {
+      setInstantMessage({
+        _id: data._id,
+        roomId: data.roomId,
+        senderId: data.senderId,
+        receiverId: data.receiverId,
+        text: data.text,
+        isSeen: data.isSeen,
+        createdAt: data.createdAt,
+      });
+    });
+
+    // unsubscribe from event
+    return () => {
+      socket.current.off("getMessage");
+    };
+  }, []);
+
+  /*GET CURRENT USER DATA*/
   useEffect(() => {
     const getUserData = async () => {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -59,7 +103,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     getUserData();
   }, []);
 
-  //GET REGISTERED USERS LIST
+  /*GET ALL USERS LIST*/
   useEffect(() => {
     const getAllUsers = async () => {
       const { data } = await axios.get(
@@ -71,37 +115,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     getAllUsers();
   }, [onlineUsers]);
 
-  //TRIGGERED WHEN COMPONENT IS MOUNTED
-  useEffect(() => {
-    initiateSocket();
-    socket.current = getSocket();
-
-    //executed when new instant message arrives
-    socket.current.on("getMessage", (data) => {
-      setInstantMessage({
-        _id: data._id,
-        roomId: data.roomId,
-        senderId: data.senderId,
-        receiverId: data.receiverId,
-        text: data.text,
-        isSeen: data.isSeen,
-        createdAt: data.createdAt,
-      });
-    });
-  }, []);
-
-  //TRIGGERED ON USER LOGIN
-  useEffect(() => {
-    //add user to onlineUsers array on socket server
-    socket.current.emit("addUser", currentUser?._id);
-
-    //get online users
-    socket.current.on("getOnlineUsers", (users) => {
-      setOnlineUsers(users);
-    });
-  }, [currentUser?._id]);
-
-  //TRIGGERED WHEN INSTANT MESSAGE ARRIVES OR USER SELECTS A ROOM
+  /*TRIGGERED WHEN INSTANT MESSAGE ARRIVES OR USER SELECTS A ROOM*/
   useEffect(() => {
     if (
       instantMessage &&
@@ -112,7 +126,7 @@ const ChatWindow = ({ onUserChangeState }) => {
     }
   }, [instantMessage, currentRoom]);
 
-  //GET MESSAGES FROM SELECTED ROOM
+  /*GET MESSAGES FROM SELECTED ROOM*/
   useEffect(() => {
     const getMessages = async () => {
       try {
@@ -129,48 +143,6 @@ const ChatWindow = ({ onUserChangeState }) => {
     currentRoom && getMessages();
   }, [currentRoom]);
 
-  //TRIGGERED WHEN USER IS TYPING
-  useEffect(() => {
-    const handleIsTyping = ({ currentRoomId, senderUsername }) => {
-      //check that typing indicator appears in the correct room
-      if (!currentRoom || currentRoomId !== currentRoom?._id) return;
-
-      //set timer interval
-      const typingTimeout = 1400;
-      let typingTimer;
-
-      clearTimeout(typingTimer);
-
-      //update isTyping state
-      setIsTyping((prevState) => ({
-        ...prevState,
-        typingNow: true,
-      }));
-
-      setIsTyping((prevState) => ({
-        ...prevState,
-        username: senderUsername,
-      }));
-
-      //set indicator state to false at chosen interval
-      typingTimer = setTimeout(() => {
-        setIsTyping(false);
-      }, typingTimeout);
-    };
-
-    socket.current.on("isTyping", handleIsTyping);
-
-    //close socket when current room changes or component unmounts
-    return () => {
-      socket.current.off("isTyping", handleIsTyping);
-    };
-  }, [currentRoom]);
-
-  // TRIGGERED WHEN USER LOGS OUT TO UPDATE ONLINE USERS ARRAY
-  const disconnectSocketHandler = () => {
-    socket.current.emit("logout", socket.current.id);
-  };
-
   return (
     <>
       {currentUser && (
@@ -179,10 +151,10 @@ const ChatWindow = ({ onUserChangeState }) => {
           <NavigationBar
             className={styles.navbar}
             onUserChangeState={onUserChangeState}
-            onDisconnectSocket={disconnectSocketHandler}
             onSetProfileWindow={() => setProfileWindow(true)}
             currentUser={currentUser}
             navUnreadMessages={navUnreadMessages}
+            socket={socket.current}
             onExitRoom={() => setCurrentRoom(null)}
           />
           <MDBContainer fluid className='py-0'>
@@ -220,11 +192,10 @@ const ChatWindow = ({ onUserChangeState }) => {
                             />
                           </MDBRow>
                           <MDBRow className={styles.typingIndicator}>
-                            {isTyping.typingNow ? (
-                              <p>{isTyping.username} is typing...</p>
-                            ) : (
-                              " "
-                            )}
+                            <TypingIndicator
+                              currentRoom={currentRoom}
+                              socket={socket.current}
+                            />
                           </MDBRow>
                         </MDBTypography>
 
@@ -232,6 +203,7 @@ const ChatWindow = ({ onUserChangeState }) => {
                           <Inputs
                             currentUser={currentUser}
                             currentRoom={currentRoom}
+                            socket={socket.current}
                             onNewMessage={(data) =>
                               setMessages([...messages, data])
                             }
@@ -252,7 +224,7 @@ const ChatWindow = ({ onUserChangeState }) => {
                     onUpdateUserProfile={(updatedProfile) =>
                       setCurrentUser(updatedProfile)
                     }
-                    onSetLoading={(state) => setIsLoading(state)}
+                    onLoading={(state) => setIsLoading(state)}
                     onExitRoom={() => setCurrentRoom(lastVistitedRoom)}
                   />
                 )}
@@ -265,4 +237,4 @@ const ChatWindow = ({ onUserChangeState }) => {
   );
 };
 
-export default ChatWindow;
+export default ChatPage;

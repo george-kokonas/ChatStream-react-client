@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./App.css";
 
 import HomePage from "./components/HomePage/HomePage";
-import ChatWindow from "./components/ChatPage/ChatWindow";
+import ChatPage from "./components/ChatPage/ChatPage";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,7 +30,7 @@ const App = () => {
         {!isLoggedIn ? (
           <HomePage onUserChangeState={userChangeStateHandler} />
         ) : (
-          <ChatWindow onUserChangeState={userChangeStateHandler} />
+          <ChatPage onUserChangeState={userChangeStateHandler} />
         )}
       </div>
     </>

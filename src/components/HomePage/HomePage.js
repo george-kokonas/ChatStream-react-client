@@ -5,7 +5,7 @@ import Tabs from "./Tabs/Tabs";
 import Login from "./Login/Login";
 import SignUp from "./Signup/Signup";
 import About from "./About/About";
-import ChatWindow from "../ChatPage/ChatWindow";
+import ChatPage from "../ChatPage/ChatPage";
 
 import {
   MDBContainer,
@@ -71,7 +71,7 @@ const HomePage = ({ onUserChangeState }) => {
                   }
                 />
                 <Route exact path='/about' element={<About />} />
-                <Route path='/chat' element={<ChatWindow />} />
+                <Route path='/chat' element={<ChatPage />} />
               </Routes>
             </MDBCol>
           </MDBRow>

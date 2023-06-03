@@ -1,34 +1,28 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 
 import getAuthHeaders from "../../helpers/authHeaders";
 import API_URL from "../../helpers/config";
-import { initiateSocket, getSocket } from "../socket/Socket";
 
-import "./Inputs.css"
+import "./Inputs.css";
 
-const Inputs = ({ currentUser, currentRoom, onNewMessage }) => {
+const Inputs = ({ currentUser, currentRoom, socket, onNewMessage }) => {
   const [newMessage, setNewMessage] = useState("");
   const [receiverId, setReceiverId] = useState("");
-  const socket = useRef();
 
   useEffect(() => {
-    initiateSocket();
-    socket.current = getSocket();
-
     const receiverId = currentRoom.members.find(
       (member) => member !== currentUser._id
     );
-
     setReceiverId(receiverId);
   }, [currentRoom.members, currentUser._id]);
 
   const inputChangeHandler = (event) => {
     setNewMessage(event.target.value);
 
-    //emmit user is typing signal
-    socket.current.emit("userTyping", {
+    //emmit signal that a user is typing
+    socket.emit("userTyping", {
       senderUsername: currentUser.username,
       receiverId: receiverId,
       currentRoomId: currentRoom._id,
@@ -54,7 +48,7 @@ const Inputs = ({ currentUser, currentRoom, onNewMessage }) => {
     };
 
     //executed when instant message is sent
-    socket.current.emit("sendMessage", message);
+    socket.emit("sendMessage", message);
 
     //send message to server
     try {

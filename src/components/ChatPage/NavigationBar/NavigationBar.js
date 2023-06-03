@@ -20,20 +20,20 @@ import {
 
 const NavigationBar = ({
   onUserChangeState,
-  onDisconnectSocket,
   onSetProfileWindow,
   currentUser,
   navUnreadMessages,
   onExitRoom,
+  socket,
 }) => {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    onDisconnectSocket();
-    navigate("/");
+    socket.emit("logout", socket.id);
     onUserChangeState(false);
+    navigate("/");
   };
 
   return (
