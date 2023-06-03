@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
+import getAuthHeaders from "../helpers/authHeaders";
+import API_URL from "../helpers/config";
+import { initiateSocket, getSocket } from "../helpers/socket";
+
 import NavigationBar from "./NavigationBar/NavigationBar";
 import SideBar from "./SideBar/SideBar";
 import Messages from "./Messages/Messages";
 import Inputs from "./Inputs/Inputs";
 import ProfileWindow from "./ProfileWindow/ProfileWindow";
 import TypingIndicator from "./TypingIndicator/TypingIndicator";
-
-import getAuthHeaders from "../helpers/authHeaders";
-import API_URL from "../helpers/config";
-import { initiateSocket, getSocket } from "../helpers/socket";
 
 import { MDBContainer, MDBRow, MDBCol, MDBTypography } from "mdb-react-ui-kit";
 import styles from "./ChatPage.module.css";

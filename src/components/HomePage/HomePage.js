@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import Tabs from "./Tabs/Tabs";

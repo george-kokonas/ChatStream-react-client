@@ -1,3 +1,5 @@
+import React from "react";
+
 import { MDBCard, MDBCardBody, MDBIcon } from "mdb-react-ui-kit";
 import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
 import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
