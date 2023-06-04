@@ -1,7 +1,8 @@
 import { MDBCard, MDBCardBody, MDBIcon } from "mdb-react-ui-kit";
 import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
 import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
-import "./message.css";
+
+import styles from "./Message.module.css"
 
 const Messages = ({ message, sentByMe , currentUser, friend }) => {
   let messageOutput = sentByMe ? (
@@ -13,11 +14,11 @@ const Messages = ({ message, sentByMe , currentUser, friend }) => {
         width='60'
         height="60"
       />
-      <MDBCard className='my-message-card'>
-        <MDBCardBody className='message-card'>
-          <p className='message-text'>{message.text}</p>
-          <p className='time-container text-muted'>
-            <MDBIcon className='clock-icon' far icon='clock' />
+      <MDBCard className={styles.myMessage}>
+        <MDBCardBody className={styles.message}>
+          <p className={styles.messageText}>{message.text}</p>
+          <p className={`${styles.timeContainer} text-muted`}>
+            <MDBIcon className={styles.clockIcon} far icon='clock' />
             <CustomTimeAgo date={message.createdAt} />
           </p>
         </MDBCardBody>
@@ -32,11 +33,11 @@ const Messages = ({ message, sentByMe , currentUser, friend }) => {
         width='60'
         height="60"
       />
-      <MDBCard className='friend-message-card'>
-        <MDBCardBody className='message-card'>
-          <p className='message-text'>{message.text}</p>
-          <p className='time-container text-muted'>
-            <MDBIcon className='clock-icon' far icon='clock' />
+      <MDBCard className={styles.othersMessage}>
+        <MDBCardBody className={styles.message}>
+          <p className={styles.messageText}>{message.text}</p>
+          <p className={`${styles.timeContainer} text-muted`}>
+            <MDBIcon className={styles.clockIcon} far icon='clock' />
             <CustomTimeAgo date={message.createdAt} />
           </p>
         </MDBCardBody>

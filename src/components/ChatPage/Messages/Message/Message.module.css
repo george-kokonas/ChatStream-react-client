@@ -1,24 +1,25 @@
-.message-card {
+.message {
   max-width: 30vw;
   margin: 0px;
   padding: 0px;
 }
-.my-message-card {
+
+.myMessage {
   background-color: rgb(156, 211, 232);
   margin-right: 5px;
 }
 
-.friend-message-card {
+.othersMessage {
   background-color: rgba(244, 246, 245, 0.95);
   margin-left: 5px;
 }
 
-.message-text {
+.messageText {
   padding: 6px 6px 0px 20px;
   margin: 0;
 }
 
-.time-container {
+.timeContainer {
   margin: 0px 8px 2px 5px;
   font-size: small;
   text-align: end;
@@ -29,6 +30,6 @@
   padding-right: 2px;
 }
 
-.clock-icon {
+.clockIcon {
   margin-right: 4px;
 }
