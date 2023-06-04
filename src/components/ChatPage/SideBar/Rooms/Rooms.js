@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
 import API_URL from "../../../helpers/config";

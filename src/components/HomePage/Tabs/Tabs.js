@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { MDBTabs, MDBTabsItem, MDBTabsLink } from "mdb-react-ui-kit";
