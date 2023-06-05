@@ -115,17 +115,6 @@ const ChatPage = ({ onUserChangeState }) => {
     getAllUsers();
   }, [onlineUsers]);
 
-  /*TRIGGERED WHEN INSTANT MESSAGE ARRIVES OR USER SELECTS A ROOM*/
-  useEffect(() => {
-    if (
-      instantMessage &&
-      currentRoom?.members.includes(instantMessage.senderId)
-    ) {
-      setLastVisitedRoom(currentRoom);
-      setMessages((prev) => [...prev, instantMessage]);
-    }
-  }, [instantMessage, currentRoom]);
-
   /*GET MESSAGES FROM SELECTED ROOM*/
   useEffect(() => {
     const getMessages = async () => {
@@ -142,6 +131,17 @@ const ChatPage = ({ onUserChangeState }) => {
     };
     currentRoom && getMessages();
   }, [currentRoom]);
+
+  /*TRIGGERED WHEN INSTANT MESSAGE ARRIVES OR USER SELECTS A ROOM*/
+  useEffect(() => {
+    if (
+      instantMessage &&
+      currentRoom?.members.includes(instantMessage.senderId)
+    ) {
+      setLastVisitedRoom(currentRoom);
+      setMessages((prev) => [...prev, instantMessage]);
+    }
+  }, [instantMessage, currentRoom]);
 
   return (
     <>
@@ -165,7 +165,6 @@ const ChatPage = ({ onUserChangeState }) => {
                   currentUser={currentUser}
                   allUsers={allUsers}
                   onlineUsers={onlineUsers}
-                  currentRoom={currentRoom}
                   messages={messages}
                   instantMessage={instantMessage}
                   onSelectRoom={(room) => {
