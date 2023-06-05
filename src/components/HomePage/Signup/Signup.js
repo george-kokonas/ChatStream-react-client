@@ -48,7 +48,7 @@ const SignUp = ({ onUserChangeState, onSetLoading }) => {
       );
 
     if (isValidEmail && isValidUsername && isValidPassword) {
-      const userData = {
+      const user = {
         email,
         username,
         password,
@@ -57,10 +57,11 @@ const SignUp = ({ onUserChangeState, onSetLoading }) => {
       try {
         onSetLoading(true);
 
-        const { data } = await axios.post(`${API_URL}/auth/register`, userData);
+        const { data } = await axios.post(`${API_URL}/auth/register`, user);
 
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("user", JSON.stringify(data.userData));
+        console.log(data.userData);
 
         alert("WELCOME ONBOARD!");
         setEmail("");

@@ -43,7 +43,7 @@ const Login = ({ onUserChangeState, onSetLoading }) => {
         const { data } = await axios.post(`${API_URL}/auth/login`, userData);
 
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("user", JSON.stringify(data.userData));
 
         alert("Logged in Successfully");
         onUserChangeState(true);
