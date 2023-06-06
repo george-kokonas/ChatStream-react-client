@@ -1,26 +1,31 @@
 .message {
   max-width: 30vw;
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
 }
 
 .myMessage {
   background-color: rgb(156, 211, 232);
   margin-right: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  color: #212121;
 }
 
 .othersMessage {
   background-color: rgba(244, 246, 245, 0.95);
   margin-left: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  color: #000;
 }
 
 .messageText {
-  padding: 6px 6px 0px 20px;
   margin: 0;
 }
 
 .timeContainer {
-  margin: 0px 8px 2px 5px;
+  margin: 0 8px 2px 5px;
   font-size: small;
   text-align: end;
 }
@@ -28,6 +33,7 @@
 .timeago {
   padding-left: 5px;
   padding-right: 2px;
+  font-style: italic ;
 }
 
 .clockIcon {

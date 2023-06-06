@@ -1,14 +1,15 @@
 .tabs{
-    background-color: rgb(32, 32, 32);
+    padding: 0;
+    margin: 0;
 }
 
 .nav-pills .nav-link {
-    background-color: #d4a20bef;
-    color: rgba(0,0,0,.6);
+    background-color: rgb(133, 129, 129);
+    color: rgb(255, 255, 255);
 }
 
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-    color: #fff;
-    background-color: rgb(17, 117, 82);
+    background-color: rgb(152, 67, 67);
+    color: #ffffff;
 }
 

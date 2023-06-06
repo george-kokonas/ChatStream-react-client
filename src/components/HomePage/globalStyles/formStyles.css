@@ -1,19 +1,20 @@
 .submit-btn {
-  background-color: rgb(17, 117, 82);
+  background-color: #676767;
+  color: #ededed;
 }
 
 .submit-btn:hover {
-  background-color: rgb(10, 157, 106);
+  background-color: rgb(76, 76, 76);
 }
 
 .submit-btn:focus {
   color: #dad8d8;
-  background-color: rgb(17, 117, 82);
+  background-color: rgb(76, 76, 76);
 }
 
 .error-msg{
   margin-left: 5px;
   font-size: small;
-  color: #e60b0b;
+  color: #d15656;
 }
 

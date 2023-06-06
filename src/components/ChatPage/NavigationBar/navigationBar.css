@@ -1,5 +1,8 @@
 .navbar {
-  background-image: linear-gradient(to bottom, #79777a, #606093);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-image: linear-gradient(to bottom, #79777a, #45457d);
   border-bottom: 1px solid white;
   border-radius: 30px 30px 0px 0px;
 }
@@ -13,5 +16,5 @@
   font-size: 30px;
   padding: 0 5px 0 5px;
   font-weight: 1000;
-  color: #ded4d4;
+  color: #ebebeb;
 }
