@@ -31,6 +31,12 @@ const SignUp = ({ onUserChangeState, onSetLoading }) => {
     setPasswordError(null);
   };
 
+  const resetInputs = () => {
+    setEmail("");
+    setUsername("");
+    setPassword("");
+  };
+
   const submitHandler = async (event) => {
     event.preventDefault();
     nullishErrors();
@@ -61,12 +67,10 @@ const SignUp = ({ onUserChangeState, onSetLoading }) => {
 
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.userData));
-        console.log(data.userData);
 
         alert("WELCOME ONBOARD!");
-        setEmail("");
-        setUsername("");
-        setPassword("");
+        resetInputs();
+
         onUserChangeState(true);
       } catch (error) {
         const { message } = error.response.data;

@@ -10,29 +10,38 @@ const Login = ({ onUserChangeState, onSetLoading }) => {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
-  const isValidEmail = (email) => {
+  const testEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
   };
 
-  const isValidPassword = (password) => {
+  const testPassword = (password) => {
     return /^(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/.test(password);
+  };
+
+  const nullishErrors = () => {
+    setEmailError(null);
+    setPasswordError(null);
+  };
+
+  const resetInputs = () => {
+    setEmail("");
+    setPassword("");
   };
 
   const submitHandler = async (event) => {
     event.preventDefault();
+    nullishErrors();
 
-    setEmailError(null);
-    setPasswordError(null);
+    const isValidEmail = testEmail(email) || setEmailError("Email is invalid");
 
-    isValidEmail(email) || setEmailError("Email is invalid");
-
-    isValidPassword(password) ||
+    const isValidPassword =
+      testPassword(password) ||
       setPasswordError(
         "Must contain at least one digit, one special character and be at least 6 characters."
       );
 
     //User credentials pass the validation
-    if (email && password) {
+    if (isValidEmail && isValidPassword) {
       const userData = {
         email,
         password,
@@ -52,8 +61,7 @@ const Login = ({ onUserChangeState, onSetLoading }) => {
         console.log(error);
       }
 
-      setEmail("");
-      setPassword("");
+      resetInputs();
       onSetLoading(false);
     }
   };
