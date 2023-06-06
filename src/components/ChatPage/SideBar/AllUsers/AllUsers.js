@@ -4,13 +4,15 @@ import getAuthHeaders from "../../../helpers/authHeaders";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
-import "./AllUsers.css";
 import userCard from "../Sidebar.module.css";
 import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
+import "./AllUsers.css";
 
 const RegisteredUsers = ({ currentUser, user, isOnline, rooms, onNewRoom }) => {
+
   //CREATE NEW ROOM WITH SELECTED USER FROM USERS LIST
   const newRoomHandler = async () => {
+    
     //only allow chat with users that haven't started converstation yet
     for (let i = 0; i < rooms.length; i++) {
       if (rooms[i].members.includes(user._id)) return;

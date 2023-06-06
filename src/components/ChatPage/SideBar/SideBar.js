@@ -21,32 +21,63 @@ const SideBar = ({
   onSelectRoom,
   navUnreadMessages,
 }) => {
-  const [tab, setTab] = useState(null);
+  const [tab, setTab] = useState("users");
   const [rooms, setRooms] = useState([]);
   const [currentRoom, setCurrentRoom] = useState(null);
 
-  useEffect(()=>{
-    const initialTab = rooms.length === 0 ? "users" : "conversations"
-    setTab(initialTab)
-  },[rooms.length])
+  // Function to fetch chat rooms
+  const fetchChatRooms = async (url) => {
+    try {
+      const response = await axios.get(url, getAuthHeaders());
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error fetching data");
+    }
+  };
 
-  //TOO BAD - FIND ANOTHER WAY
-  //TRIGGERED WHEN USER LOGS IN OR A NEW MESSAGE ARRIVES TO OPEN A NEW ROOM
+  // TRIGGERED WHEN USER LOGS IN TO FETCH HIS ROOMS
   useEffect(() => {
     const getRooms = async () => {
+      const url = `${API_URL}/chat/getChatRoom/${currentUser?._id}`;
+
       try {
-        const { data } = await axios.get(
-          `${API_URL}/chat/getChatRoom/${currentUser._id}`,
-          getAuthHeaders()
-        );
-        setRooms(data);
+        const roomsData = await fetchChatRooms(url);
+        setRooms(roomsData);
       } catch (error) {
-        console.log(error);
+        alert("Error fetching Conversations...");
+      }
+    };
+
+    getRooms();
+  }, [currentUser?._id]);
+
+  // TRIGGERED ON RECEIVER'S SIDE WHEN INSTANT MESSAGE ARRIVES AND INITIATES A CONVERSATION (FIRST MESSAGE)
+  useEffect(() => {
+    if (!instantMessage) return;
+
+    // Search if conversation already exists
+    const roomExists = rooms.find((room) => room._id === instantMessage.roomId);
+
+    const getRooms = async () => {
+      const url = `${API_URL}/chat/getNewChatRoom/${instantMessage?.roomId}`;
+
+      try {
+        const roomData = await fetchChatRooms(url);
+        // Add new room to existing rooms
+        setRooms((prevRooms) => [...prevRooms, roomData]);
+
+        // Notify the user
+        navUnreadMessages(true);
+      } catch (error) {
         alert("Error fetching data");
       }
     };
-    getRooms();
-  }, [currentUser._id, instantMessage]);
+
+    if (!roomExists) {
+      getRooms();
+    }
+  }, [instantMessage, navUnreadMessages, rooms]);
 
   const handleSelectUserClick = (user) => {
     //prevent actions if user clicks on himself
@@ -136,3 +167,7 @@ const SideBar = ({
 };
 
 export default SideBar;
+// useEffect(() => {
+// const initialTab = rooms.length === 0 ? "users" : "conversations";
+// setTab(initialTab);
+// }, [rooms.length]);
