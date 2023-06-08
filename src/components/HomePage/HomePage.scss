@@ -1,0 +1,36 @@
+.homepage-container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(126, 149, 169);
+
+  .content-container {
+    width: 100vw;
+
+    .top-part {
+      .logo-container {
+        display: flex;
+        justify-content: center;
+        height: 30vh;
+        color: white;
+
+        .logo {
+          padding: 3vh;
+        }
+      }
+
+      .form-container {
+        height: 55vh;
+        width: 100vw;
+        padding-top: 10vh;
+      }
+    }
+    .footer {
+      display: flex;
+      justify-content: space-evenly;
+      flex-direction: column;
+      height: 15vh;
+      align-items: center;
+    }
+  }
+}

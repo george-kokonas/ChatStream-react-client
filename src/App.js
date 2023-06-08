@@ -25,7 +25,6 @@ const App = () => {
   };
 
   return (
-    <>
       <div className='main'>
         {!isLoggedIn ? (
           <HomePage onUserChangeState={userChangeStateHandler} />
@@ -33,7 +32,6 @@ const App = () => {
           <ChatPage onUserChangeState={userChangeStateHandler} />
         )}
       </div>
-    </>
   );
 };
 

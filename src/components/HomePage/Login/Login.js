@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import API_URL from "../../helpers/config";
 import { MDBContainer, MDBInput, MDBBtn } from "mdb-react-ui-kit";
@@ -9,6 +10,7 @@ const Login = ({ onUserChangeState, onSetLoading }) => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
+  const navigate = useNavigate();
 
   const testEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
@@ -67,7 +69,7 @@ const Login = ({ onUserChangeState, onSetLoading }) => {
   };
 
   return (
-    <MDBContainer className='p-3 my-5 d-flex flex-column w-52'>
+    <MDBContainer className='p-3 d-flex flex-column w-50'>
       {/* EMAIL INPUT FIELD */}
       <MDBInput
         wrapperClass='mb-1'
@@ -101,12 +103,12 @@ const Login = ({ onUserChangeState, onSetLoading }) => {
         LOG IN
       </MDBBtn>
 
-      {/* TODO : LINK THE SIGN UP LINK WITH THE SIGN UP COMPONENT */}
-      {/* <div className='text-center'>
-        <p>
-          Not registered? <a href='#!'>Sign Up</a>
-        </p>
-      </div> */}
+      <p class='account-nav-text text-center'>
+        No account yet? <br />{" "}
+        <span className='account-nav-link' onClick={() => navigate("/signup")}>
+          Sign Up
+        </span>
+      </p>
     </MDBContainer>
   );
 };

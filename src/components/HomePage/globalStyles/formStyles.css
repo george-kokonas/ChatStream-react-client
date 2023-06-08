@@ -1,5 +1,6 @@
 .submit-btn {
   background-color: #676767;
+  background-color: #ea8959e8;
   color: #ededed;
 }
 
@@ -12,9 +13,16 @@
   background-color: rgb(76, 76, 76);
 }
 
-.error-msg{
+.error-msg {
   margin-left: 5px;
   font-size: small;
-  color: #d15656;
+  color: #a91111;
 }
 
+.account-nav-text {
+  color: #e3dfdf;
+}
+.account-nav-link {
+  cursor: pointer;
+  color: #243796;
+}

@@ -1,49 +1,32 @@
 import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import Tabs from "./Tabs/Tabs";
 import Login from "./Login/Login";
 import SignUp from "./Signup/Signup";
 import About from "./About/About";
 import ChatPage from "../ChatPage/ChatPage";
 
-import {
-  MDBContainer,
-  MDBCol,
-  MDBRow,
-  MDBBtn,
-  MDBIcon,
-} from "mdb-react-ui-kit";
-import "./HomePage.css";
+import { MDBBtn, MDBIcon } from "mdb-react-ui-kit";
+import "./HomePage.scss";
+import logo from "../../assets/logo.png";
 import "../../components/Loader/Loader.css";
 
 const HomePage = ({ onUserChangeState }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [selection, setSelection] = useState("log in");
-
-  const handleSelection = (choice) => {
-    setSelection(choice);
-  };
 
   return (
     <>
-      {isLoading && <div className='loader-container' />}
       <div className='homepage-container'>
-        <MDBContainer fluid>
-          <MDBRow className='top-container'>
-            {/* NAVIGATION TABS */}
-            <MDBCol className='form-container'>
-              <div className='d-flex flex-row align-items-center justify-content-center'>
-                <Tabs onSelection={handleSelection} />
-              </div>
+        {isLoading && <div className='loader-container' />}
+        <div className='content-container'>
 
-              {/* TABS TITLE AND DIVIDER */}
-              <div className='divider d-flex align-items-center my-4'>
-                <p className='text-center fw-bold mx-3 mb-0'>
-                  {selection.toUpperCase()}
-                </p>
-              </div>
+          {/* Top-Part */}
+          <div className='top-part'>
+            <div className='logo-container'>
+              <img className='logo' alt='logo' src={logo} />
+            </div>
 
+            <div className='form-container'>
               <Routes>
                 <Route
                   exact
@@ -73,55 +56,51 @@ const HomePage = ({ onUserChangeState }) => {
                 <Route exact path='/about' element={<About />} />
                 <Route path='/chat' element={<ChatPage />} />
               </Routes>
-            </MDBCol>
-          </MDBRow>
+            </div>
+          </div>
 
           {/* FOOTER */}
-          <MDBRow className='footer'>
-            <div className='d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 footer'>
-              <div className='footer-text pb-3'>ChatStream © 2023.</div>
+          <div className='footer'>
+            {/*profile icons */}
+            <div className='footer-icons'>
+              <MDBBtn
+                tag='a'
+                color='none'
+                className='mx-3'
+                style={{ color: "white" }}
+                href='https://github.com/george-kokonas'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <MDBIcon fab icon='github' size='2x' />
+              </MDBBtn>
 
-              {/*RIGHT SIDE ICONS */}
-              <div className='pb-3'>
-                <MDBBtn
-                  tag='a'
-                  color='none'
-                  className='mx-3'
-                  style={{ color: "white" }}
-                  href='https://github.com/george-kokonas'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <MDBIcon fab icon='github' size='2x' />
-                </MDBBtn>
+              <MDBBtn
+                tag='a'
+                color='none'
+                className='mx-3'
+                style={{ color: "white" }}
+                href='https://www.linkedin.com/in/george-k-swd/'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <MDBIcon fab icon='linkedin-in' size='2x' />
+              </MDBBtn>
 
-                <MDBBtn
-                  tag='a'
-                  color='none'
-                  className='mx-3'
-                  style={{ color: "white" }}
-                  href='https://www.linkedin.com/in/george-k-swd/'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <MDBIcon fab icon='linkedin-in' size='2x' />
-                </MDBBtn>
-
-                <MDBBtn
-                  tag='a'
-                  color='none'
-                  className='mx-3'
-                  style={{ color: "white" }}
-                  href={`mailto:g.kokwnas@gmail.com`}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <MDBIcon far icon='envelope' size='2x' />
-                </MDBBtn>
-              </div>
+              <MDBBtn
+                tag='a'
+                color='none'
+                className='mx-3'
+                style={{ color: "white" }}
+                href={`mailto:g.kokwnas@gmail.com`}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <MDBIcon far icon='envelope' size='2x' />
+              </MDBBtn>
             </div>
-          </MDBRow>
-        </MDBContainer>
+          </div>
+        </div>
       </div>
     </>
   );
