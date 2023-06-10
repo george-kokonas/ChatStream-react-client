@@ -54,7 +54,7 @@ const HomePage = ({ onUserChangeState }) => {
                   }
                 />
                 <Route exact path='/about' element={<About />} />
-                <Route path='/chat' element={<ChatPage />} />
+                <Route path='/chat/*' element={<ChatPage />} />
               </Routes>
             </div>
           </div>

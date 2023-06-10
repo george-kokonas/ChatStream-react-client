@@ -10,12 +10,13 @@ import "../../Loader/Loader.css";
 
 const ProfileWindow = ({
   currentUser,
-  onSetProfileWindow,
+  setSideNavSelection,
   onLoading,
   onExitRoom,
 }) => {
   const [image, setImage] = useState("");
   const [userInfo, setUserInfo] = useState("");
+  
   const imageInputRef = useRef(null);
 
   const imageChangeHandler = (event) => {
@@ -103,7 +104,7 @@ const ProfileWindow = ({
               className='btn-close btn-close-white '
               aria-label='Close'
               onClick={() => {
-                onSetProfileWindow();
+                setSideNavSelection();
                 onExitRoom();
               }}
             />

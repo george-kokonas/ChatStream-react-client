@@ -103,7 +103,7 @@ const Login = ({ onUserChangeState, onSetLoading }) => {
         LOG IN
       </MDBBtn>
 
-      <p class='account-nav-text text-center'>
+      <p className='account-nav-text text-center'>
         No account yet? <br />{" "}
         <span className='account-nav-link' onClick={() => navigate("/signup")}>
           Sign Up

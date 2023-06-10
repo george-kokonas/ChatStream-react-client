@@ -1,31 +1,34 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
-import NavigationBar from "./NavigationBar/NavigationBar";
-import SideBar from "./SideBar/SideBar";
+import SideNav from "./SideNav/SideNav";
+import AllUsers from "./AllUsers/AllUsers";
+import Rooms from "./Rooms/Rooms";
 import Messages from "./Messages/Messages";
 import Inputs from "./Inputs/Inputs";
 import ProfileWindow from "./ProfileWindow/ProfileWindow";
 import TypingIndicator from "./TypingIndicator/TypingIndicator";
 
-import getAuthHeaders from "../helpers/authHeaders";
-import API_URL from "../helpers/config";
 import { initiateSocket, getSocket } from "../helpers/socket";
+import getAuthHeaders from "../helpers/authHeaders";
+import fetchChatRooms from "../helpers/fetchChatRooms";
+import API_URL from "../helpers/config";
 
-import { MDBContainer, MDBRow, MDBCol, MDBTypography } from "mdb-react-ui-kit";
 import styles from "./ChatPage.module.css";
+import { MDBRow, MDBCol, MDBTypography } from "mdb-react-ui-kit";
 
 const ChatPage = ({ onUserChangeState }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [allUsers, setAllUsers] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [rooms, setRooms] = useState([]);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [lastVistitedRoom, setLastVisitedRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [instantMessage, setInstantMessage] = useState(null);
-  const [profileWindow, setProfileWindow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [navUnreadMessages, setNavUnreadMessages] = useState(false);
+  const [SideNavSelection, setSideNavSelection] = useState("");
 
   const socket = useRef();
 
@@ -103,6 +106,22 @@ const ChatPage = ({ onUserChangeState }) => {
     getUserData();
   }, []);
 
+  // TRIGGERED WHEN USER LOGS IN TO FETCH HIS ROOMS
+  useEffect(() => {
+    const getRooms = async () => {
+      const url = `${API_URL}/chat/getChatRoom/${currentUser?._id}`;
+
+      try {
+        const roomsData = await fetchChatRooms(url);
+        setRooms(roomsData);
+      } catch (error) {
+        alert("Error fetching Conversations...");
+      }
+    };
+
+    getRooms();
+  }, [currentUser?._id]);
+
   /*GET ALL USERS LIST*/
   useEffect(() => {
     const getAllUsers = async () => {
@@ -143,95 +162,140 @@ const ChatPage = ({ onUserChangeState }) => {
     }
   }, [instantMessage, currentRoom]);
 
+  // TRIGGERED ON RECEIVER'S SIDE WHEN INSTANT MESSAGE ARRIVES AND INITIATES A CONVERSATION (FIRST MESSAGE)
+  useEffect(() => {
+    if (!instantMessage) return;
+
+    // Search if conversation already exists
+    const roomExists = rooms.find((room) => room._id === instantMessage.roomId);
+
+    const getRooms = async () => {
+      const url = `${API_URL}/chat/getNewChatRoom/${instantMessage?.roomId}`;
+
+      try {
+        const roomData = await fetchChatRooms(url);
+
+        // Add new room to existing rooms
+        setRooms([...rooms, roomData]);
+
+        // Notify the user
+        setNavUnreadMessages(true);
+      } catch (error) {
+        alert("Error fetching data");
+      }
+    };
+
+    if (!roomExists) {
+      getRooms();
+    }
+  }, [instantMessage, navUnreadMessages, rooms]);
+
   return (
     <>
       {currentUser && (
         <div className={styles.container}>
-          {isLoading && <div className='loader-container' />}
-          <NavigationBar
-            className={styles.navbar}
-            onUserChangeState={onUserChangeState}
-            onSetProfileWindow={() => setProfileWindow(true)}
+          {/* SIDEBAR */}
+          <SideNav
             currentUser={currentUser}
-            navUnreadMessages={navUnreadMessages}
+            setSideNavSelection={setSideNavSelection}
+            onUserChangeState={onUserChangeState}
             socket={socket.current}
-            onExitRoom={() => setCurrentRoom(null)}
           />
-          <MDBContainer fluid className='py-0'>
-            <MDBRow>
-              {/*LEFT-SIDE BAR */}
-              <MDBCol md='6' lg='5' xl='4' xxl='3' className={styles.sidebar}>
-                <SideBar
+
+          {/* USERS */}
+          {SideNavSelection === "users" && (
+            <div className={styles.allUsersContainer}>
+              <AllUsers
+                allUsers={allUsers}
+                currentUser={currentUser}
+                onlineUsers={onlineUsers}
+                rooms={rooms}
+                setCurrentRoom={(room) => setCurrentRoom(room)}
+                onSelectRoom={(room) => {
+                  setCurrentRoom(room);
+                  setLastVisitedRoom(room);
+                }}
+                setRooms={(newRoom) => setRooms([...rooms, newRoom])}
+              />
+            </div>
+          )}
+
+          {/* CHATROOMS */}
+          {SideNavSelection === "conversations" && (
+            <div>
+              <Rooms
+                rooms={rooms}
+                messages={messages}
+                setCurrentRoom={(room) => setCurrentRoom(room)}
+                instantMessage={instantMessage}
+                currentUser={currentUser}
+                currentRoom={currentRoom}
+                onSelectRoom={(room) => {
+                  setCurrentRoom(room);
+                  setLastVisitedRoom(room);
+                }}
+                navUnreadMessages={(state) => setNavUnreadMessages(state)}
+              />
+            </div>
+          )}
+
+          {/* CHAT WINDOW */}
+          <MDBCol className={styles.chatWrapper}>
+            <>
+              {currentRoom ? (
+                <>
+                  <MDBTypography listUnStyled>
+                    <MDBRow className={styles.conversation}>
+                      <Messages
+                        currentUser={currentUser}
+                        allUsers={allUsers}
+                        currentRoom={currentRoom}
+                        messages={messages}
+                      />
+                    </MDBRow>
+                    <MDBRow className={styles.typingIndicator}>
+                      <TypingIndicator
+                        currentRoom={currentRoom}
+                        socket={socket.current}
+                      />
+                    </MDBRow>
+                  </MDBTypography>
+
+                  <MDBRow className={styles.inputs}>
+                    <Inputs
+                      currentUser={currentUser}
+                      currentRoom={currentRoom}
+                      socket={socket.current}
+                      onNewMessage={(data) => setMessages([...messages, data])}
+                    />
+                  </MDBRow>
+                </>
+              ) : (
+                <p className={styles.noConversationsMessage}>
+                  Welcome to ChatStream {currentUser.username}! <br />
+                  Select a user from the list and start chatting!
+                </p>
+              )}
+            </>
+
+            {/* PROFILE */}    
+            {SideNavSelection === "profile" && (
+              <div>
+                <ProfileWindow
                   currentUser={currentUser}
-                  allUsers={allUsers}
-                  onlineUsers={onlineUsers}
-                  messages={messages}
-                  instantMessage={instantMessage}
-                  onSelectRoom={(room) => {
-                    setCurrentRoom(room);
-                    setLastVisitedRoom(room);
-                  }}
-                  navUnreadMessages={(state) => setNavUnreadMessages(state)}
+                  setSideNavSelection={() => setSideNavSelection(false)}
+                  onUpdateUserProfile={(updatedProfile) =>
+                    setCurrentUser(updatedProfile)
+                  }
+                  onLoading={(state) => setIsLoading(state)}
+                  onExitRoom={() => setCurrentRoom(lastVistitedRoom)}
                 />
-              </MDBCol>
-
-              {/* CHAT WINDOW */}
-              <MDBCol className={styles.chatWrapper}>
-                {!profileWindow ? (
-                  <>
-                    {currentRoom ? (
-                      <>
-                        <MDBTypography listUnStyled>
-                          <MDBRow className={styles.conversation}>
-                            <Messages
-                              currentUser={currentUser}
-                              allUsers={allUsers}
-                              currentRoom={currentRoom}
-                              messages={messages}
-                            />
-                          </MDBRow>
-                          <MDBRow className={styles.typingIndicator}>
-                            <TypingIndicator
-                              currentRoom={currentRoom}
-                              socket={socket.current}
-                            />
-                          </MDBRow>
-                        </MDBTypography>
-
-                        <MDBRow className={styles.inputs}>
-                          <Inputs
-                            currentUser={currentUser}
-                            currentRoom={currentRoom}
-                            socket={socket.current}
-                            onNewMessage={(data) =>
-                              setMessages([...messages, data])
-                            }
-                          />
-                        </MDBRow>
-                      </>
-                    ) : (
-                      <p className={styles.noConversationsMessage}>
-                        Welcome to ChatStream {currentUser.username}! <br />
-                        Select a user from the list and start chatting!
-                      </p>
-                    )}
-                  </>
-                ) : (
-                  <ProfileWindow
-                    currentUser={currentUser}
-                    onSetProfileWindow={() => setProfileWindow(false)}
-                    onUpdateUserProfile={(updatedProfile) =>
-                      setCurrentUser(updatedProfile)
-                    }
-                    onLoading={(state) => setIsLoading(state)}
-                    onExitRoom={() => setCurrentRoom(lastVistitedRoom)}
-                  />
-                )}
-              </MDBCol>
-            </MDBRow>
-          </MDBContainer>
+              </div>
+            )}
+          </MDBCol>
         </div>
       )}
+      {isLoading && <div className='loader-container' />}
     </>
   );
 };

@@ -1,11 +1,34 @@
 .container {
   display: flex;
-  flex-direction: column;
-  height: 95vh;
-  margin: 20px;
-  border-radius: 30px;
-  background-color: #525282;
+  /* flex-direction: column; */
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(126, 149, 169);
 }
+
+.allUsersContainer{
+  background-color: antiquewhite;
+  margin: 1vh;
+  width: 30vh;
+  height: 80vh;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .sidebar {
   height: 84vh;
@@ -27,14 +50,14 @@
 
 .typingIndicator {
   height: 25px;
-  color:  #fbfbfb;
+  color: #fbfbfb;
   font-style: italic;
   opacity: 70%;
 }
 
-.noConversationsMessage{
+.noConversationsMessage {
   text-align: center;
-    margin-top: 15%;
-    color: rgb(224, 222, 221);
-    font-size: 4vh;
+  margin-top: 15%;
+  color: rgb(224, 222, 221);
+  font-size: 4vh;
 }
