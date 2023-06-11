@@ -9,7 +9,7 @@ const Messages = ({ currentUser, allUsers, currentRoom, messages }) => {
 
   useEffect(() => {
     const membersIds = currentRoom.members;
-    const friendId = membersIds.find(
+    const friendId = membersIds?.find(
       (memberId) => memberId !== currentUser._id
     );
     const friend = allUsers.find((user) => user._id === friendId);
