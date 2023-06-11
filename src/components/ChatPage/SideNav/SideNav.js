@@ -11,7 +11,11 @@ import defaultUserIcon from "../../../assets/defaultUserIcon.png";
 
 const SideNav = ({
   currentUser,
-  setSideNavSelection,
+  setNavSelection,
+  setLastNavSelection,
+  navSelection,
+  lastNavSelection,
+  setCurrentRoom,
   onUserChangeState,
   socket,
 }) => {
@@ -27,7 +31,7 @@ const SideNav = ({
   };
 
   return (
-    <Sidebar collapsed={isCollapsed} collapsedWidth='8vh'>
+    <Sidebar collapsed={isCollapsed} width='15vw' collapsedWidth='8vh'>
       <Menu>
         <MenuItem
           onClick={() => setIsCollapsed(!isCollapsed)}
@@ -36,12 +40,35 @@ const SideNav = ({
           <FontAwesomeIcon icon={faBars} size='xl' />
         </MenuItem>
 
-        <MenuItem onClick={() => setSideNavSelection("users")}>
+        <MenuItem
+          onClick={() => {
+            if (
+              lastNavSelection === "users" ||
+              navSelection === "profile"
+            )
+              return;
+            setNavSelection("users");
+            setLastNavSelection("users");
+            setCurrentRoom("");
+          }}
+        >
           <FontAwesomeIcon icon={faUsersBetweenLines} size='xl' />
           Users
         </MenuItem>
 
-        <MenuItem onClick={() => setSideNavSelection("conversations")}>
+        <MenuItem
+          onClick={() => {
+            if (
+              lastNavSelection === "conversations" ||
+              navSelection === "profile"
+            )
+              return;
+
+            setNavSelection("conversations");
+            setLastNavSelection("conversations");
+            setCurrentRoom("");
+          }}
+        >
           <FontAwesomeIcon
             className='unread-msg-icon'
             icon={faMessage}
@@ -50,7 +77,14 @@ const SideNav = ({
           Conversations
         </MenuItem>
 
-        <MenuItem onClick={() => setSideNavSelection("profile")}>
+        <MenuItem
+          onClick={() => {
+            // if(navSelection === "profile")return
+
+            setNavSelection("profile");
+            setCurrentRoom();
+          }}
+        >
           <img
             src={currentUser.profileImage || defaultUserIcon}
             alt='avatar'

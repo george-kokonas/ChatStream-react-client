@@ -4,20 +4,24 @@ const Rooms = ({
   currentUser,
   rooms,
   currentRoom,
-  onSelectRoom,
   setCurrentRoom,
   navUnreadMessages,
   messages,
   instantMessage,
+  setNavSelection,
+  setLastNavSelection,
+  setLastVisitedRoom
 }) => {
   return (
     <div>
-      {rooms.length &&
+      {rooms.length > 0 &&
         rooms.map((room) => (
           <div
             onClick={() => {
               setCurrentRoom(room);
-              onSelectRoom(room);
+              setNavSelection();
+              setLastNavSelection();
+              setLastVisitedRoom(room)
             }}
             key={room._id}
           >

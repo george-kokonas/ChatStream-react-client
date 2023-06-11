@@ -1,0 +1,65 @@
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(126, 149, 169);
+
+  .wrapper {
+    display: flex;
+    border: 2px solid black;
+    margin: auto;
+    height: 100%;
+    width: 100%;
+
+    .allUsersContainer {
+      background-color: #faebd7;
+      margin: auto;
+      width: 50%;
+      max-height: 100%;
+      overflow-y: scroll;
+    }
+
+    .chatroomsContainer {
+      border: 2px solid black;
+      // margin: auto;
+      width: 25%;
+    }
+
+    .chatWrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between ;
+      border: 2px solid black;
+      width: 100%;
+      margin: 0% 2%;
+     
+    }
+
+    .profile {
+      margin: auto;
+      width: 80%;
+      height: 80%;
+      background-color: aquamarine;
+    }
+  }
+}
+
+/* .conversation {
+  height: 74vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+} */
+
+/* .typingIndicator {
+  height: 25px;
+  color: #fbfbfb;
+  font-style: italic;
+  opacity: 70%;
+} */
+/* 
+.noConversationsMessage {
+  text-align: center;
+  margin-top: 15%;
+  color: rgb(224, 222, 221);
+  font-size: 4vh;
+} */

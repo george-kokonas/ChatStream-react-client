@@ -4,15 +4,15 @@ import axios from "axios";
 import API_URL from "../../helpers/config";
 import getAuthHeaders from "../../helpers/authHeaders";
 
-import styles from "./ProfileWindow.module.css";
+import styles from "./Profile.module.css";
 import addProfilePic from "../../../assets/addProfileImage.png";
 import "../../Loader/Loader.css";
 
-const ProfileWindow = ({
+const Profile= ({
+  setNavSelection,
   currentUser,
-  setSideNavSelection,
+  setCurrentRoom,
   onLoading,
-  onExitRoom,
 }) => {
   const [image, setImage] = useState("");
   const [userInfo, setUserInfo] = useState("");
@@ -94,18 +94,19 @@ const ProfileWindow = ({
   return (
     <>
       {/* PROFILE WINDOW CONTAINER */}
-      <div className={styles.profileWindowContainer}>
+      <div className={styles.profileContainer}>
         {/* USER UPLOAD PROFILE IMAGE CONTAINER */}
         <div className='upload-image-container'>
           {/* close button */}
           <div className={styles.closeBtnContainer}>
             <button
               type='button'
-              className='btn-close btn-close-white '
+              className='btn-close btn-close-black '
               aria-label='Close'
               onClick={() => {
-                setSideNavSelection();
-                onExitRoom();
+                setNavSelection();
+                setCurrentRoom();
+          
               }}
             />
           </div>
@@ -122,8 +123,7 @@ const ProfileWindow = ({
                 event.preventDefault();
                 imageInputRef.current.click();
               }}
-              width='300'
-              height='300'
+              width='40%'
             />
           </div>
 
@@ -195,4 +195,4 @@ const ProfileWindow = ({
   );
 };
 
-export default ProfileWindow;
+export default Profile;

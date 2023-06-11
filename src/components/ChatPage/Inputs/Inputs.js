@@ -12,6 +12,7 @@ const Inputs = ({ currentUser, currentRoom, socket, onNewMessage }) => {
   const [receiverId, setReceiverId] = useState("");
 
   useEffect(() => {
+    setNewMessage("");
     const receiverId = currentRoom.members.find(
       (member) => member !== currentUser._id
     );

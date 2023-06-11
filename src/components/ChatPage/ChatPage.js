@@ -6,7 +6,7 @@ import AllUsers from "./AllUsers/AllUsers";
 import Rooms from "./Rooms/Rooms";
 import Messages from "./Messages/Messages";
 import Inputs from "./Inputs/Inputs";
-import ProfileWindow from "./ProfileWindow/ProfileWindow";
+import Profile from "./Profile/Profile";
 import TypingIndicator from "./TypingIndicator/TypingIndicator";
 
 import { initiateSocket, getSocket } from "../helpers/socket";
@@ -14,7 +14,7 @@ import getAuthHeaders from "../helpers/authHeaders";
 import fetchChatRooms from "../helpers/fetchChatRooms";
 import API_URL from "../helpers/config";
 
-import styles from "./ChatPage.module.css";
+import styles from "./ChatPage.module.scss";
 import { MDBRow, MDBCol, MDBTypography } from "mdb-react-ui-kit";
 
 const ChatPage = ({ onUserChangeState }) => {
@@ -28,7 +28,8 @@ const ChatPage = ({ onUserChangeState }) => {
   const [instantMessage, setInstantMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [navUnreadMessages, setNavUnreadMessages] = useState(false);
-  const [SideNavSelection, setSideNavSelection] = useState("");
+  const [navSelection, setNavSelection] = useState("");
+  const [lastNavSelection, setLastNavSelection] = useState("");
 
   const socket = useRef();
 
@@ -190,109 +191,113 @@ const ChatPage = ({ onUserChangeState }) => {
     }
   }, [instantMessage, navUnreadMessages, rooms]);
 
+  console.log(lastVistitedRoom);
   return (
     <>
+      {/* SIDEBAR */}
       {currentUser && (
         <div className={styles.container}>
-          {/* SIDEBAR */}
           <SideNav
-            currentUser={currentUser}
-            setSideNavSelection={setSideNavSelection}
+            setNavSelection={(selection) => setNavSelection(selection)}
+            setLastNavSelection={(lastSelection) =>
+              setLastNavSelection(lastSelection)
+            }
+            navSelection={navSelection}
+            lastNavSelection={lastNavSelection}
+            setCurrentRoom={(selection) => setCurrentRoom(selection)}
             onUserChangeState={onUserChangeState}
+            currentUser={currentUser}
             socket={socket.current}
           />
-
-          {/* USERS */}
-          {SideNavSelection === "users" && (
-            <div className={styles.allUsersContainer}>
-              <AllUsers
-                allUsers={allUsers}
-                currentUser={currentUser}
-                onlineUsers={onlineUsers}
-                rooms={rooms}
-                setCurrentRoom={(room) => setCurrentRoom(room)}
-                onSelectRoom={(room) => {
-                  setCurrentRoom(room);
-                  setLastVisitedRoom(room);
-                }}
-                setRooms={(newRoom) => setRooms([...rooms, newRoom])}
-              />
-            </div>
-          )}
-
-          {/* CHATROOMS */}
-          {SideNavSelection === "conversations" && (
-            <div>
-              <Rooms
-                rooms={rooms}
-                messages={messages}
-                setCurrentRoom={(room) => setCurrentRoom(room)}
-                instantMessage={instantMessage}
-                currentUser={currentUser}
-                currentRoom={currentRoom}
-                onSelectRoom={(room) => {
-                  setCurrentRoom(room);
-                  setLastVisitedRoom(room);
-                }}
-                navUnreadMessages={(state) => setNavUnreadMessages(state)}
-              />
-            </div>
-          )}
-
-          {/* CHAT WINDOW */}
-          <MDBCol className={styles.chatWrapper}>
-            <>
-              {currentRoom ? (
-                <>
-                  <MDBTypography listUnStyled>
-                    <MDBRow className={styles.conversation}>
-                      <Messages
-                        currentUser={currentUser}
-                        allUsers={allUsers}
-                        currentRoom={currentRoom}
-                        messages={messages}
-                      />
-                    </MDBRow>
-                    <MDBRow className={styles.typingIndicator}>
-                      <TypingIndicator
-                        currentRoom={currentRoom}
-                        socket={socket.current}
-                      />
-                    </MDBRow>
-                  </MDBTypography>
-
-                  <MDBRow className={styles.inputs}>
-                    <Inputs
-                      currentUser={currentUser}
-                      currentRoom={currentRoom}
-                      socket={socket.current}
-                      onNewMessage={(data) => setMessages([...messages, data])}
-                    />
-                  </MDBRow>
-                </>
-              ) : (
-                <p className={styles.noConversationsMessage}>
-                  Welcome to ChatStream {currentUser.username}! <br />
-                  Select a user from the list and start chatting!
-                </p>
-              )}
-            </>
-
-            {/* PROFILE */}    
-            {SideNavSelection === "profile" && (
-              <div>
-                <ProfileWindow
+          <div className={styles.wrapper}>
+            {/* USERS */}
+            {navSelection === "users" && (
+              <div className={styles.allUsersContainer}>
+                <AllUsers
+                  allUsers={allUsers}
                   currentUser={currentUser}
-                  setSideNavSelection={() => setSideNavSelection(false)}
-                  onUpdateUserProfile={(updatedProfile) =>
-                    setCurrentUser(updatedProfile)
+                  onlineUsers={onlineUsers}
+                  setRooms={(newRoom) => setRooms([...rooms, newRoom])}
+                  setCurrentRoom={(room) => setCurrentRoom(room)}
+                  rooms={rooms}
+                  setNavSelection={() => setNavSelection("conversations")}
+                  setLastNavSelection={() =>
+                    setLastNavSelection("conversations")
                   }
-                  onLoading={(state) => setIsLoading(state)}
-                  onExitRoom={() => setCurrentRoom(lastVistitedRoom)}
+                  setLastVisitedRoom={(room) => setLastVisitedRoom(room)}
                 />
               </div>
             )}
-          </MDBCol>
+
+            {/* CHATROOMS */}
+            {navSelection === "conversations" && (
+              <div className={styles.chatroomsContainer}>
+                <Rooms
+                  rooms={rooms}
+                  messages={messages}
+                  setCurrentRoom={(room) => setCurrentRoom(room)}
+                  setLastVisitedRoom={(room) => setLastVisitedRoom(room)}
+                  instantMessage={instantMessage}
+                  currentUser={currentUser}
+                  currentRoom={currentRoom}
+                  navUnreadMessages={(state) => setNavUnreadMessages(state)}
+                  setNavSelection={() => setNavSelection("conversations")}
+                  setLastNavSelection={() =>
+                    setLastNavSelection("conversations")
+                  }
+                />
+              </div>
+            )}
+
+            {/* CHAT WINDOW */}
+            {currentRoom && (
+              <MDBCol className={styles.chatWrapper}>
+                <MDBTypography listUnStyled>
+                  <MDBRow className={styles.conversation}>
+                    <Messages
+                      currentUser={currentUser}
+                      allUsers={allUsers}
+                      currentRoom={currentRoom}
+                      messages={messages}
+                    />
+                  </MDBRow>
+                  <MDBRow className={styles.typingIndicator}>
+                    <TypingIndicator
+                      currentRoom={currentRoom}
+                      socket={socket.current}
+                    />
+                  </MDBRow>
+                </MDBTypography>
+
+                <MDBRow className={styles.inputs}>
+                  <Inputs
+                    currentUser={currentUser}
+                    currentRoom={currentRoom}
+                    socket={socket.current}
+                    onNewMessage={(data) => setMessages([...messages, data])}
+                  />
+                </MDBRow>
+              </MDBCol>
+            )}
+
+            {/* PROFILE */}
+            {navSelection === "profile" && (
+              <div className={styles.profile}>
+                <Profile
+                  currentUser={currentUser}
+                  onLoading={(state) => setIsLoading(state)}
+                  onUpdateUserProfile={(updatedProfile) =>
+                    setCurrentUser(updatedProfile)
+                  }
+                  setNavSelection={() => setNavSelection(lastNavSelection)}
+                  setCurrentRoom={() =>
+                    lastNavSelection === "users" ||
+                    setCurrentRoom(lastVistitedRoom)
+                  }
+                />
+              </div>
+            )}
+          </div>
         </div>
       )}
       {isLoading && <div className='loader-container' />}
