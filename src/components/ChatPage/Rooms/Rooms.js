@@ -5,12 +5,11 @@ const Rooms = ({
   rooms,
   currentRoom,
   setCurrentRoom,
-  navUnreadMessages,
   messages,
   instantMessage,
+  navUnreadMessages,
   setNavSelection,
-  setLastNavSelection,
-  setLastVisitedRoom
+  setHiddentElement
 }) => {
   return (
     <div>
@@ -20,8 +19,7 @@ const Rooms = ({
             onClick={() => {
               setCurrentRoom(room);
               setNavSelection();
-              setLastNavSelection();
-              setLastVisitedRoom(room)
+              setHiddentElement();
             }}
             key={room._id}
           >

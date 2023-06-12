@@ -35,9 +35,7 @@
         width: 20%;
         overflow-y: scroll;
 
-        @media (max-width: 767px) {
-          display: none;
-        }
+       
       }
       .conversationWrapper {
         display: flex;
@@ -75,6 +73,14 @@
         }
       }
     }
+    @media (max-width: 767px) {
+     .isHidden{
+      @media (max-width: 767px) {
+        display: none;
+      }
+     }
+    }
+
   }
 }
 

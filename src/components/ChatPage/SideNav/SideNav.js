@@ -10,12 +10,12 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import defaultUserIcon from "../../../assets/defaultUserIcon.png";
 
 const SideNav = ({
-  currentUser,
   setNavSelection,
-  setLastNavSelection,
   navSelection,
-  lastNavSelection,
   setCurrentRoom,
+  setHiddentElement,
+  hiddenElement,
+  currentUser,
   onUserChangeState,
   socket,
 }) => {
@@ -31,7 +31,7 @@ const SideNav = ({
   };
 
   return (
-    <Sidebar collapsed={isCollapsed} width='15vw' collapsedWidth='8vh'>
+    <Sidebar collapsed={isCollapsed} width='15vw' collapsedWidth='18vw'>
       <Menu>
         <MenuItem
           onClick={() => setIsCollapsed(!isCollapsed)}
@@ -42,14 +42,10 @@ const SideNav = ({
 
         <MenuItem
           onClick={() => {
-            if (
-              lastNavSelection === "users" ||
-              navSelection === "profile"
-            )
-              return;
+            //leave from profile page only with X btn
+            if (navSelection === "profile") return;
             setNavSelection("users");
-            setLastNavSelection("users");
-            setCurrentRoom("");
+            setCurrentRoom(null);
           }}
         >
           <FontAwesomeIcon icon={faUsersBetweenLines} size='xl' />
@@ -58,15 +54,14 @@ const SideNav = ({
 
         <MenuItem
           onClick={() => {
-            if (
-              lastNavSelection === "conversations" ||
-              navSelection === "profile"
-            )
-              return;
+            if (navSelection === "profile" ) return;
 
+            if (!hiddenElement) {
+              setHiddentElement();
+            }
+            
+            setCurrentRoom(null);
             setNavSelection("conversations");
-            setLastNavSelection("conversations");
-            setCurrentRoom("");
           }}
         >
           <FontAwesomeIcon
@@ -79,8 +74,6 @@ const SideNav = ({
 
         <MenuItem
           onClick={() => {
-            // if(navSelection === "profile")return
-
             setNavSelection("profile");
             setCurrentRoom();
           }}

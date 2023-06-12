@@ -28,7 +28,7 @@ const ChatPage = ({ onUserChangeState }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [navUnreadMessages, setNavUnreadMessages] = useState(false);
   const [navSelection, setNavSelection] = useState("");
-  const [lastNavSelection, setLastNavSelection] = useState("");
+  const [hiddenElement, setHiddentElement] = useState(false);
 
   const socket = useRef();
 
@@ -197,14 +197,12 @@ const ChatPage = ({ onUserChangeState }) => {
         <div className={styles.container}>
           <SideNav
             setNavSelection={(selection) => setNavSelection(selection)}
-            setLastNavSelection={(lastSelection) =>
-              setLastNavSelection(lastSelection)
-            }
             navSelection={navSelection}
-            lastNavSelection={lastNavSelection}
             setCurrentRoom={(selection) => setCurrentRoom(selection)}
-            onUserChangeState={onUserChangeState}
+            setHiddentElement={() => setHiddentElement(false)}
+            hiddentElement={hiddenElement}
             currentUser={currentUser}
+            onUserChangeState={onUserChangeState}
             socket={socket.current}
           />
 
@@ -213,17 +211,14 @@ const ChatPage = ({ onUserChangeState }) => {
             {navSelection === "users" && (
               <div className={styles.usersListContainer}>
                 <AllUsers
-                  allUsers={allUsers}
                   currentUser={currentUser}
+                  allUsers={allUsers}
                   onlineUsers={onlineUsers}
+                  rooms={rooms}
                   setRooms={(newRoom) => setRooms([...rooms, newRoom])}
                   setCurrentRoom={(room) => setCurrentRoom(room)}
-                  rooms={rooms}
                   setNavSelection={() => setNavSelection("conversations")}
-                  setLastNavSelection={() =>
-                    setLastNavSelection("conversations")
-                  }
-                  setLastVisitedRoom={(room) => setLastVisitedRoom(room)}
+                  setHiddenElement={() => setHiddentElement(true)}
                 />
               </div>
             )}
@@ -232,20 +227,21 @@ const ChatPage = ({ onUserChangeState }) => {
             {navSelection === "conversations" && (
               <div className={styles.chatWrapper}>
                 {/* ROOMS LIST*/}
-                <div className={styles.roomsContainer}>
+                <div
+                  className={` ${styles.roomsContainer} ${
+                    hiddenElement ? styles.isHidden : ""
+                  } `}
+                >
                   <Rooms
-                    rooms={rooms}
-                    messages={messages}
-                    setCurrentRoom={(room) => setCurrentRoom(room)}
-                    setLastVisitedRoom={(room) => setLastVisitedRoom(room)}
-                    instantMessage={instantMessage}
                     currentUser={currentUser}
+                    rooms={rooms}
                     currentRoom={currentRoom}
+                    setCurrentRoom={(room) => setCurrentRoom(room)}
+                    messages={messages}
+                    instantMessage={instantMessage}
                     navUnreadMessages={(state) => setNavUnreadMessages(state)}
                     setNavSelection={() => setNavSelection("conversations")}
-                    setLastNavSelection={() =>
-                      setLastNavSelection("conversations")
-                    }
+                    setHiddentElement={() => setHiddentElement(true)}
                   />
                 </div>
 
@@ -288,15 +284,8 @@ const ChatPage = ({ onUserChangeState }) => {
               <div className={styles.profile}>
                 <Profile
                   currentUser={currentUser}
+                  setNavSelection={() => setNavSelection("users")}
                   onLoading={(state) => setIsLoading(state)}
-                  onUpdateUserProfile={(updatedProfile) =>
-                    setCurrentUser(updatedProfile)
-                  }
-                  setNavSelection={() => setNavSelection(lastNavSelection)}
-                  setCurrentRoom={() =>
-                    lastNavSelection === "users" ||
-                    setCurrentRoom(lastVistitedRoom)
-                  }
                 />
               </div>
             )}

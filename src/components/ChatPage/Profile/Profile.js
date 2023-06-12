@@ -11,7 +11,6 @@ import "../../Loader/Loader.css";
 const Profile= ({
   setNavSelection,
   currentUser,
-  setCurrentRoom,
   onLoading,
 }) => {
   const [image, setImage] = useState("");
@@ -105,8 +104,6 @@ const Profile= ({
               aria-label='Close'
               onClick={() => {
                 setNavSelection();
-                setCurrentRoom();
-          
               }}
             />
           </div>

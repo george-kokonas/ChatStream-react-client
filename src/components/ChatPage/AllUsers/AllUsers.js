@@ -6,15 +6,14 @@ import API_URL from "../../helpers/config";
 import getAuthHeaders from "../../helpers/authHeaders";
 
 const AllUsers = ({
-  allUsers,
   currentUser,
+  allUsers,
   onlineUsers,
   rooms,
   setRooms,
   setCurrentRoom,
-  setLastVisitedRoom,
   setNavSelection,
-  setLastNavSelection,
+  setHiddenElement,
 }) => {
   const newRoomHandler = async (selectedUser) => {
     //prevent user from starting a conversation with himself
@@ -22,17 +21,17 @@ const AllUsers = ({
       return;
     }
 
-    //only allow chat with users that haven't started converstation yet
+    //if no chat create room else navigate to chat with clicked user
     for (let i = 0; i < rooms.length; i++) {
       if (rooms[i].members.includes(selectedUser._id)) {
         setNavSelection();
         setCurrentRoom(rooms[i]);
-        setLastVisitedRoom(rooms[i])
-        setLastNavSelection()
+        setHiddenElement();
         return;
       }
     }
 
+    // create room
     const room = {
       senderId: currentUser._id,
       receiverId: selectedUser._id,
@@ -51,17 +50,11 @@ const AllUsers = ({
       //set new Room as current in ChatPage.js
       setCurrentRoom(data);
 
-      //set new Room as last visited
-      setLastVisitedRoom(data)
-
       //open conversations list
       setNavSelection();
 
-      //set last selection 
-      setLastNavSelection()
-
-
-
+      //hide conversations list on small screens
+      setHiddenElement();
     } catch (error) {
       console.log(error);
       alert("Unable to start new conversation...");
@@ -88,20 +81,3 @@ const AllUsers = ({
 };
 
 export default AllUsers;
-
-//   const handleSelectUserClick = (user) => {
-//   //prevent actions if user clicks on himself
-//   if (user._id === currentUser._id) return;
-
-//   //find the conversation with the selected user
-//   const room = rooms.find((room) => room.members.includes(user._id));
-
-//   //if no conversation yet, return
-//   if (!room) return;
-
-//   //set conversation with selected user
-//   setCurrentRoom(room);
-
-//   //pass conversation to ChatPage.js
-//   onSelectRoom(room);
-// };
