@@ -4,7 +4,7 @@ import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
 import API_URL from "../../../helpers/config";
 import getAuthHeaders from "../../../helpers/authHeaders";
 
-import styles from "./Rooms.module.css";
+import styles from "./Rooms.module.scss";
 import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
 
 const Room = ({
@@ -22,13 +22,13 @@ const Room = ({
   const onNavUnreadMessagesRef = useRef(navUnreadMessages);
 
   const listItemClassname =
-    currentRoom?._id === room?._id ? `${styles.currentRoom}` : `${styles.room}`;
+    currentRoom?._id === room?._id ? `${styles.currentRoom}` : `${""}`;
 
   //HELPER FUNCTION TO PROCESS LAST MESSAGE
   const proccessMessage = (array) => {
-    // get the first 25 characters of the last message in the array
+    // get the first 12 characters of the last message in the array
     let message = array[array.length - 1]?.text;
-    message.length > 20 && (message = message.slice(0, 20) + "...");
+    message.length > 10 && (message = message.slice(0, 10) + "...");
 
     const createdAt = array[array.length - 1].createdAt;
 
@@ -125,39 +125,35 @@ const Room = ({
   }, [currentUser, room]);
 
   return (
-    <div className={listItemClassname}>
-      <li className='p-2 mb-1'>
-        <a href='#!' className='d-flex justify-content-between'>
-          <div className='d-flex flex-row'>
-            <img
-              src={friend?.profileImage || defaultUserIcon}
-              alt='avatar'
-              className='rounded-circle d-flex align-self-center me-3 shadow-1-strong'
-              width='50'
-              height='50'
-            />
-            <div className='pt-1'>
-              <p className={`${styles.card} ${styles.card}`}>
-                {friend?.username}
-              </p>
-              <p className='small text-muted'>
-                {lastMessage.message
-                  ? lastMessage.message
-                  : "no messages yet.."}
-              </p>
-            </div>
-          </div>
+    <li className={`${styles.roomItem} ${listItemClassname}`}>
+      <a href='#!' className='d-flex justify-content-between'>
+        <div className='d-flex flex-row'>
+          <img
+            src={friend?.profileImage || defaultUserIcon}
+            alt='avatar'
+            className='rounded-circle d-flex align-self-center me-3 shadow-1-strong'
+            width='50'
+            height='50'
+          />
           <div className='pt-1'>
-            <p className='small text-muted mb-1'>
-              <CustomTimeAgo date={lastMessage?.createdAt} />
+            <p className={`${styles.card} ${styles.card}`}>
+              {friend?.username}
             </p>
-            <span className='badge bg-danger float-end'>
-              {unreadCounter === 0 ? "" : unreadCounter}
-            </span>
+            <p className='small text-muted'>
+              {lastMessage.message ? lastMessage.message : "no messages yet.."}
+            </p>
           </div>
-        </a>
-      </li>
-    </div>
+        </div>
+        <div className={styles.rigthSideContainer}>
+          <span className={`${styles.unreadCount} badge bg-danger float-end`}>
+            {unreadCounter === 0 ? "" : unreadCounter}1
+          </span>
+          <p className='small text-muted mb-1'>
+            <CustomTimeAgo date={lastMessage?.createdAt} />
+          </p>
+        </div>
+      </a>
+    </li>
   );
 };
 

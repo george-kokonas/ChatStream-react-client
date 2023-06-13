@@ -31,7 +31,7 @@ const SideNav = ({
   };
 
   return (
-    <Sidebar collapsed={isCollapsed} width='15vw' collapsedWidth='18vw'>
+    <Sidebar collapsed={isCollapsed} width='15vw' collapsedWidth='6%'>
       <Menu>
         <MenuItem
           onClick={() => setIsCollapsed(!isCollapsed)}
