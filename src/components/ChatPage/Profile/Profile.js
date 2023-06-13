@@ -4,18 +4,15 @@ import axios from "axios";
 import API_URL from "../../helpers/config";
 import getAuthHeaders from "../../helpers/authHeaders";
 
-import styles from "./Profile.module.css";
+import { MDBBtn } from "mdb-react-ui-kit";
+import styles from "./Profile.module.scss";
 import addProfilePic from "../../../assets/addProfileImage.png";
 import "../../Loader/Loader.css";
 
-const Profile= ({
-  setNavSelection,
-  currentUser,
-  onLoading,
-}) => {
+const Profile = ({ setNavSelection, currentUser, onLoading }) => {
   const [image, setImage] = useState("");
   const [userInfo, setUserInfo] = useState("");
-  
+
   const imageInputRef = useRef(null);
 
   const imageChangeHandler = (event) => {
@@ -94,10 +91,12 @@ const Profile= ({
     <>
       {/* PROFILE WINDOW CONTAINER */}
       <div className={styles.profileContainer}>
+
         {/* USER UPLOAD PROFILE IMAGE CONTAINER */}
-        <div className='upload-image-container'>
+        <div className={styles.uploadImageContainer}>
+         
           {/* close button */}
-          <div className={styles.closeBtnContainer}>
+          <div className={styles.closeBtn}>
             <button
               type='button'
               className='btn-close btn-close-black '
@@ -114,32 +113,23 @@ const Profile= ({
           >
             <img
               src={image ? image : `${addProfilePic}`}
-              className='rounded-circle'
+              className={`${image} rounded-circle`}
               alt='add-profile'
               onClick={(event) => {
                 event.preventDefault();
                 imageInputRef.current.click();
               }}
-              width='40%'
+              // width='40%'
             />
           </div>
 
-          {/* upload button */}
-          <div className='d-flex justify-content-center'>
-            <div className={` ${styles.uploadBtn} btn btn-warning btn-rounded`}>
-              <label
-                className={`${styles.uploadBtn} form-label text-white m-1 `}
-                htmlFor='upload-btn'
-              >
-                Upload
-              </label>
-              <input
-                type='submit'
-                className='form-control d-none'
-                id='upload-btn'
-                onClick={UploadImageHandler}
-              />
-            </div>
+          <div
+            onClick={UploadImageHandler}
+            className='d-flex justify-content-center'
+          >
+            <MDBBtn rounded className='mx-2 ' color='dark'>
+              UPLOAD
+            </MDBBtn>
           </div>
 
           {/* input ref to open file explorer */}
@@ -153,7 +143,7 @@ const Profile= ({
 
         {/* UPLOAD USER INFO CONTAINER */}
         <div
-          className={`${styles.userInfoContainer} d-flex justify-content-center mb-4 `}
+          className={`${styles.userInfoContainer} d-flex justify-content-center`}
         >
           {/* text input */}
           <div className='form-group'>
@@ -161,29 +151,18 @@ const Profile= ({
               type='text'
               className={`${styles.userInfoInput} form-control`}
               aria-describedby='user-info-input'
-              placeholder='Enter something you want to share with the world (quote,mood)... '
+              placeholder='Enter something you want to share with the world...'
               value={userInfo}
               onChange={(event) => setUserInfo(event.target.value)}
             />
 
-            {/* submit button */}
-            <div className={` d-flex justify-content-center mt-4`}>
-              <div
-                className={` ${styles.uploadBtn} btn btn-warning btn-rounded`}
-              >
-                <label
-                  className={`${styles.uploadBtn} form-label text-white m-1 `}
-                  htmlFor='submit-info-btn'
-                >
-                  SUBMIT
-                </label>
-                <input
-                  type='submit'
-                  className='form-control d-none'
-                  id='submit-info-btn'
-                  onClick={submitInfoHandler}
-                />
-              </div>
+            <div
+              onClick={submitInfoHandler}
+              className= {`${styles.infoSubmitBtn} d-flex justify-content-center `}
+            >
+              <MDBBtn rounded className='my-2 ' color='dark'>
+                SUBMIT
+              </MDBBtn>
             </div>
           </div>
         </div>

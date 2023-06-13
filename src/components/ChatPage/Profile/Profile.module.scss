@@ -1,0 +1,56 @@
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 30px;
+
+  .closeBtn {
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px 15px 0 0;
+  }
+
+  .uploadImageContainer {
+    height: 60%;
+
+    .imagePreview {
+      height: 30vh;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .userInfoContainer {
+    margin: auto;
+
+    .userInfoInput {
+      margin-bottom: 6%;
+      text-align: center;
+      width: 70vw;
+      height: 7vh;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .profileContainer {
+    .uploadImageContainer {
+      height: 70%;
+
+      .imagePreview {
+        margin: auto;
+        height: 44vh;
+      }
+    }
+
+    .userInfoContainer {
+      .userInfoInput {
+        margin-top: 2%;
+        width: 50vw;
+      }
+    }
+  }
+}
