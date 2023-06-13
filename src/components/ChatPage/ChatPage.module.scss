@@ -42,7 +42,6 @@
 
     .chatWrapper {
       display: flex;
-      // border: 2px solid black;
       width: 100%;
 
       .roomsContainer {
@@ -81,16 +80,17 @@
         flex-direction: column;
         justify-content: space-between;
         width: 80%;
-        // border: 2px solid black;
 
         @media (max-width: 767px) {
-          width: 95%;
-          height: auto;
+          width: 100%;
+          height: 100vh;
           margin: auto;
         }
+
         .messages {
           overflow-y: auto;
           overflow-x: hidden;
+          height: 100vh;
 
           @media (max-width: 767px) {
             max-height: 85vh;
@@ -109,6 +109,8 @@
         }
 
         .inputs {
+          width: 100%;
+          height: auto;
         }
       }
     }

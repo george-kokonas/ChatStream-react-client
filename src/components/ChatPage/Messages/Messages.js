@@ -23,13 +23,7 @@ const Messages = ({ currentUser, allUsers, currentRoom, messages }) => {
 
   return (
     <div>
-      {!messages.length ? (
-        <p className='no-messages-message'>
-          Nothing to show... <br /> Initiate a chat <br /> with your new friend,{" "}
-          {friend?.username}!
-        </p>
-      ) : (
-        messages.map((msg, index) => (
+      { messages.map((msg, index) => (
           <div key={index} ref={scrollToEnd}>
             <Message
               currentUser={currentUser}
@@ -39,8 +33,7 @@ const Messages = ({ currentUser, allUsers, currentRoom, messages }) => {
               sentByMe={msg.senderId === currentUser._id}
             />
           </div>
-        ))
-      )}
+        ))}
     </div>
   );
 };

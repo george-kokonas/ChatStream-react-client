@@ -146,7 +146,7 @@ const Room = ({
         </div>
         <div className={styles.rigthSideContainer}>
           <span className={`${styles.unreadCount} badge bg-danger float-end`}>
-            {unreadCounter === 0 ? "" : unreadCounter}1
+            {unreadCounter === 0 ? "" : unreadCounter}
           </span>
           <p className='small text-muted mb-1'>
             <CustomTimeAgo date={lastMessage?.createdAt} />

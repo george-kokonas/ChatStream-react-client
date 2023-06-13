@@ -7,7 +7,9 @@ import { faMessage } from "@fortawesome/free-solid-svg-icons";
 import { faUsersBetweenLines } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+
 import defaultUserIcon from "../../../assets/defaultUserIcon.png";
+import styles from "./SideNav.module.scss";
 
 const SideNav = ({
   setNavSelection,
@@ -31,16 +33,23 @@ const SideNav = ({
   };
 
   return (
-    <Sidebar collapsed={isCollapsed} width='15vw' collapsedWidth='6%'>
+    <Sidebar
+      className={styles.sidebar}
+      collapsed={isCollapsed}
+      width='145px'
+      collapsedWidth='77px'
+    >
       <Menu>
         <MenuItem
+          className={styles.navItem}
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className='menu1'
         >
-          <FontAwesomeIcon icon={faBars} size='xl' />
+          <FontAwesomeIcon className={styles.icon} icon={faBars} size='xl' />
+          {/* <span className={styles.text}> Chatstream</span> */}
         </MenuItem>
 
         <MenuItem
+          className={styles.navItem}
           onClick={() => {
             //leave from profile page only with X btn
             if (navSelection === "profile") return;
@@ -48,49 +57,55 @@ const SideNav = ({
             setCurrentRoom(null);
           }}
         >
-          <FontAwesomeIcon icon={faUsersBetweenLines} size='xl' />
-          Users
+          <FontAwesomeIcon
+            className={styles.icon}
+            icon={faUsersBetweenLines}
+            size='xl'
+          />
+          <span className={styles.text}>Users</span>
         </MenuItem>
 
         <MenuItem
+          className={styles.navItem}
           onClick={() => {
-            if (navSelection === "profile" ) return;
+            if (navSelection === "profile") return;
 
             if (!hiddenElement) {
               setHiddentElement();
             }
-            
+
             setCurrentRoom(null);
             setNavSelection("conversations");
           }}
         >
-          <FontAwesomeIcon
-            className='unread-msg-icon'
-            icon={faMessage}
-            size='xl'
-          />
-          Conversations
+          <FontAwesomeIcon className={styles.icon} icon={faMessage} size='xl' />
+          <span className={styles.text}>Chats</span>
         </MenuItem>
 
         <MenuItem
+          className={styles.navItem}
           onClick={() => {
             setNavSelection("profile");
             setCurrentRoom();
+            setIsCollapsed(true);
           }}
         >
           <img
             src={currentUser.profileImage || defaultUserIcon}
             alt='avatar'
-            className='rounded-circle align-self-center me-1 shadow-1-strong'
-            width='30'
-            height='30'
+            className={`${styles.icon} `}
+            // width='2px'
           />
-          Profile
+          <span className={styles.text}>Profile</span>
         </MenuItem>
 
-        <MenuItem onClick={() => logoutHandler()}>
-          <FontAwesomeIcon icon={faArrowRightFromBracket} size='xl' />
-          Logout
+        <MenuItem className={styles.navItem} onClick={() => logoutHandler()}>
+          <FontAwesomeIcon
+            className={styles.icon}
+            icon={faArrowRightFromBracket}
+            size='xl'
+          />
+          <span className={styles.text}>Logout</span>
         </MenuItem>
       </Menu>
     </Sidebar>
