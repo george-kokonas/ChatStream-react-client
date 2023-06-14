@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import API_URL from "../../helpers/config";
-import { MDBContainer, MDBInput, MDBBtn } from "mdb-react-ui-kit";
-import "../globalStyles/formStyles.css";
+import Textfield from "../../UI/TextField/TextField";
+import Button from "../../UI/Button/Button";
+
+import styles from "../formStyles/formStyles.module.scss";
 
 const SignUp = ({ onUserChangeState, onSetLoading }) => {
   const [email, setEmail] = useState("");
@@ -53,7 +55,7 @@ const SignUp = ({ onUserChangeState, onSetLoading }) => {
     const isValidPassword =
       testPassword(password) ||
       setPasswordError(
-        "Must contain at least one digit, one special character and be at least 6 characters."
+        "Must contain at least 1 digit, 1 special character and minimum 6 characters."
       );
 
     if (isValidEmail && isValidUsername && isValidPassword) {
@@ -89,58 +91,77 @@ const SignUp = ({ onUserChangeState, onSetLoading }) => {
   };
 
   return (
-    <MDBContainer className='p-3 my-0 d-flex flex-column w-50'>
+    <>
       {/* EMAIL INPUT FIELD */}
-      <MDBInput
-        wrapperClass='mb-1'
-        label='Email address'
-        id='email'
-        type='email'
-        size='lg'
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-      />
-      {emailError && <span className='error-msg'>{emailError}</span>}
+      <div className={styles.container}>
+        <div className={styles.inputWrapper}>
+          <Textfield
+            type='email'
+            value={email}
+            height='5vh'
+            width='40vw'
+            responsiveWidth='80vw'
+            placeholder='E-mail'
+            onChange={(event) => setEmail(event.target.value)}
+          />
+          {emailError && (
+            <span className={styles.errorMessage}>{emailError}</span>
+          )}
+        </div>
+        {/* USERNAME INPUT FIELD */}
 
-      {/* USERNAME INPUT FIELD */}
-      <MDBInput
-        wrapperClass='mt-3 mb-1'
-        label='User name'
-        id='form1'
-        type='text'
-        size='lg'
-        value={username}
-        onChange={(event) => setUsername(event.target.value)}
-      />
-      {usernameError && <span className='error-msg'>{usernameError}</span>}
+        <div className={styles.inputWrapper}>
+          <Textfield
+            type='text'
+            value={username}
+            height='5vh'
+            width='40vw'
+            responsiveWidth='80vw'
+            placeholder='Username'
+            onChange={(event) => setUsername(event.target.value)}
+          />
+          {usernameError && (
+            <span className={styles.errorMessage}>{usernameError}</span>
+          )}
+        </div>
 
-      {/* PASSWORD INPUT FIELD */}
-      <MDBInput
-        wrapperClass='mt-3 mb-1'
-        label='Password'
-        id='form2'
-        type='password'
-        size='lg'
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
-      {passwordError && <span className='error-msg'>{passwordError}</span>}
-
-      {/* SUBMIT BUTTON */}
-      <MDBBtn
-        className='submit-btn mt-3 mb-3'
-        type='submit'
-        onClick={submitHandler}
-      >
-        SIGN UP
-      </MDBBtn>
-      <p className='account-nav-text text-center'>
-        Already a member?{" "}
-        <span className='account-nav-link' onClick={() => navigate("/login")}>
-          Log In
-        </span>
-      </p>
-    </MDBContainer>
+        {/* PASSWORD INPUT FIELD */}
+        <div className={styles.inputWrapper}>
+          <Textfield
+            type='password'
+            value={password}
+            height='5vh'
+            width='40vw'
+            responsiveWidth='80vw'
+            placeholder='Password'
+            onChange={(event) => setPassword(event.target.value)}
+          />
+          {passwordError && (
+            <span className={styles.errorMessage}>{passwordError}</span>
+          )}
+        </div>
+        {/* SUBMIT BUTTON */}
+        <div className={styles.buttonContainer}>
+          <Button
+            type='submit'
+            label='log in'
+            width='40vw'
+            height='4vh'
+            responsiveWidth='80vw'
+            onClick={submitHandler}
+          />
+          <p className={styles.accountText}>
+            Already a member?{" "}
+            <span
+              className={styles.accountLink}
+              onClick={() => navigate("/login")}
+            >
+              Log In
+            </span>
+          </p>
+        </div>
+      </div>
+    </>
   );
 };
 

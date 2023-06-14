@@ -3,11 +3,10 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./Login/Login";
 import SignUp from "./Signup/Signup";
-import About from "./About/About";
 import ChatPage from "../ChatPage/ChatPage";
 
 import { MDBBtn, MDBIcon } from "mdb-react-ui-kit";
-import "./HomePage.scss";
+import styles from "./HomePage.module.scss";
 import logo from "../../assets/logo.png";
 import "../../components/Loader/Loader.css";
 
@@ -16,17 +15,19 @@ const HomePage = ({ onUserChangeState }) => {
 
   return (
     <>
-      <div className='homepage-container'>
         {isLoading && <div className='loader-container' />}
-        <div className='content-container'>
+      <div className={styles.container}>
+        <div className={styles.contentContainer}>
 
           {/* Top-Part */}
-          <div className='top-part'>
-            <div className='logo-container'>
-              <img className='logo' alt='logo' src={logo} />
+          <div className={styles.topContainer}>
+            
+            {/* logo */}
+            <div className={styles.logoWrapper}>
+              <img className={styles.logo} alt='logo' src={logo} />
             </div>
 
-            <div className='form-container'>
+            <div className={styles.formContainer}>
               <Routes>
                 <Route
                   exact
@@ -53,16 +54,15 @@ const HomePage = ({ onUserChangeState }) => {
                     />
                   }
                 />
-                <Route exact path='/about' element={<About />} />
                 <Route path='/chat/*' element={<ChatPage />} />
               </Routes>
             </div>
           </div>
 
           {/* FOOTER */}
-          <div className='footer'>
+          <div className={styles.footerContainer}>
             {/*profile icons */}
-            <div className='footer-icons'>
+            <div>
               <MDBBtn
                 tag='a'
                 color='none'

@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
 import API_URL from "../../helpers/config";
-import { MDBContainer, MDBInput, MDBBtn } from "mdb-react-ui-kit";
-import "../globalStyles/formStyles.css";
+import Textfield from "../../UI/TextField/TextField";
+import Button from "../../UI/Button/Button";
+
+import styles from "../formStyles/formStyles.module.scss";
 
 const Login = ({ onUserChangeState, onSetLoading }) => {
   const [email, setEmail] = useState("");
@@ -39,7 +42,7 @@ const Login = ({ onUserChangeState, onSetLoading }) => {
     const isValidPassword =
       testPassword(password) ||
       setPasswordError(
-        "Must contain at least one digit, one special character and be at least 6 characters."
+        "Must contain at least 1 digit, 1 special character and minimum 6 characters."
       );
 
     //User credentials pass the validation
@@ -69,47 +72,67 @@ const Login = ({ onUserChangeState, onSetLoading }) => {
   };
 
   return (
-    <MDBContainer className='p-3 d-flex flex-column w-50'>
+    <div className={styles.container}>
       {/* EMAIL INPUT FIELD */}
-      <MDBInput
-        wrapperClass='mb-1'
-        label='Email address'
-        id='email'
-        type='email'
-        size='lg'
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-      />
-      {emailError && <span className='error-msg'>{emailError}</span>}
+      <div className={styles.inputWrapper}>
+        <Textfield
+          className={styles.textInp}
+          type='email'
+          value={email}
+          height='5vh'
+          width='40vw'
+          responsiveWidth='80vw'
+          placeholder='E-mail'
+          onChange={(event) => {
+            setEmail(event.target.value);
+            setEmailError(null);
+          }}
+        />
+        {emailError && (
+          <span className={styles.errorMessage}>{emailError}</span>
+        )}
+      </div>
 
       {/* PASSWORD INPUT FIELD */}
-      <MDBInput
-        wrapperClass='mt-3 mb-1 pl-4'
-        label='Password'
-        id='form2'
-        type='password'
-        size='lg'
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
-      {passwordError && <span className='error-msg'>{passwordError}</span>}
+      <div className={styles.inputWrapper}>
+        <Textfield
+          value={password}
+          type='password'
+          height='5vh'
+          width='40vw'
+          responsiveWidth='80vw'
+          placeholder='Password'
+          onChange={(event) => {
+            setPassword(event.target.value);
+            setPasswordError(null);
+          }}
+        />
+        {passwordError && (
+          <span className={styles.errorMessage}>{passwordError}</span>
+        )}
+      </div>
 
       {/* SUBMIT BUTTON */}
-      <MDBBtn
-        className='submit-btn mt-5 mb-3'
-        type='submit'
-        onClick={submitHandler}
-      >
-        LOG IN
-      </MDBBtn>
-
-      <p className='account-nav-text text-center'>
-        No account yet? <br />{" "}
-        <span className='account-nav-link' onClick={() => navigate("/signup")}>
-          Sign Up
-        </span>
-      </p>
-    </MDBContainer>
+      <div className={styles.buttonContainer}>
+        <Button
+          type='submit'
+          label='log in'
+          width='40vw'
+          height='4vh'
+          responsiveWidth='80vw'
+          onClick={submitHandler}
+        />
+        <p className={styles.accountText}>
+          No account yet? <br />{" "}
+          <span
+            className={styles.accountLink}
+            onClick={() => navigate("/signup")}
+          >
+            Sign Up
+          </span>
+        </p>
+      </div>
+    </div>
   );
 };
 
