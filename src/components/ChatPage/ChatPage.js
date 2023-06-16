@@ -29,6 +29,7 @@ const ChatPage = ({ onUserChangeState }) => {
   const [navUnreadMessages, setNavUnreadMessages] = useState(false);
   const [navSelection, setNavSelection] = useState("");
   const [hiddenElement, setHiddentElement] = useState(false);
+  const [messagesPreview, setMessagesPreview] = useState([]);
 
   const socket = useRef();
 
@@ -106,6 +107,22 @@ const ChatPage = ({ onUserChangeState }) => {
     getUserData();
   }, []);
 
+  /*GET ALL USERS LIST*/
+  useEffect(() => {
+    const getAllUsers = async () => {
+      try {
+        const { data } = await axios.get(
+          `${API_URL}/user/getRegisteredUsers`,
+          getAuthHeaders()
+        );
+        setAllUsers(data);
+      } catch (error) {
+        alert("Unable to retrieve users....");
+      }
+    };
+    getAllUsers();
+  }, [onlineUsers]);
+
   // TRIGGERED WHEN USER LOGS IN TO FETCH HIS ROOMS
   useEffect(() => {
     const getRooms = async () => {
@@ -122,17 +139,48 @@ const ChatPage = ({ onUserChangeState }) => {
     getRooms();
   }, [currentUser?._id]);
 
-  /*GET ALL USERS LIST*/
+  /*ON FIRST LOAD, GET LAST MESSAGES FOR ALL ROOMS (CONVERSATIONS LIST PREVIEW)*/
   useEffect(() => {
-    const getAllUsers = async () => {
-      const { data } = await axios.get(
-        `${API_URL}/user/getRegisteredUsers`,
-        getAuthHeaders()
-      );
-      setAllUsers(data);
+    const getLastMessages = async () => {
+      const roomsIds = rooms.map((room) => room._id);
+
+      try {
+        const { data } = await axios.get(
+          `${API_URL}/chat/getLastMessages/${roomsIds}`,
+          getAuthHeaders()
+        );
+        setMessagesPreview(data);
+      } catch (error) {
+        alert("Error fetching messages...");
+      }
     };
-    getAllUsers();
-  }, [onlineUsers]);
+    rooms.length && getLastMessages();
+  }, [rooms]);
+
+  /*SET INCOMING INSTANT MESSAGE AS LAST MESSAGE (CONVERSATIONS LIST PREVIEW) */
+  useEffect(() => {
+    if (!instantMessage) return;
+
+    setMessagesPreview((prevMessages) => {
+      const updatedMessages = prevMessages.filter(
+        (message) => message.roomId !== instantMessage.roomId
+      );
+      return [...updatedMessages, instantMessage];
+    });
+  }, [instantMessage]);
+
+  /*SET SENT MESSAGE AS LAST MESSAGE (CONVERSATIONS LIST PREVIEW) */
+  useEffect(() => {
+    if (messages.length === 0) return;
+    const sentMessage = messages[messages.length - 1];
+
+    setMessagesPreview((prevMessages) => {
+      const updatedMessages = prevMessages.filter(
+        (message) => message.roomId !== sentMessage.roomId
+      );
+      return [...updatedMessages, sentMessage];
+    });
+  }, [messages]);
 
   /*GET MESSAGES FROM SELECTED ROOM*/
   useEffect(() => {
@@ -232,6 +280,7 @@ const ChatPage = ({ onUserChangeState }) => {
                     hiddenElement ? styles.isHidden : ""
                   } `}
                 >
+                {/* <div className={styles.roomsContainer}> */}
                   <Rooms
                     currentUser={currentUser}
                     rooms={rooms}
@@ -242,6 +291,7 @@ const ChatPage = ({ onUserChangeState }) => {
                     navUnreadMessages={(state) => setNavUnreadMessages(state)}
                     setNavSelection={() => setNavSelection("conversations")}
                     setHiddentElement={() => setHiddentElement(true)}
+                    messagesPreview={messagesPreview}
                   />
                 </div>
 

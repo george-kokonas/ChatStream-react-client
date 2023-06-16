@@ -1,3 +1,4 @@
+import React from "react";
 import Room from "./Room/Room";
 
 const Rooms = ({
@@ -9,7 +10,8 @@ const Rooms = ({
   instantMessage,
   navUnreadMessages,
   setNavSelection,
-  setHiddentElement
+  setHiddentElement,
+  messagesPreview,
 }) => {
   return (
     <div>
@@ -28,9 +30,14 @@ const Rooms = ({
               room={room}
               currentRoom={currentRoom}
               navUnreadMessages={navUnreadMessages}
-              instantMessage={instantMessage}
+              instantMessage={
+                instantMessage?.roomId === room._id && instantMessage
+              }
               userMessages={messages.filter(
                 (message) => message.roomId === currentRoom?._id
+              )}
+              messagePreview={messagesPreview.filter(
+                (message) => message?.roomId === room?._id
               )}
             />
           </div>

@@ -11,9 +11,9 @@ const Room = ({
   currentUser,
   room,
   currentRoom,
-  userMessages,
   instantMessage,
   navUnreadMessages,
+  messagePreview,
 }) => {
   const [friend, setFriend] = useState(null);
   const [lastMessage, setLastMessage] = useState([]);
@@ -24,19 +24,25 @@ const Room = ({
   const listItemClassname =
     currentRoom?._id === room?._id ? `${styles.currentRoom}` : `${""}`;
 
-  //HELPER FUNCTION TO PROCESS LAST MESSAGE
-  const proccessMessage = (array) => {
-    // get the first 12 characters of the last message in the array
-    let message = array[array.length - 1]?.text;
-    message.length > 10 && (message = message.slice(0, 10) + "...");
+  //PROCESS LAST MESSAGE
+  const proccessMessage = (message) => {
+    let messageText = message.text;
 
-    const createdAt = array[array.length - 1].createdAt;
+    // get the first 12 characters of the last message in the array
+    messageText.length > 10 && (messageText = messageText.slice(0, 10) + "...");
+
+    //get timestamp
+    const createdAt = message.createdAt;
 
     setLastMessage({
-      message,
+      messageText,
       createdAt,
     });
   };
+
+  useEffect(() => {
+    proccessMessage(messagePreview[0]);
+  }, [messagePreview]);
 
   useEffect(() => {
     onNavUnreadMessagesRef.current = navUnreadMessages;
@@ -71,36 +77,6 @@ const Room = ({
       setUnreadCounter(0);
     }
   }, [room?._id, currentRoom?._id, instantMessage]);
-
-  // ON FIRST LOAD, UPDATE THE MESSAGE IN CONVERSATIONS CARD
-  useEffect(() => {
-    const getMessages = async () => {
-      try {
-        const { data } = await axios.get(
-          `${API_URL}/chat/getMessages/${room?._id}`,
-          getAuthHeaders()
-        );
-        data.length && proccessMessage(data);
-      } catch (error) {
-        alert("Error fetching data");
-        console.log(error);
-      }
-    };
-    getMessages();
-  }, [room]);
-
-  // WHEN USER SENDS MESSAGE ,UPDATE THE MESSAGE IN CONVERSATIONS CARD
-  useEffect(() => {
-    if (userMessages.length && currentRoom._id === room._id) {
-      proccessMessage(userMessages);
-    }
-  }, [userMessages, currentRoom?._id, room?._id]);
-
-  // WHEN USER RECEIVES INSTANT MESSAGE, UPDATE THE MESSAGE IN CONVERSATIONS CARD
-  useEffect(() => {
-    if (!instantMessage) return;
-    instantMessage.roomId === room._id && proccessMessage([instantMessage]);
-  }, [instantMessage, room]);
 
   //FIND DATA OF THE OTHER PARTICIPANT TO RENDER USERNAME IN CONVERSATIONS CARD
   useEffect(() => {
@@ -140,7 +116,9 @@ const Room = ({
               {friend?.username}
             </p>
             <p className='small text-muted'>
-              {lastMessage.message ? lastMessage.message : "no messages yet.."}
+              {messagePreview[0]?.text
+                ? messagePreview[0]?.text
+                : "no messages yet.."}
             </p>
           </div>
         </div>
