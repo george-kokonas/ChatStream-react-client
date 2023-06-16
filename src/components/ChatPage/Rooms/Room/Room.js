@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState} from "react";
 import axios from "axios";
 import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
 import API_URL from "../../../helpers/config";
@@ -11,15 +11,11 @@ const Room = ({
   currentUser,
   room,
   currentRoom,
-  instantMessage,
-  navUnreadMessages,
   messagePreview,
 }) => {
   const [friend, setFriend] = useState(null);
   const [preview, setPreview] = useState([]);
-  const [unreadCounter, setUnreadCounter] = useState(0);
 
-  const onNavUnreadMessagesRef = useRef(navUnreadMessages);
 
   const listItemClassname =
     currentRoom?._id === room?._id ? `${styles.currentRoom}` : `${""}`;
@@ -44,40 +40,6 @@ const Room = ({
   useEffect(() => {
     messagePreview.length && proccessMessage(messagePreview[0]);
   }, [messagePreview]);
-
-  useEffect(() => {
-    onNavUnreadMessagesRef.current = navUnreadMessages;
-  }, [navUnreadMessages]);
-
-  useEffect(() => {
-    if (unreadCounter) {
-      navUnreadMessages(true);
-    }
-  }, [navUnreadMessages, unreadCounter]);
-
-  useEffect(() => {
-    if (!unreadCounter) {
-      onNavUnreadMessagesRef.current(false);
-    }
-  }, [unreadCounter]);
-
-  //UNREAD MESSAGES INCREMENT
-  useEffect(() => {
-    if (room._id === instantMessage?.roomId) {
-      setUnreadCounter((prevCounter) => prevCounter + 1);
-    }
-  }, [instantMessage, room._id]);
-
-  //UNREAD MESSAGES RESET
-  useEffect(() => {
-    //reset counter when user enters a room or he is already in the room that received instant message
-    if (
-      room?._id === currentRoom?._id ||
-      currentRoom?._id === instantMessage?.roomId
-    ) {
-      setUnreadCounter(0);
-    }
-  }, [room?._id, currentRoom?._id, instantMessage]);
 
   //FIND DATA OF THE OTHER PARTICIPANT TO RENDER USERNAME IN CONVERSATIONS CARD
   useEffect(() => {
@@ -123,7 +85,6 @@ const Room = ({
         </div>
         <div className={styles.rigthSideContainer}>
           <span className={`${styles.unreadCount} badge bg-danger float-end`}>
-            {unreadCounter === 0 ? "" : unreadCounter}
           </span>
           <p className='small text-muted mb-1'>
             <CustomTimeAgo date={preview.createdAt} />

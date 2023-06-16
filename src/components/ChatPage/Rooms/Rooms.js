@@ -6,9 +6,6 @@ const Rooms = ({
   rooms,
   currentRoom,
   setCurrentRoom,
-  messages,
-  instantMessage,
-  navUnreadMessages,
   setNavSelection,
   setHiddentElement,
   messagesPreview,
@@ -29,13 +26,6 @@ const Rooms = ({
               currentUser={currentUser}
               room={room}
               currentRoom={currentRoom}
-              navUnreadMessages={navUnreadMessages}
-              instantMessage={
-                instantMessage?.roomId === room._id && instantMessage
-              }
-              userMessages={messages.filter(
-                (message) => message.roomId === currentRoom?._id
-              )}
               messagePreview={messagesPreview.filter(
                 (message) => message?.roomId === room?._id
               )}

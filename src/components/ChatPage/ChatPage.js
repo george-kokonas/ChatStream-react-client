@@ -22,14 +22,12 @@ const ChatPage = ({ onUserChangeState }) => {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [currentRoom, setCurrentRoom] = useState(null);
-  const [lastVistitedRoom, setLastVisitedRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [instantMessage, setInstantMessage] = useState(null);
+  const [messagesPreview, setMessagesPreview] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [navUnreadMessages, setNavUnreadMessages] = useState(false);
   const [navSelection, setNavSelection] = useState("");
   const [hiddenElement, setHiddentElement] = useState(false);
-  const [messagesPreview, setMessagesPreview] = useState([]);
 
   const socket = useRef();
 
@@ -205,7 +203,6 @@ const ChatPage = ({ onUserChangeState }) => {
       instantMessage &&
       currentRoom?.members?.includes(instantMessage.senderId)
     ) {
-      setLastVisitedRoom(currentRoom);
       setMessages((prev) => [...prev, instantMessage]);
     }
   }, [instantMessage, currentRoom]);
@@ -222,12 +219,8 @@ const ChatPage = ({ onUserChangeState }) => {
 
       try {
         const roomData = await fetchChatRooms(url);
-
         // Add new room to existing rooms
         setRooms([...rooms, roomData]);
-
-        // Notify the user
-        setNavUnreadMessages(true);
       } catch (error) {
         alert("Error fetching data");
       }
@@ -236,13 +229,14 @@ const ChatPage = ({ onUserChangeState }) => {
     if (!roomExists) {
       getRooms();
     }
-  }, [instantMessage, navUnreadMessages, rooms]);
+  }, [instantMessage, rooms]);
 
   return (
     <>
       {/* SIDEBAR */}
       {currentUser && (
         <div className={styles.container}>
+
           <SideNav
             setNavSelection={(selection) => setNavSelection(selection)}
             navSelection={navSelection}
@@ -255,6 +249,7 @@ const ChatPage = ({ onUserChangeState }) => {
           />
 
           <div className={styles.wrapper}>
+
             {/* USERS */}
             {navSelection === "users" && (
               <div className={styles.usersListContainer}>
@@ -280,15 +275,11 @@ const ChatPage = ({ onUserChangeState }) => {
                     hiddenElement ? styles.isHidden : ""
                   } `}
                 >
-                {/* <div className={styles.roomsContainer}> */}
                   <Rooms
                     currentUser={currentUser}
                     rooms={rooms}
                     currentRoom={currentRoom}
                     setCurrentRoom={(room) => setCurrentRoom(room)}
-                    messages={messages}
-                    instantMessage={instantMessage}
-                    navUnreadMessages={(state) => setNavUnreadMessages(state)}
                     setNavSelection={() => setNavSelection("conversations")}
                     setHiddentElement={() => setHiddentElement(true)}
                     messagesPreview={messagesPreview}
