@@ -16,7 +16,7 @@ const Room = ({
   messagePreview,
 }) => {
   const [friend, setFriend] = useState(null);
-  const [lastMessage, setLastMessage] = useState([]);
+  const [preview, setPreview] = useState([]);
   const [unreadCounter, setUnreadCounter] = useState(0);
 
   const onNavUnreadMessagesRef = useRef(navUnreadMessages);
@@ -26,22 +26,23 @@ const Room = ({
 
   //PROCESS LAST MESSAGE
   const proccessMessage = (message) => {
-    let messageText = message.text;
+    let text = message.text;
 
     // get the first 12 characters of the last message in the array
-    messageText.length > 10 && (messageText = messageText.slice(0, 10) + "...");
+    text.length > 10 && (text = text.slice(0, 10) + "...");
 
     //get timestamp
     const createdAt = message.createdAt;
 
-    setLastMessage({
-      messageText,
+    setPreview({
+      text,
       createdAt,
     });
   };
 
+  //proccess preview message
   useEffect(() => {
-    proccessMessage(messagePreview[0]);
+    messagePreview.length && proccessMessage(messagePreview[0]);
   }, [messagePreview]);
 
   useEffect(() => {
@@ -116,9 +117,7 @@ const Room = ({
               {friend?.username}
             </p>
             <p className='small text-muted'>
-              {messagePreview[0]?.text
-                ? messagePreview[0]?.text
-                : "no messages yet.."}
+              {preview.text ? preview.text : "no messages yet.."}
             </p>
           </div>
         </div>
@@ -127,7 +126,7 @@ const Room = ({
             {unreadCounter === 0 ? "" : unreadCounter}
           </span>
           <p className='small text-muted mb-1'>
-            <CustomTimeAgo date={lastMessage?.createdAt} />
+            <CustomTimeAgo date={preview.createdAt} />
           </p>
         </div>
       </a>
