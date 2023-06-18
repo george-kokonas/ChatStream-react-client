@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 
 import SideNav from "./SideNav/SideNav";
@@ -42,7 +42,7 @@ const ChatPage = ({ onUserChangeState }) => {
     };
   }, []);
 
-  /*TRIGGERED ON USER LOGIN*/
+  /*ON USER LOGIN, UPDATE ONLINE USERS ARRAY AND GET ONLINE USERS*/
   useEffect(() => {
     //add user to onlineUsers array on socket server
     socket.current.emit("addUser", currentUser?._id);
@@ -58,29 +58,7 @@ const ChatPage = ({ onUserChangeState }) => {
     };
   }, [currentUser?._id]);
 
-  /*TRIGGERED WHEN INSTANT MESSAGE ARRIVES*/
-  useEffect(() => {
-    socket.current.on("getMessage", (data) => {
-      setInstantMessage({
-        _id: data._id,
-        roomId: data.roomId,
-        senderId: data.senderId,
-        receiverId: data.receiverId,
-        text: data.text,
-        isSeen: data.isSeen,
-        createdAt: data.createdAt,
-      });
-      setMessages((prev) => [...prev, data]);
-      setUnseenMessages((prev) => [...prev, data]);
-    });
-
-    // unsubscribe from event
-    return () => {
-      socket.current.off("getMessage");
-    };
-  }, []);
-
-  /*GET CURRENT USER DATA*/
+  /*ON USER LOGIN, GET CURRENT USER DATA*/
   useEffect(() => {
     const getUserData = async () => {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -107,7 +85,7 @@ const ChatPage = ({ onUserChangeState }) => {
     getUserData();
   }, []);
 
-  /*GET ALL USERS LIST*/
+  /*ON USER LOGIN, GET ALL USERS LIST*/
   useEffect(() => {
     const getAllUsers = async () => {
       try {
@@ -121,9 +99,9 @@ const ChatPage = ({ onUserChangeState }) => {
       }
     };
     getAllUsers();
-  }, [onlineUsers]);
+  }, []);
 
-  // TRIGGERED WHEN USER LOGS IN TO FETCH HIS ROOMS
+  /* ON USER LOGIN, FETCH HIS ROOMS*/
   useEffect(() => {
     const getRooms = async () => {
       const url = `${API_URL}/chat/getChatRoom/${currentUser?._id}`;
@@ -139,7 +117,7 @@ const ChatPage = ({ onUserChangeState }) => {
     getRooms();
   }, [currentUser?._id]);
 
-  /*ON FIRST LOAD, GET LAST MESSAGES FOR ALL ROOMS (CONVERSATIONS LIST PREVIEW)*/
+  /*ON USER LOGIN, GET LAST MESSAGES FOR ALL ROOMS (CONVERSATIONS LIST PREVIEW)*/
   useEffect(() => {
     const getLastMessages = async () => {
       const roomsIds = rooms.map((room) => room._id);
@@ -156,6 +134,96 @@ const ChatPage = ({ onUserChangeState }) => {
     };
     rooms.length && getLastMessages();
   }, [rooms]);
+
+  /*ON USER LOG IN, FETCH UNREAD MESSAGES */
+  useEffect(() => {
+    const getUnseenMessages = async () => {
+      try {
+        const { data } = await axios.get(
+          `${API_URL}/chat/getUnseenMessages/${currentUser._id}`,
+          getAuthHeaders()
+        );
+        setUnseenMessages(data);
+      } catch (error) {
+        alert("Unable to fetch unread messages status...");
+      }
+    };
+    currentUser && getUnseenMessages();
+  }, [currentUser]);
+
+  /*ON SELECT ROOM, GET MESSAGES FOR SPECIFIC ROOM*/
+  useEffect(() => {
+    //get messages for specific room
+    const getMessages = async () => {
+      try {
+        const { data } = await axios.get(
+          `${API_URL}/chat/getMessages/${currentRoom._id}`,
+          getAuthHeaders()
+        );
+        setMessages(data);
+      } catch (error) {
+        alert("Error fetching data");
+        console.log(error);
+      }
+    };
+
+    currentRoom && getMessages();
+  }, [currentRoom]);
+
+  /*UPDATE SEEN MESSAGES STATUS*/
+  const updateMessagesStatus = useCallback(
+    async (roomId) => {
+      try {
+        //update messages status in current room
+        await axios.put(
+          `${API_URL}/chat/updateMessagesStatus/${roomId}`,
+          null,
+          getAuthHeaders()
+        );
+
+        //filter the seen messages from the unseenMessages array
+        const updatedUnseenMessages = unseenMessages.filter(
+          (message) => message.roomId !== roomId
+        );
+        // Update unseenMessages array
+        setUnseenMessages(updatedUnseenMessages);
+      } catch (error) {
+        alert("Error updating message statuses");
+        console.error(error);
+      }
+    },
+    [unseenMessages]
+  );
+
+  /*ON INSTANT MESSAGE ARRIVAL, SET MESSAGE AND HANDLE UNREAD LOGIC (CONVERSATIONS LIST UNREAD)*/
+  useEffect(() => {
+    socket.current.on("getMessage", (instantMessage) => {
+      setInstantMessage({
+        _id: instantMessage._id,
+        roomId: instantMessage.roomId,
+        senderId: instantMessage.senderId,
+        receiverId: instantMessage.receiverId,
+        text: instantMessage.text,
+        isSeen: instantMessage.isSeen,
+        createdAt: instantMessage.createdAt,
+      });
+      setMessages((prev) => [...prev, instantMessage]);
+
+      //if user is already in conversation that receives instant message, mark message as seen
+      if (currentRoom?._id === instantMessage.roomId) {
+        updateMessagesStatus(instantMessage.roomId);
+
+        //add messages to unseenMessages array to increase the count
+      } else {
+        setUnseenMessages((prev) => [...prev, instantMessage]);
+      }
+    });
+
+    // unsubscribe from event
+    return () => {
+      socket.current.off("getMessage");
+    };
+  }, [currentRoom, updateMessagesStatus]);
 
   /*SET INCOMING INSTANT MESSAGE AS LAST MESSAGE (CONVERSATIONS LIST PREVIEW) */
   useEffect(() => {
@@ -182,25 +250,6 @@ const ChatPage = ({ onUserChangeState }) => {
     });
   }, [messages]);
 
-  /*GET MESSAGES FROM SELECTED ROOM*/
-  useEffect(() => {
-    //get messages for specific room
-    const getMessages = async () => {
-      try {
-        const { data } = await axios.get(
-          `${API_URL}/chat/getMessages/${currentRoom._id}`,
-          getAuthHeaders()
-        );
-        setMessages(data);
-      } catch (error) {
-        alert("Error fetching data");
-        console.log(error);
-      }
-    };
-
-    currentRoom && getMessages();
-  }, [currentRoom]);
-
   // TRIGGERED ON RECEIVER'S SIDE WHEN INSTANT MESSAGE ARRIVES AND INITIATES A CONVERSATION (FIRST MESSAGE)
   useEffect(() => {
     //bad - find another way
@@ -223,44 +272,6 @@ const ChatPage = ({ onUserChangeState }) => {
       getRooms();
     }
   }, [instantMessage, rooms]);
-
-  /*TRIGGERED ON USER LOGS IN TO FETCH UNREAD MESSAGES */
-  useEffect(() => {
-    const getUnseenMessages = async () => {
-      try {
-        const { data } = await axios.get(
-          `${API_URL}/chat/getUnseenMessages/${currentUser._id}`,
-          getAuthHeaders()
-        );
-        setUnseenMessages(data);
-      } catch (error) {
-        alert("Unable to fetch unread messages status...");
-      }
-    };
-    currentUser && getUnseenMessages();
-  }, [currentUser]);
-
-  /*UPDATE SEEN MESSAGES STATUS*/
-  const updateMessagesStatus = async (roomId) => {
-    try {
-      //update messages status in current room
-      await axios.put(
-        `${API_URL}/chat/updateMessagesStatus/${roomId}`,
-        null,
-        getAuthHeaders()
-      );
-
-      //filter the seen messages from the unseenMessages array
-      const updatedUnseenMessages = unseenMessages.filter(
-        (message) => message.roomId !== roomId
-      );
-      // Update unseenMessages array
-      setUnseenMessages(updatedUnseenMessages);
-    } catch (error) {
-      alert("Error updating message statuses");
-      console.error(error);
-    }
-  };
 
   return (
     <>
