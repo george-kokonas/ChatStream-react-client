@@ -1,4 +1,4 @@
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
 import API_URL from "../../../helpers/config";
@@ -12,13 +12,18 @@ const Room = ({
   room,
   currentRoom,
   messagePreview,
+  unseenMessages,
 }) => {
   const [friend, setFriend] = useState(null);
   const [preview, setPreview] = useState([]);
 
-
   const listItemClassname =
     currentRoom?._id === room?._id ? `${styles.currentRoom}` : `${""}`;
+
+  //proccess preview message
+  useEffect(() => {
+    messagePreview.length && proccessMessage(messagePreview[0]);
+  }, [messagePreview]);
 
   //PROCESS LAST MESSAGE
   const proccessMessage = (message) => {
@@ -35,11 +40,6 @@ const Room = ({
       createdAt,
     });
   };
-
-  //proccess preview message
-  useEffect(() => {
-    messagePreview.length && proccessMessage(messagePreview[0]);
-  }, [messagePreview]);
 
   //FIND DATA OF THE OTHER PARTICIPANT TO RENDER USERNAME IN CONVERSATIONS CARD
   useEffect(() => {
@@ -85,6 +85,7 @@ const Room = ({
         </div>
         <div className={styles.rigthSideContainer}>
           <span className={`${styles.unreadCount} badge bg-danger float-end`}>
+            {unseenMessages?.length > 0 && unseenMessages?.length}
           </span>
           <p className='small text-muted mb-1'>
             <CustomTimeAgo date={preview.createdAt} />

@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 55vh;
+  width: 100vw;
+  padding-top: 4vh;
+}
+.container .inputWrapper {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 9vh;
+}
+.container .inputWrapper .errorMessage {
+  max-width: 72vw;
+  font-weight: 400;
+  text-align: center;
+  font-size: 15px;
+  color: #ffbf00;
+  opacity: 1;
+}
+.container .buttonContainer {
+  text-align: center;
+  position: fixed;
+  bottom: 22vh;
+}
+.container .buttonContainer .accountText {
+  color: #e3dfdf;
+}
+.container .buttonContainer .accountLink {
+  cursor: pointer;
+  color: #243796;
+}/*# sourceMappingURL=formStyles.module.css.map */

@@ -27,7 +27,7 @@ const ChatPage = ({ onUserChangeState }) => {
   const [messagesPreview, setMessagesPreview] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [navSelection, setNavSelection] = useState("");
-  const [hiddenElement, setHiddentElement] = useState(false);
+  const [unseenMessages, setUnseenMessages] = useState([]);
 
   const socket = useRef();
 
@@ -70,6 +70,8 @@ const ChatPage = ({ onUserChangeState }) => {
         isSeen: data.isSeen,
         createdAt: data.createdAt,
       });
+      setMessages((prev) => [...prev, data]);
+      setUnseenMessages((prev) => [...prev, data]);
     });
 
     // unsubscribe from event
@@ -182,6 +184,7 @@ const ChatPage = ({ onUserChangeState }) => {
 
   /*GET MESSAGES FROM SELECTED ROOM*/
   useEffect(() => {
+    //get messages for specific room
     const getMessages = async () => {
       try {
         const { data } = await axios.get(
@@ -194,24 +197,14 @@ const ChatPage = ({ onUserChangeState }) => {
         console.log(error);
       }
     };
+
     currentRoom && getMessages();
   }, [currentRoom]);
 
-  /*TRIGGERED WHEN INSTANT MESSAGE ARRIVES OR USER SELECTS A ROOM*/
-  useEffect(() => {
-    if (
-      instantMessage &&
-      currentRoom?.members?.includes(instantMessage.senderId)
-    ) {
-      setMessages((prev) => [...prev, instantMessage]);
-    }
-  }, [instantMessage, currentRoom]);
-
   // TRIGGERED ON RECEIVER'S SIDE WHEN INSTANT MESSAGE ARRIVES AND INITIATES A CONVERSATION (FIRST MESSAGE)
   useEffect(() => {
+    //bad - find another way
     if (!instantMessage) return;
-
-    // Search if conversation already exists
     const roomExists = rooms.find((room) => room._id === instantMessage.roomId);
 
     const getRooms = async () => {
@@ -231,25 +224,59 @@ const ChatPage = ({ onUserChangeState }) => {
     }
   }, [instantMessage, rooms]);
 
+  /*TRIGGERED ON USER LOGS IN TO FETCH UNREAD MESSAGES */
+  useEffect(() => {
+    const getUnseenMessages = async () => {
+      try {
+        const { data } = await axios.get(
+          `${API_URL}/chat/getUnseenMessages/${currentUser._id}`,
+          getAuthHeaders()
+        );
+        setUnseenMessages(data);
+      } catch (error) {
+        alert("Unable to fetch unread messages status...");
+      }
+    };
+    currentUser && getUnseenMessages();
+  }, [currentUser]);
+
+  /*UPDATE SEEN MESSAGES STATUS*/
+  const updateMessagesStatus = async (roomId) => {
+    try {
+      //update messages status in current room
+      await axios.put(
+        `${API_URL}/chat/updateMessagesStatus/${roomId}`,
+        null,
+        getAuthHeaders()
+      );
+
+      //filter the seen messages from the unseenMessages array
+      const updatedUnseenMessages = unseenMessages.filter(
+        (message) => message.roomId !== roomId
+      );
+      // Update unseenMessages array
+      setUnseenMessages(updatedUnseenMessages);
+    } catch (error) {
+      alert("Error updating message statuses");
+      console.error(error);
+    }
+  };
+
   return (
     <>
       {/* SIDEBAR */}
       {currentUser && (
         <div className={styles.container}>
-
           <SideNav
             setNavSelection={(selection) => setNavSelection(selection)}
             navSelection={navSelection}
             setCurrentRoom={(selection) => setCurrentRoom(selection)}
-            setHiddentElement={() => setHiddentElement(false)}
-            hiddentElement={hiddenElement}
             currentUser={currentUser}
             onUserChangeState={onUserChangeState}
             socket={socket.current}
           />
 
           <div className={styles.wrapper}>
-
             {/* USERS */}
             {navSelection === "users" && (
               <div className={styles.usersListContainer}>
@@ -261,7 +288,6 @@ const ChatPage = ({ onUserChangeState }) => {
                   setRooms={(newRoom) => setRooms([...rooms, newRoom])}
                   setCurrentRoom={(room) => setCurrentRoom(room)}
                   setNavSelection={() => setNavSelection("conversations")}
-                  setHiddenElement={() => setHiddentElement(true)}
                 />
               </div>
             )}
@@ -270,19 +296,16 @@ const ChatPage = ({ onUserChangeState }) => {
             {navSelection === "conversations" && (
               <div className={styles.chatWrapper}>
                 {/* ROOMS LIST*/}
-                <div
-                  className={` ${styles.roomsContainer} ${
-                    hiddenElement ? styles.isHidden : ""
-                  } `}
-                >
+                <div className={styles.roomsContainer}>
                   <Rooms
                     currentUser={currentUser}
                     rooms={rooms}
                     currentRoom={currentRoom}
                     setCurrentRoom={(room) => setCurrentRoom(room)}
                     setNavSelection={() => setNavSelection("conversations")}
-                    setHiddentElement={() => setHiddentElement(true)}
                     messagesPreview={messagesPreview}
+                    unseenMessages={unseenMessages}
+                    updateMessagesStatus={updateMessagesStatus}
                   />
                 </div>
 
@@ -294,7 +317,9 @@ const ChatPage = ({ onUserChangeState }) => {
                         currentUser={currentUser}
                         allUsers={allUsers}
                         currentRoom={currentRoom}
-                        messages={messages}
+                        messages={messages.filter(
+                          (message) => message.roomId === currentRoom?._id
+                        )}
                       />
                     </div>
 

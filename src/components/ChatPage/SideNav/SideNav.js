@@ -15,8 +15,6 @@ const SideNav = ({
   setNavSelection,
   navSelection,
   setCurrentRoom,
-  setHiddentElement,
-  hiddenElement,
   currentUser,
   onUserChangeState,
   socket,
@@ -51,8 +49,6 @@ const SideNav = ({
         <MenuItem
           className={styles.navItem}
           onClick={() => {
-            //leave from profile page only with X btn
-            if (navSelection === "profile") return;
             setNavSelection("users");
             setCurrentRoom(null);
           }}
@@ -68,14 +64,8 @@ const SideNav = ({
         <MenuItem
           className={styles.navItem}
           onClick={() => {
-            if (navSelection === "profile") return;
-
-            if (!hiddenElement) {
-              setHiddentElement();
-            }
-
-            setCurrentRoom(null);
             setNavSelection("conversations");
+            setCurrentRoom(null);
           }}
         >
           <FontAwesomeIcon className={styles.icon} icon={faMessage} size='xl' />

@@ -7,18 +7,21 @@ const Rooms = ({
   currentRoom,
   setCurrentRoom,
   setNavSelection,
-  setHiddentElement,
   messagesPreview,
+  unseenMessages,
+  updateMessagesStatus,
 }) => {
+
+
   return (
     <div>
       {rooms.length > 0 &&
         rooms.map((room) => (
           <div
             onClick={() => {
-              setCurrentRoom(room);
               setNavSelection();
-              setHiddentElement();
+              setCurrentRoom(room);
+              updateMessagesStatus(room._id);
             }}
             key={room._id}
           >
@@ -29,6 +32,10 @@ const Rooms = ({
               messagePreview={messagesPreview.filter(
                 (message) => message?.roomId === room?._id
               )}
+              unseenMessages={unseenMessages.filter(
+                (message) => message.roomId === room._id
+              )}
+            
             />
           </div>
         ))}

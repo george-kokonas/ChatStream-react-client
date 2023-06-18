@@ -1,0 +1,29 @@
+.roomItem {
+  background-color: #fbfbfb;
+  list-style: none;
+  padding: 2%;
+  border-bottom: 1px solid rgb(204, 204, 204);
+}
+
+.currentRoom {
+  background-color: #a7c3db;
+}
+
+.card {
+  margin-bottom: 0;
+  color: rgb(17, 22, 20);
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+.rigthSideContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 1vh;
+}
+.rigthSideContainer .unreadCount {
+  width: -moz-fit-content;
+  width: fit-content;
+  align-self: end;
+}/*# sourceMappingURL=Rooms.module.css.map */

@@ -1,0 +1,112 @@
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(126, 149, 169);
+}
+.container .wrapper {
+  display: flex;
+  margin: auto;
+  height: 100%;
+  width: 100%;
+}
+.container .wrapper .usersListContainer {
+  border-radius: 40px 0 0 15px;
+  margin: auto;
+  max-height: 85%;
+  width: 90%;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #cccccc #f0f0f0;
+}
+.container .wrapper .usersListContainer::-webkit-scrollbar {
+  width: 10px;
+}
+.container .wrapper .usersListContainer::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+.container .wrapper .usersListContainer::-webkit-scrollbar-thumb {
+  background-color: #cccccc;
+  border-radius: 5px;
+}
+@media (min-width: 768px) {
+  .container .wrapper .usersListContainer {
+    width: 50%;
+    max-width: 500px;
+    margin: auto;
+  }
+}
+.container .wrapper .chatWrapper {
+  display: flex;
+  width: 100%;
+}
+.container .wrapper .chatWrapper .roomsContainer {
+  border-radius: 40px 0 0 15px;
+  margin: auto;
+  max-height: 85%;
+  width: 90%;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #cccccc #f0f0f0;
+}
+.container .wrapper .chatWrapper .roomsContainer::-webkit-scrollbar {
+  width: 10px;
+}
+.container .wrapper .chatWrapper .roomsContainer::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+.container .wrapper .chatWrapper .roomsContainer::-webkit-scrollbar-thumb {
+  background-color: #cccccc;
+  border-radius: 5px;
+}
+@media (min-width: 768px) {
+  .container .wrapper .chatWrapper .roomsContainer {
+    border-radius: 0;
+    margin: 0;
+    width: 25%;
+    max-height: 100%;
+  }
+}
+.container .wrapper .chatWrapper .conversationWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 80%;
+}
+@media (max-width: 767px) {
+  .container .wrapper .chatWrapper .conversationWrapper {
+    width: 100%;
+    height: 100vh;
+    margin: auto;
+  }
+}
+.container .wrapper .chatWrapper .conversationWrapper .messages {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100vh;
+}
+@media (max-width: 767px) {
+  .container .wrapper .chatWrapper .conversationWrapper .messages {
+    max-height: 85vh;
+  }
+}
+@media (min-width: 768px) {
+  .container .wrapper .chatWrapper .conversationWrapper .messages {
+    height: 100vh;
+  }
+}
+.container .wrapper .chatWrapper .conversationWrapper .typingIndicator {
+  height: 25px;
+  color: #fbfbfb;
+  font-style: italic;
+  opacity: 70%;
+}
+.container .wrapper .chatWrapper .conversationWrapper .inputs {
+  width: 100%;
+  height: auto;
+}
+.container .profile {
+  margin: auto;
+  width: 80%;
+  height: 80%;
+}/*# sourceMappingURL=ChatPage.module.css.map */

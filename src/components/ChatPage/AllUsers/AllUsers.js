@@ -13,7 +13,6 @@ const AllUsers = ({
   setRooms,
   setCurrentRoom,
   setNavSelection,
-  setHiddenElement,
 }) => {
   const newRoomHandler = async (selectedUser) => {
     //prevent user from starting a conversation with himself
@@ -26,7 +25,6 @@ const AllUsers = ({
       if (rooms[i].members.includes(selectedUser._id)) {
         setNavSelection();
         setCurrentRoom(rooms[i]);
-        setHiddenElement();
         return;
       }
     }
@@ -52,9 +50,7 @@ const AllUsers = ({
 
       //open conversations list
       setNavSelection();
-
-      //hide conversations list on small screens
-      setHiddenElement();
+      
     } catch (error) {
       console.log(error);
       alert("Unable to start new conversation...");

@@ -1,0 +1,29 @@
+.container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(126, 149, 169);
+}
+.container .contentContainer {
+  width: 100vw;
+}
+.container .contentContainer .topContainer .logoWrapper {
+  display: flex;
+  justify-content: center;
+  height: 30vh;
+}
+.container .contentContainer .topContainer .logoWrapper .logo {
+  padding: 3vh;
+}
+.container .contentContainer .topContainer .formContainer {
+  height: 55vh;
+  width: 100vw;
+  padding-top: 5vh;
+}
+.container .contentContainer .footerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 15vh;
+  align-items: center;
+}/*# sourceMappingURL=HomePage.module.css.map */

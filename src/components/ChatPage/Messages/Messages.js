@@ -5,6 +5,7 @@ import "./Messages.css";
 
 const Messages = ({ currentUser, allUsers, currentRoom, messages }) => {
   const [friend, setFriend] = useState(null);
+
   const scrollToEnd = useRef();
 
   useEffect(() => {
@@ -23,17 +24,17 @@ const Messages = ({ currentUser, allUsers, currentRoom, messages }) => {
 
   return (
     <div>
-      { messages.map((msg, index) => (
-          <div key={index} ref={scrollToEnd}>
-            <Message
-              currentUser={currentUser}
-              friend={friend}
-              allUsers={allUsers}
-              message={msg}
-              sentByMe={msg.senderId === currentUser._id}
-            />
-          </div>
-        ))}
+      {messages.map((message, index) => (
+        <div key={index} ref={scrollToEnd}>
+          <Message
+            currentUser={currentUser}
+            friend={friend}
+            allUsers={allUsers}
+            message={message}
+            sentByMe={message.senderId === currentUser._id}
+          />
+        </div>
+      ))}
     </div>
   );
 };

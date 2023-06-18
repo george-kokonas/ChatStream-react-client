@@ -1,3 +1,4 @@
+// import { useEffect } from "react";
 import { MDBCard, MDBCardBody, MDBIcon } from "mdb-react-ui-kit";
 import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
 import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
@@ -5,6 +6,7 @@ import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
 import styles from "./Message.module.css"
 
 const Messages = ({ message, sentByMe , currentUser, friend }) => {
+  
   let messageOutput = sentByMe ? (
     <li className='d-flex flex-row-reverse mb-3'>
       <img
