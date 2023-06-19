@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // background-color: rgb(56, 81, 81);
+  background-color: rgb(160, 218, 218);
+  height: 100vh;
+  width: 30%;
+
+  .top {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: auto;
+  }
+
+  .content {
+    border: 1px solid black;
+    flex-grow: 1;
+    width: 100%;
+  }
+}

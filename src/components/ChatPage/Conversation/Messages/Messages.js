@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Message from "./Message/Message";
 
-import "./Messages.css";
+import styles from "./Messages.module.scss";
 
 const Messages = ({ currentUser, allUsers, currentRoom, messages }) => {
   const [friend, setFriend] = useState(null);
@@ -23,7 +23,7 @@ const Messages = ({ currentUser, allUsers, currentRoom, messages }) => {
   }, [messages]);
 
   return (
-    <div>
+    <div className={styles.container}>
       {messages.map((message, index) => (
         <div key={index} ref={scrollToEnd}>
           <Message

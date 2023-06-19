@@ -144,7 +144,7 @@ const SignUp = ({ onUserChangeState, onSetLoading }) => {
         <div className={styles.buttonContainer}>
           <Button
             type='submit'
-            label='log in'
+            label='sign up'
             width='40vw'
             height='4vh'
             responsiveWidth='80vw'

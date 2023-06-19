@@ -1,13 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 
-import SideNav from "./SideNav/SideNav";
-import AllUsers from "./AllUsers/AllUsers";
-import Rooms from "./Rooms/Rooms";
-import Messages from "./Messages/Messages";
-import Inputs from "./Inputs/Inputs";
+import Sidebar from "./Sidebar/Sidebar";
+import Conversation from "./Conversation/Conversation";
 import Profile from "./Profile/Profile";
-import TypingIndicator from "./TypingIndicator/TypingIndicator";
 
 import { initiateSocket, getSocket } from "../helpers/socket";
 import getAuthHeaders from "../helpers/authHeaders";
@@ -26,8 +22,8 @@ const ChatPage = ({ onUserChangeState }) => {
   const [instantMessage, setInstantMessage] = useState(null);
   const [messagesPreview, setMessagesPreview] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [navSelection, setNavSelection] = useState("");
   const [unseenMessages, setUnseenMessages] = useState([]);
+  const [mainWindowContent, setMainWindowContent] = useState([]);
 
   const socket = useRef();
 
@@ -278,98 +274,54 @@ const ChatPage = ({ onUserChangeState }) => {
       {/* SIDEBAR */}
       {currentUser && (
         <div className={styles.container}>
-          <SideNav
-            setNavSelection={(selection) => setNavSelection(selection)}
-            navSelection={navSelection}
-            setCurrentRoom={(selection) => setCurrentRoom(selection)}
+          <Sidebar
             currentUser={currentUser}
+            allUsers={allUsers}
+            onlineUsers={onlineUsers}
+            rooms={rooms}
+            setRooms={(newRoom) => setRooms([...rooms, newRoom])}
+            setCurrentRoom={(room) => setCurrentRoom(room)}
+            currentRoom={currentRoom}
+            messagesPreview={messagesPreview}
+            unseenMessages={unseenMessages}
+            updateMessagesStatus={updateMessagesStatus}
+            setMainWindowContent={setMainWindowContent}
             onUserChangeState={onUserChangeState}
             socket={socket.current}
           />
 
-          <div className={styles.wrapper}>
-            {/* USERS */}
-            {navSelection === "users" && (
-              <div className={styles.usersListContainer}>
-                <AllUsers
-                  currentUser={currentUser}
-                  allUsers={allUsers}
-                  onlineUsers={onlineUsers}
-                  rooms={rooms}
-                  setRooms={(newRoom) => setRooms([...rooms, newRoom])}
-                  setCurrentRoom={(room) => setCurrentRoom(room)}
-                  setNavSelection={() => setNavSelection("conversations")}
-                />
-              </div>
-            )}
-
-            {/* CHAT */}
-            {navSelection === "conversations" && (
-              <div className={styles.chatWrapper}>
-                {/* ROOMS LIST*/}
-                <div className={styles.roomsContainer}>
-                  <Rooms
+          {/* CONVERSATION */}
+          {mainWindowContent === "conversation" && (
+            <>
+              {" "}
+              {currentRoom && (
+                <div className={styles.conversationContainer}>
+                  <Conversation
                     currentUser={currentUser}
-                    rooms={rooms}
+                    allUsers={allUsers}
                     currentRoom={currentRoom}
-                    setCurrentRoom={(room) => setCurrentRoom(room)}
-                    setNavSelection={() => setNavSelection("conversations")}
-                    messagesPreview={messagesPreview}
-                    unseenMessages={unseenMessages}
-                    updateMessagesStatus={updateMessagesStatus}
+                    messages={messages.filter(
+                      (message) => message.roomId === currentRoom?._id
+                    )}
+                    onNewMessage={(data) => setMessages([...messages, data])}
+                    socket={socket.current}
                   />
                 </div>
+              )}
+            </>
+          )}
 
-                {/* CONVERSATION */}
-                {currentRoom && (
-                  <div className={styles.conversationWrapper}>
-                    <div className={styles.messages}>
-                      <Messages
-                        currentUser={currentUser}
-                        allUsers={allUsers}
-                        currentRoom={currentRoom}
-                        messages={messages.filter(
-                          (message) => message.roomId === currentRoom?._id
-                        )}
-                      />
-                    </div>
+          {mainWindowContent === "profile" && (
+            <Profile
+              currentUser={currentUser}
+              setMainWindowContent={setMainWindowContent}
+              setIsLoading={setIsLoading}
+            />
+          )}
 
-                    <div className={styles.typingIndicator}>
-                      <TypingIndicator
-                        currentRoom={currentRoom}
-                        socket={socket.current}
-                      />
-                    </div>
-
-                    <div className={styles.inputs}>
-                      <Inputs
-                        currentUser={currentUser}
-                        currentRoom={currentRoom}
-                        socket={socket.current}
-                        onNewMessage={(data) =>
-                          setMessages([...messages, data])
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* PROFILE */}
-            {navSelection === "profile" && (
-              <div className={styles.profile}>
-                <Profile
-                  currentUser={currentUser}
-                  setNavSelection={() => setNavSelection("users")}
-                  onLoading={(state) => setIsLoading(state)}
-                />
-              </div>
-            )}
-          </div>
+          {isLoading && <div className='loader-container' />}
         </div>
       )}
-      {isLoading && <div className='loader-container' />}
     </>
   );
 };

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CustomTimeAgo from "../../CustomTimeAgo/CustomTimeAgo";
-import API_URL from "../../../helpers/config";
-import getAuthHeaders from "../../../helpers/authHeaders";
+import CustomTimeAgo from "../../../../UI/CustomTimeAgo/CustomTimeAgo";
+import API_URL from "../../../../helpers/config";
+import getAuthHeaders from "../../../../helpers/authHeaders";
 
 import styles from "./Rooms.module.scss";
-import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
+import defaultAvatar from "../../../../../assets/defaultAvatar.png";
 
 const Room = ({
   currentUser,
@@ -68,7 +68,7 @@ const Room = ({
       <a href='#!' className='d-flex justify-content-between'>
         <div className='d-flex flex-row'>
           <img
-            src={friend?.profileImage || defaultUserIcon}
+            src={friend?.profileImage || defaultAvatar}
             alt='avatar'
             className='rounded-circle d-flex align-self-center me-3 shadow-1-strong'
             width='50'

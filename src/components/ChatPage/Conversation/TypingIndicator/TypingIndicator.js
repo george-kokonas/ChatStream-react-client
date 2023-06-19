@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+// import styles from "./TypingIndicator.module.scss"
 
 const TypingIndicator = ({ currentRoom, socket }) => {
   const [isTyping, setIsTyping] = useState({
@@ -8,6 +9,7 @@ const TypingIndicator = ({ currentRoom, socket }) => {
 
   useEffect(() => {
     const handleIsTyping = ({ currentRoomId, senderUsername }) => {
+
       //allow typing indicator to appears in the correct conversation
       if (!currentRoom || currentRoomId !== currentRoom._id) return;
 

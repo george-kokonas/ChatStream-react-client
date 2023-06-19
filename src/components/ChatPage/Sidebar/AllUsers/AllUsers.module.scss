@@ -1,0 +1,47 @@
+.container {
+
+  
+  .usersList{
+    
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #cccccc #f0f0f0;
+    
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background-color: #f0f0f0;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background-color: #cccccc;
+      border-radius: 5px;
+    }
+    
+    @media (min-width: 768px) {
+      border-radius: 0 0 12px 12px  ;
+    }
+    
+  }
+  
+  // overflow-y: scroll;
+  // scrollbar-width: 10px;
+  // scrollbar-color: #cccccc #f0f0f0;
+
+  // &::-webkit-scrollbar {
+  //   width: 10px;
+  // }
+
+  // &::-webkit-scrollbar-track {
+  //   background-color: #f0f0f0;
+  // }
+
+  // &::-webkit-scrollbar-thumb {
+  //   background-color: #cccccc;
+  //   border-radius: 5px;
+  // }
+
+
+}

@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
-import defaultUserIcon from "../../../../assets/defaultUserIcon.png";
+import defaultAvatar from "../../../../../assets/defaultAvatar.png";
 import styles from "./User.module.scss";
 
 const User = ({ user, isOnline, newRoomHandler }) => {
@@ -12,7 +12,7 @@ const User = ({ user, isOnline, newRoomHandler }) => {
         <a href='#!' className='d-flex justify-content-between'>
           <div className='d-flex flex-row'>
             <img
-              src={user.profileImage || defaultUserIcon}
+              src={user.profileImage || defaultAvatar}
               alt='avatar'
               className='rounded-circle d-flex align-self-center me-3 shadow-1-strong'
               width='60'

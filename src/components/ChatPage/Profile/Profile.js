@@ -9,7 +9,7 @@ import styles from "./Profile.module.scss";
 import addProfilePic from "../../../assets/addProfileImage.png";
 import "../../Loader/Loader.css";
 
-const Profile = ({ setNavSelection, currentUser, onLoading }) => {
+const Profile = ({ currentUser, setMainWindowContent, setIsLoading }) => {
   const [image, setImage] = useState("");
   const [userInfo, setUserInfo] = useState("");
 
@@ -40,7 +40,7 @@ const Profile = ({ setNavSelection, currentUser, onLoading }) => {
     if (!image) return;
 
     try {
-      onLoading(true);
+      setIsLoading(true);
       await axios.post(
         `${API_URL}/profile/setImage/`,
         { userId: currentUser._id, profileImage: image },
@@ -59,7 +59,7 @@ const Profile = ({ setNavSelection, currentUser, onLoading }) => {
       alert("Unable to upload Image...");
     }
     setImage("");
-    onLoading(false);
+    setIsLoading(false);
   };
 
   const submitInfoHandler = async (event) => {
@@ -67,7 +67,7 @@ const Profile = ({ setNavSelection, currentUser, onLoading }) => {
     if (!userInfo) return;
 
     try {
-      onLoading(true);
+      setIsLoading(true);
       await axios.post(
         `${API_URL}/profile/setInfo/`,
         {
@@ -84,26 +84,22 @@ const Profile = ({ setNavSelection, currentUser, onLoading }) => {
       console.log(error);
     }
     setUserInfo("");
-    onLoading(false);
+    setIsLoading(false);
   };
 
   return (
     <>
       {/* PROFILE WINDOW CONTAINER */}
       <div className={styles.profileContainer}>
-
         {/* USER UPLOAD PROFILE IMAGE CONTAINER */}
         <div className={styles.uploadImageContainer}>
-         
           {/* close button */}
           <div className={styles.closeBtn}>
             <button
               type='button'
               className='btn-close btn-close-black '
               aria-label='Close'
-              onClick={() => {
-                setNavSelection();
-              }}
+              onClick={() => setMainWindowContent("")}
             />
           </div>
 
@@ -158,7 +154,7 @@ const Profile = ({ setNavSelection, currentUser, onLoading }) => {
 
             <div
               onClick={submitInfoHandler}
-              className= {`${styles.infoSubmitBtn} d-flex justify-content-center `}
+              className={`${styles.infoSubmitBtn} d-flex justify-content-center `}
             >
               <MDBBtn rounded className='my-2 ' color='dark'>
                 SUBMIT

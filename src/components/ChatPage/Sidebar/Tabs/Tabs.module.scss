@@ -1,0 +1,41 @@
+$tabBackgroundColor: #ccc;
+$activeTabBackgroundColor: #fff;
+$hoveredTabBackgroundColor: #ddd;
+$tabWidth: 6vw;
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    border-bottom: 1px solid grey;
+
+    .tab {
+      width: $tabWidth;
+      padding: 5px 10px;
+      margin-right: 5px;
+      // background-color: $tabBackgroundColor;
+      cursor: pointer;
+      border-bottom: 2px solid black;
+      position: relative;
+
+      &:hover {
+        background-color: $hoveredTabBackgroundColor;
+      }
+
+      &.active {
+        background-color: $activeTabBackgroundColor;
+        font-weight: bold;
+        border-bottom: 2px solid $activeTabBackgroundColor;
+
+        &:after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 2px;
+          background-color: $activeTabBackgroundColor;
+        }
+      }
+    }
+  }

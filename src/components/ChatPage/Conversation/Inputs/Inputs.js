@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 
-import getAuthHeaders from "../../helpers/authHeaders";
-import API_URL from "../../helpers/config";
+import getAuthHeaders from "../../../helpers/authHeaders";
+import API_URL from "../../../helpers/config";
 
 import "./Inputs.css";
 

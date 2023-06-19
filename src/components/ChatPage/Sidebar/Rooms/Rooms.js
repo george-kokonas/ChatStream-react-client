@@ -6,22 +6,20 @@ const Rooms = ({
   rooms,
   currentRoom,
   setCurrentRoom,
-  setNavSelection,
   messagesPreview,
   unseenMessages,
   updateMessagesStatus,
+  setMainWindowContent
 }) => {
-
-
   return (
     <div>
       {rooms.length > 0 &&
         rooms.map((room) => (
           <div
             onClick={() => {
-              setNavSelection();
               setCurrentRoom(room);
               updateMessagesStatus(room._id);
+              setMainWindowContent("conversation")
             }}
             key={room._id}
           >
@@ -35,7 +33,6 @@ const Rooms = ({
               unseenMessages={unseenMessages.filter(
                 (message) => message.roomId === room._id
               )}
-            
             />
           </div>
         ))}
