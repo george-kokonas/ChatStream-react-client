@@ -8,7 +8,7 @@ import ChatPage from "../ChatPage/ChatPage";
 import { MDBBtn, MDBIcon } from "mdb-react-ui-kit";
 import styles from "./HomePage.module.scss";
 import logo from "../../assets/logo.png";
-import "../../components/Loader/Loader.css";
+import "../UI/Loader/Loader.css";
 
 const HomePage = ({ onUserChangeState }) => {
   const [isLoading, setIsLoading] = useState(false);

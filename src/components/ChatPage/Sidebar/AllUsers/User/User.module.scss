@@ -1,6 +1,32 @@
 .userItem{
-    background-color: rgb(238, 235, 231);
+    background-color: #fbfbfb;
     list-style: none;
     padding: 2%;
     border-bottom: 1px solid rgb(204, 204, 204);
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: space-around;
+    // background-color: rgb(253, 253, 253);
+    // max-width: 100%;
+    // list-style: none;
+
+    // max-height: 10vh;
+
+    &:hover{
+        background-color: #bad0f6;
+    }
+
+    .username{
+        flex: 1;
+        padding: 0;
+        margin: 0;
+        color: #2474ff;
+        font-weight: 900;
+        font-size: 22px;
+    }
+    
+    .profileInfo{
+        font-weight: 500;
+        color: black;
+    }
 }

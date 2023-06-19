@@ -4,7 +4,7 @@ import CustomTimeAgo from "../../../../UI/CustomTimeAgo/CustomTimeAgo";
 import API_URL from "../../../../helpers/config";
 import getAuthHeaders from "../../../../helpers/authHeaders";
 
-import styles from "./Rooms.module.scss";
+import styles from "./Room.module.scss";
 import defaultAvatar from "../../../../../assets/defaultAvatar.png";
 
 const Room = ({
@@ -65,33 +65,28 @@ const Room = ({
 
   return (
     <li className={`${styles.roomItem} ${listItemClassname}`}>
-      <a href='#!' className='d-flex justify-content-between'>
-        <div className='d-flex flex-row'>
-          <img
-            src={friend?.profileImage || defaultAvatar}
-            alt='avatar'
-            className='rounded-circle d-flex align-self-center me-3 shadow-1-strong'
-            width='50'
-            height='50'
-          />
-          <div className='pt-1'>
-            <p className={`${styles.card} ${styles.card}`}>
-              {friend?.username}
-            </p>
-            <p className='small text-muted'>
-              {preview.text ? preview.text : "no messages yet.."}
-            </p>
-          </div>
+      <div className={styles.leftSide}>
+        <img
+          src={friend?.profileImage || defaultAvatar}
+          alt='avatar'
+          className='rounded-circle d-flex align-self-center shadow-1-strong'
+          width='55'
+        />
+      </div>
+
+      <div className={styles.center}>
+        <div className={styles.username}>{friend?.username}</div>
+        <div className={styles.preview}>{preview.text ? preview.text : "no chat yet.."}</div>
+      </div>
+
+      <div className={styles.rightSide}>
+        <div className={`${styles.unreadCount} badge`}>
+          <CustomTimeAgo date={preview.createdAt} />
         </div>
-        <div className={styles.rigthSideContainer}>
-          <span className={`${styles.unreadCount} badge bg-danger float-end`}>
-            {unseenMessages?.length > 0 && unseenMessages?.length}
-          </span>
-          <p className='small text-muted mb-1'>
-            <CustomTimeAgo date={preview.createdAt} />
-          </p>
-        </div>
-      </a>
+        <span className={`${styles.unreadCount} badge bg-danger`}>
+          {unseenMessages?.length > 0 && unseenMessages?.length}
+        </span>
+      </div>
     </li>
   );
 };

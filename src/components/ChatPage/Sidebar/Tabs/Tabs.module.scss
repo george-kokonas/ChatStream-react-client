@@ -1,41 +1,43 @@
-$tabBackgroundColor: #ccc;
-$activeTabBackgroundColor: #fff;
-$hoveredTabBackgroundColor: #ddd;
-$tabWidth: 6vw;
+// $tabBackgroundColor: #ccc;
+// $activeTabBackgroundColor: #b5b3b3;
+$hoveredTabBackgroundColor: #646161;
+$tabWidth: fit-content;
 
 .tabs {
-    display: flex;
-    justify-content: space-around;
-    padding: 10px;
-    border-bottom: 1px solid grey;
+  display: flex;
+  justify-content: center;
+  // text-align: center;
+  padding: 10px;
 
-    .tab {
-      width: $tabWidth;
-      padding: 5px 10px;
-      margin-right: 5px;
-      // background-color: $tabBackgroundColor;
-      cursor: pointer;
-      border-bottom: 2px solid black;
-      position: relative;
+  .tab {
+    position: relative;
+    box-shadow: 0 3px rgba(0, 0, 0, 0.1);
+    width: $tabWidth;
+    margin: 0 8%;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(241, 238, 238);
+    cursor: pointer;
 
-      &:hover {
-        background-color: $hoveredTabBackgroundColor;
-      }
+    &:hover {
+      background-color: $hoveredTabBackgroundColor;
+    }
 
-      &.active {
-        background-color: $activeTabBackgroundColor;
-        font-weight: bold;
-        border-bottom: 2px solid $activeTabBackgroundColor;
+    &.active {
+      font-size: 18px;
+      font-weight: bolder;
+      color: rgb(255, 246, 246);
+      border-bottom: 2px solid white;
 
-        &:after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          width: 100%;
-          height: 2px;
-          background-color: $activeTabBackgroundColor;
-        }
+      &:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        // background-color: $activeTabBackgroundColor;
       }
     }
   }
+}

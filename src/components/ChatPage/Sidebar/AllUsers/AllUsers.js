@@ -5,7 +5,7 @@ import User from "./User/User";
 import API_URL from "../../../helpers/config";
 import getAuthHeaders from "../../../helpers/authHeaders";
 
-// import styles from "./AllUsers.module.scss";
+import styles from "./AllUsers.module.scss";
 
 const AllUsers = ({
   currentUser,
@@ -57,8 +57,7 @@ const AllUsers = ({
   };
 
   return (
-    <div>
-      <div>
+      <div className={styles.container}>
         {users?.map((user) => (
           <div key={user._id}>
             <User
@@ -73,7 +72,6 @@ const AllUsers = ({
           </div>
         ))}
       </div>
-    </div>
   );
 };
 

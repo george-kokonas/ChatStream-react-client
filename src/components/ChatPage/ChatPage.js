@@ -4,6 +4,7 @@ import axios from "axios";
 import Sidebar from "./Sidebar/Sidebar";
 import Conversation from "./Conversation/Conversation";
 import Profile from "./Profile/Profile";
+import "../UI/Loader/Loader.css"
 
 import { initiateSocket, getSocket } from "../helpers/socket";
 import getAuthHeaders from "../helpers/authHeaders";
@@ -23,7 +24,7 @@ const ChatPage = ({ onUserChangeState }) => {
   const [messagesPreview, setMessagesPreview] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [unseenMessages, setUnseenMessages] = useState([]);
-  const [mainWindowContent, setMainWindowContent] = useState([]);
+  const [mainWindowContent, setMainWindowContent] = useState("");
 
   const socket = useRef();
 
@@ -319,9 +320,9 @@ const ChatPage = ({ onUserChangeState }) => {
             />
           )}
 
-          {isLoading && <div className='loader-container' />}
         </div>
       )}
+      {isLoading && <div className='loader-container' />}
     </>
   );
 };

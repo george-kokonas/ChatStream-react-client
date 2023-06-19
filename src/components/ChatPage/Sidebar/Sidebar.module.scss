@@ -1,23 +1,58 @@
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  // background-color: rgb(56, 81, 81);
-  background-color: rgb(160, 218, 218);
-  height: 100vh;
-  width: 30%;
+  justify-content: space-between;
+  // align-items: center;
+  background-color: rgb(126, 149, 169);
+  background-color: #ea8959e8;
+  height: auto;
+  width: 24%;
 
+  @media (max-width: 768px) {
+    /* Styles for screens up to 768px width */
+  }
+  
+  @media (min-width: 768px) and (max-width: 1024px) {
+    /* Styles for screens between 769px and 1024px width */
+    width: 34%;
+    
+  }
+  
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    /* Styles for screens larger than 1024px width */
+    width: 30%;
+  }
+  
   .top {
+    border-bottom:  1px solid rgb(254, 248, 233);
     display: flex;
     justify-content: space-around;
     align-items: center;
     width: 100%;
-    height: auto;
+    min-height: 8% ;
+    padding: 2px;
+    
+    @media (max-width: 768px) {
+      // flex-direction: column;
+      // align-items: center;
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      // flex-direction: column;
+      /* Styles for screens between 769px and 1024px width */
+      // width: 30%;
+  
+    }
   }
-
+  
   .content {
-    border: 1px solid black;
     flex-grow: 1;
     width: 100%;
+    overflow-y: auto;
+    
+    @media (max-width: 768px) {
+      // overflow-y: visible;
+    }
   }
+
+
 }

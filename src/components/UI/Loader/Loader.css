@@ -3,7 +3,7 @@
     height: 100vh;
     position: fixed;
     background: rgb(0, 0, 0)
-        url("../../assets/loader.gif") center
+        url("./loader.gif") center
         no-repeat;
     z-index: 1;
 }

@@ -7,7 +7,7 @@ import getAuthHeaders from "../../helpers/authHeaders";
 import { MDBBtn } from "mdb-react-ui-kit";
 import styles from "./Profile.module.scss";
 import addProfilePic from "../../../assets/addProfileImage.png";
-import "../../Loader/Loader.css";
+import "../../UI/Loader/Loader.css";
 
 const Profile = ({ currentUser, setMainWindowContent, setIsLoading }) => {
   const [image, setImage] = useState("");

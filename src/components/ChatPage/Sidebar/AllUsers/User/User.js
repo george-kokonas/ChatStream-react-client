@@ -14,15 +14,15 @@ const User = ({ user, isOnline, newRoomHandler }) => {
             <img
               src={user.profileImage || defaultAvatar}
               alt='avatar'
-              className='rounded-circle d-flex align-self-center me-3 shadow-1-strong'
-              width='60'
+              className='rounded-circle d-flex align-self-center  me-3 shadow-1-strong'
+              width='55'
             />
             <div className='pt-1'>
-              <p className='fw-bold mb-0'>{user.username}</p>
-              <p className='small text-muted'>{user.profileInfo}</p>
+              <p className={styles.username}>{user.username}</p>
+              <p className={styles.profileInfo}>{user.profileInfo}</p>
             </div>
           </div>
-          <p className='small text-muted mb-1'>
+          <p className='small text-muted d-flex align-self-center'>
             <FontAwesomeIcon
               icon={faCircle}
               style={isOnline ? { color: "green" } : { color: "#AA0000" }}

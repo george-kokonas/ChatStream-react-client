@@ -26,16 +26,19 @@ const ProfileButton = ({ currentUser,   setMainWindowContent , onUserChangeState
       <MDBDropdown>
         <MDBDropdownToggle
           tag='a'
-          className='nav-link d-flex align-items-center'
+          className='d-flex align-items-center'
           href='#'
         >
+          <div>
+
           <img
             src={currentUser.profileImage || defaultAvatar}
-            className='rounded-circle'
-            height='50'
+            className= {`${styles.avatar} rounded-circle` }
+            width='46'
             alt='Avatar'
             loading='lazy'
-          />
+            />
+            </div>
         </MDBDropdownToggle>
         <MDBDropdownMenu>
           <MDBDropdownItem onClick={() => setMainWindowContent("profile")}>

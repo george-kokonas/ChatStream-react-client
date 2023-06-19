@@ -3,7 +3,8 @@
   flex-direction: row;
   width: 100vw;
   height: 100vh;
-  background-color: rgb(6, 93, 170);
+  background-color: rgb(255, 255, 255);
+  background-color: rgb(166, 183, 197);
   
   .conversationContainer {
     flex: 1;
@@ -11,18 +12,17 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 20px;
-    background-color: #fff;
     color: #333;
     overflow-y: scroll;
   }
 }
 
 
-  // display: flex;
-  // height: 100vh;
-  // width: 100vw;
-  // background-color: rgba(247, 243, 243, 0.998);
-  // border: 2px solid black;
+// display: flex;
+// height: 100vh;
+// width: 100vw;
+// background-color: rgba(247, 243, 243, 0.998);
+// border: 2px solid black;
 
   // .wrapper {
   //   display: flex;
