@@ -13,9 +13,15 @@
     background-color: #dde7f2;
   }
 
-  .leftSide {
-    margin: 0;
-    align-self: center;
+  .avatar {
+    display: inline-flex;
+    .image {
+      .status {
+        position: relative;
+        bottom: 14px;
+        left: 38px;
+      }
+    }
   }
 
   .center {
