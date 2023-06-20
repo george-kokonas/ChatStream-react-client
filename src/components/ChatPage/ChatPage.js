@@ -41,19 +41,21 @@ const ChatPage = ({ onUserChangeState }) => {
 
   /*ON USER LOGIN, UPDATE ONLINE USERS ARRAY AND GET ONLINE USERS*/
   useEffect(() => {
-    //add user to onlineUsers array on socket server
-    socket.current.emit("addUser", currentUser?._id);
+    if (currentUser) {
+      //add user to onlineUsers array on socket server
+      socket.current.emit("addUser", currentUser?._id);
 
-    //get online users
-    socket.current.on("getOnlineUsers", (users) => {
-      setOnlineUsers(users);
-    });
+      //get online users
+      socket.current.on("getOnlineUsers", (users) => {
+        setOnlineUsers(users);
+      });
+    }
 
     // unsubscribe from event
     return () => {
       socket.current.off("getOnlineUsers");
     };
-  }, [currentUser?._id]);
+  }, [currentUser]);
 
   /*ON USER LOGIN, GET CURRENT USER DATA*/
   useEffect(() => {
