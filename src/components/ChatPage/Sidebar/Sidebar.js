@@ -22,7 +22,7 @@ const Sidebar = ({
   onUserChangeState,
   socket,
 }) => {
-  const [tab, setTab] = useState("rooms");
+  const [tab, setTab] = useState("users");
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredUsers, setFilteredUsers] = useState(allUsers);
 

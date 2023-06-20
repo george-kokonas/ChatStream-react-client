@@ -1,6 +1,16 @@
 .typingIndicator {
-    height: 25px;
-    color: #fbfbfb;
     font-style: italic;
-    opacity: 70%;
+    opacity: 0.5;
+    height: 4vh;
+    margin: 0;
+
+    .indicatorText{
+      margin-bottom: 2px;
+      background-color: #616161;
+      width: fit-content;
+      padding: 4px 8px; 
+      color: aliceblue;
+      border-radius: 4px;
+    
+    }
   }

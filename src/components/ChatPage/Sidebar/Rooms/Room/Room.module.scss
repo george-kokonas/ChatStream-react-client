@@ -9,6 +9,10 @@
   border-bottom: 1px solid rgb(204, 204, 204);
   cursor: pointer;
 
+  &:hover {
+    background-color: #dde7f2;
+  }
+
   .leftSide {
     margin: 0;
     align-self: center;
@@ -16,8 +20,7 @@
 
   .center {
     padding-top: 1px;
-    position: relative;
-    // border-right: 1px solid black;
+    text-align: left;
 
     .username {
       font-size: 22px;
@@ -25,13 +28,12 @@
       font-weight: bolder;
       font-family: "Arial", sans-serif;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-      color: #56a9f1;
+      color: #3395ea;
     }
     .preview {
       font-size: 16px;
       font-style: italic;
       line-height: 1.2;
-      // color: #56a9f1;
       padding-top: 7px;
       font-family: "Arial", sans-serif;
       text-shadow: 1px 1px 2px rgba(216, 187, 187, 0.2);
@@ -58,7 +60,18 @@
 }
 
 .currentRoom {
-  background-color: #a7c3db;
+  background-color: #506f8b;
+  
+  &:hover {
+    background-color: #506f8b;
+  }
+
+  .center {
+    .username {
+      color: #ffffff;
+    }
+    .preview {
+      color: #ffffff;
+    }
+  }
 }
-
-

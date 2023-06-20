@@ -65,6 +65,7 @@ const Room = ({
 
   return (
     <li className={`${styles.roomItem} ${listItemClassname}`}>
+      
       <div className={styles.leftSide}>
         <img
           src={friend?.profileImage || defaultAvatar}

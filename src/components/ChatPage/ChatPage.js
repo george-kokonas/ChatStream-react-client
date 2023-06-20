@@ -4,7 +4,7 @@ import axios from "axios";
 import Sidebar from "./Sidebar/Sidebar";
 import Conversation from "./Conversation/Conversation";
 import Profile from "./Profile/Profile";
-import "../UI/Loader/Loader.css"
+import "../UI/Loader/Loader.css";
 
 import { initiateSocket, getSocket } from "../helpers/socket";
 import getAuthHeaders from "../helpers/authHeaders";
@@ -291,12 +291,10 @@ const ChatPage = ({ onUserChangeState }) => {
             socket={socket.current}
           />
 
-          {/* CONVERSATION */}
-          {mainWindowContent === "conversation" && (
-            <>
-              {" "}
-              {currentRoom && (
-                <div className={styles.conversationContainer}>
+          <div className={styles.mainWindowContainer}>
+            {mainWindowContent === "conversation" && (
+              <>
+                {currentRoom && (
                   <Conversation
                     currentUser={currentUser}
                     allUsers={allUsers}
@@ -307,19 +305,20 @@ const ChatPage = ({ onUserChangeState }) => {
                     onNewMessage={(data) => setMessages([...messages, data])}
                     socket={socket.current}
                   />
-                </div>
-              )}
-            </>
-          )}
+                )}
+              </>
+            )}
 
-          {mainWindowContent === "profile" && (
-            <Profile
-              currentUser={currentUser}
-              setMainWindowContent={setMainWindowContent}
-              setIsLoading={setIsLoading}
-            />
-          )}
+            {mainWindowContent === "profile" && (
+              <Profile
+                currentUser={currentUser}
+                setMainWindowContent={setMainWindowContent}
+                setIsLoading={setIsLoading}
+              />
+            )}
+          </div>
 
+          {/* CONVERSATION */}
         </div>
       )}
       {isLoading && <div className='loader-container' />}
