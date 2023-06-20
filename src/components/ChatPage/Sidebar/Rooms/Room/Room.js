@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import CustomTimeAgo from "../../../../UI/CustomTimeAgo/CustomTimeAgo";
-import API_URL from "../../../../helpers/config";
-import getAuthHeaders from "../../../../helpers/authHeaders";
 
 import styles from "./Room.module.scss";
 import defaultAvatar from "../../../../../assets/defaultAvatar.png";
 
 const Room = ({
-  currentUser,
   room,
+  friend,
   currentRoom,
   messagePreview,
   unseenMessages,
 }) => {
-  const [friend, setFriend] = useState(null);
   const [preview, setPreview] = useState([]);
 
   const listItemClassname =
@@ -41,31 +37,8 @@ const Room = ({
     });
   };
 
-  //FIND DATA OF THE OTHER PARTICIPANT TO RENDER USERNAME IN CONVERSATIONS CARD
-  useEffect(() => {
-    if (room.length === 0) return;
-    const friendId = room.members.find(
-      (memberId) => memberId !== currentUser._id
-    );
-
-    const getFriend = async () => {
-      try {
-        const { data } = await axios.get(
-          `${API_URL}/user/getUser/${friendId}`,
-          getAuthHeaders()
-        );
-        setFriend(data);
-      } catch (error) {
-        console.log(error);
-        alert("Error fetching users...");
-      }
-    };
-    getFriend();
-  }, [currentUser, room]);
-
   return (
     <li className={`${styles.roomItem} ${listItemClassname}`}>
-      
       <div className={styles.leftSide}>
         <img
           src={friend?.profileImage || defaultAvatar}
@@ -77,7 +50,9 @@ const Room = ({
 
       <div className={styles.center}>
         <div className={styles.username}>{friend?.username}</div>
-        <div className={styles.preview}>{preview.text ? preview.text : "no chat yet.."}</div>
+        <div className={styles.preview}>
+          {preview.text ? preview.text : "no chat yet.."}
+        </div>
       </div>
 
       <div className={styles.rightSide}>

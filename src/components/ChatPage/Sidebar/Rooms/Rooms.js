@@ -3,13 +3,14 @@ import Room from "./Room/Room";
 
 const Rooms = ({
   currentUser,
+  friends,
   rooms,
   currentRoom,
   setCurrentRoom,
   messagesPreview,
   unseenMessages,
   updateMessagesStatus,
-  setMainWindowContent
+  setMainWindowContent,
 }) => {
   return (
     <div>
@@ -19,14 +20,16 @@ const Rooms = ({
             onClick={() => {
               setCurrentRoom(room);
               updateMessagesStatus(room._id);
-              setMainWindowContent("conversation")
+              setMainWindowContent("conversation");
             }}
             key={room._id}
           >
             <Room
-              currentUser={currentUser}
               room={room}
               currentRoom={currentRoom}
+              friend={friends.find((friend) =>
+                room.members.includes(friend._id)
+              )}
               messagePreview={messagesPreview.filter(
                 (message) => message?.roomId === room?._id
               )}

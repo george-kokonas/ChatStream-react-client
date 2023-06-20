@@ -22,7 +22,7 @@ const Sidebar = ({
   onUserChangeState,
   socket,
 }) => {
-  const [tab, setTab] = useState("users");
+  const [tab, setTab] = useState("rooms");
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredUsers, setFilteredUsers] = useState(allUsers);
 
@@ -58,6 +58,7 @@ const Sidebar = ({
         {tab === "rooms" && (
           <Rooms
             currentUser={currentUser}
+            friends = {allUsers.filter(user => user._id !== currentUser._id)}
             rooms={rooms}
             currentRoom={currentRoom}
             setCurrentRoom={setCurrentRoom}
