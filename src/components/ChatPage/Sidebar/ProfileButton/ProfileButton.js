@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 
+import Avatar from "../../../UI/Avatar/Avatar";
 import {
   MDBDropdown,
   MDBDropdownMenu,
@@ -8,11 +9,15 @@ import {
   MDBDropdownLink,
 } from "mdb-react-ui-kit";
 
-import defaultAvatar from "../../../../assets/defaultAvatar.png";
 import styles from "./ProfileButton.module.scss";
 
-const ProfileButton = ({ currentUser,   setMainWindowContent , onUserChangeState, socket }) => {
-  const navigate = useNavigate()
+const ProfileButton = ({
+  currentUser,
+  setMainWindowContent,
+  onUserChangeState,
+  socket,
+}) => {
+  const navigate = useNavigate();
 
   const logoutHandler = () => {
     localStorage.removeItem("token");
@@ -30,19 +35,12 @@ const ProfileButton = ({ currentUser,   setMainWindowContent , onUserChangeState
           href='#'
         >
           <div>
-
-          <img
-            src={currentUser.profileImage || defaultAvatar}
-            className= {`${styles.avatar} rounded-circle` }
-            width='46'
-            alt='Avatar'
-            loading='lazy'
-            />
-            </div>
+            <Avatar src={currentUser.profileImage} size='medium' />
+          </div>
         </MDBDropdownToggle>
         <MDBDropdownMenu>
           <MDBDropdownItem onClick={() => setMainWindowContent("profile")}>
-            <MDBDropdownLink href='#' >Set Profile</MDBDropdownLink>
+            <MDBDropdownLink href='#'>Set Profile</MDBDropdownLink>
           </MDBDropdownItem>
           <MDBDropdownItem onClick={() => logoutHandler()}>
             <MDBDropdownLink href='#'>Log Out</MDBDropdownLink>

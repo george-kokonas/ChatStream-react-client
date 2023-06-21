@@ -2,15 +2,15 @@ import React from "react";
 import Room from "./Room/Room";
 
 const Rooms = ({
-  currentUser,
-  friends,
   rooms,
   currentRoom,
-  setCurrentRoom,
+  friends,
+  onlineUsers,
   messagesPreview,
   unseenMessages,
-  updateMessagesStatus,
+  setCurrentRoom,
   setMainWindowContent,
+  updateMessagesStatus,
 }) => {
   return (
     <div>
@@ -30,6 +30,7 @@ const Rooms = ({
               friend={friends.find((friend) =>
                 room.members.includes(friend._id)
               )}
+              onlineUsers={onlineUsers}
               messagePreview={messagesPreview.filter(
                 (message) => message?.roomId === room?._id
               )}

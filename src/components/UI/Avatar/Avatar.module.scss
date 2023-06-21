@@ -1,0 +1,27 @@
+.container {
+  position: relative;
+
+  .avatar {
+    border: 2px double rgb(169, 169, 169);
+    border-radius: 50%;
+    object-fit: contain;
+    object-fit: cover;
+  }
+
+  .statusDot {
+    position: absolute;
+    bottom: 0px;
+    left: 43px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+  }
+  
+  .online {
+    background-color: green;
+  }
+
+  .offline {
+    background-color: rgba(255, 0, 0);
+  }
+}

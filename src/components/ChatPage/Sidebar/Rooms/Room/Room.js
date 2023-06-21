@@ -1,20 +1,30 @@
 import { useEffect, useState } from "react";
 import CustomTimeAgo from "../../../../UI/CustomTimeAgo/CustomTimeAgo";
 
+import Avatar from "../../../../UI/Avatar/Avatar";
 import styles from "./Room.module.scss";
-import defaultAvatar from "../../../../../assets/defaultAvatar.png";
 
 const Room = ({
   room,
-  friend,
   currentRoom,
+  friend,
+  onlineUsers,
   messagePreview,
   unseenMessages,
 }) => {
   const [preview, setPreview] = useState([]);
+  const [isOnlineFriend, setIsOnlineFriend] = useState(false);
 
   const listItemClassname =
     currentRoom?._id === room?._id ? `${styles.currentRoom}` : `${""}`;
+
+  useEffect(() => {
+    for (let i = 0; i < onlineUsers.length; i++) {
+      if (onlineUsers[i].userId === friend._id) {
+        setIsOnlineFriend(true);
+      }
+    }
+  }, [onlineUsers, friend, friend.username]);
 
   //proccess preview message
   useEffect(() => {
@@ -40,11 +50,10 @@ const Room = ({
   return (
     <li className={`${styles.roomItem} ${listItemClassname}`}>
       <div className={styles.leftSide}>
-        <img
-          src={friend?.profileImage || defaultAvatar}
-          alt='avatar'
-          className='rounded-circle d-flex align-self-center shadow-1-strong'
-          width='55'
+        <Avatar
+          src={friend.profileImage}
+          size='large'
+          status={isOnlineFriend ? "online" : "offline"}
         />
       </div>
 
@@ -62,9 +71,18 @@ const Room = ({
         <span className={`${styles.unreadCount} badge bg-danger`}>
           {unseenMessages?.length > 0 && unseenMessages?.length}
         </span>
+
+        <div>{isOnlineFriend}</div>
       </div>
     </li>
   );
 };
 
 export default Room;
+
+// {/* <img
+//   src={friend?.profileImage || defaultAvatar}
+//   alt='avatar'
+//   className='rounded-circle d-flex align-self-center shadow-1-strong'
+//   width='55'
+// /> */}

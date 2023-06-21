@@ -13,15 +13,9 @@
     background-color: #dde7f2;
   }
 
-  .avatar {
-    display: inline-flex;
-    .image {
-      .status {
-        position: relative;
-        bottom: 14px;
-        left: 38px;
-      }
-    }
+  .leftSide {
+    margin: 0;
+    align-self: center;
   }
 
   .center {
