@@ -69,7 +69,13 @@ const Sidebar = ({
         />
       </div>
 
-      <Tabs tab={tab} setTab={setTab} setMainWindowContent={setMainWindowContent} setSearchQuery={setSearchQuery} />
+      <Tabs
+        tab={tab}
+        setTab={setTab}
+        setMainWindowContent={setMainWindowContent}
+        setSearchQuery={setSearchQuery}
+        hasPreviousChats={rooms.length}
+      />
       <div className={styles.content}>
         <div className={styles.wrapper}>
           {tab === "users" && (
