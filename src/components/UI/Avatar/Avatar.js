@@ -11,13 +11,13 @@ const Avatar = ({ src, size, status }) => {
 
   return (
     <div className={styles.container}>
-        <img
-          className= {styles.avatar}
-          src={src || defaultAvatar}
-          style={{ width: imageSize, height: imageSize }}
-          loading="lazy"
-          alt='avatar'
-        />
+      <img
+        className={styles.avatar}
+        src={src || defaultAvatar}
+        style={{ width: imageSize, height: imageSize }}
+        loading='lazy'
+        alt='avatar'
+      />
       {status && <div className={`${styles.statusDot} ${userStatus}`} />}
     </div>
   );

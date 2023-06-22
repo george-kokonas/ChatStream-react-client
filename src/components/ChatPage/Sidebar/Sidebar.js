@@ -45,29 +45,33 @@ const Sidebar = ({
 
       <Tabs tab={tab} setTab={setTab} />
       <div className={styles.content}>
-        {tab === "users" && (
-          <AllUsers
-            currentUser={currentUser}
-            users={searchQuery ? filteredUsers : allUsers}
-            onlineUsers={onlineUsers}
-            rooms={rooms}
-            setRooms={setRooms}
-            setCurrentRoom={setCurrentRoom}
+        <div className={styles.wrapper}>
+          {tab === "users" && (
+            <AllUsers
+              currentUser={currentUser}
+              users={searchQuery ? filteredUsers : allUsers}
+              onlineUsers={onlineUsers}
+              rooms={rooms}
+              setRooms={setRooms}
+              setCurrentRoom={setCurrentRoom}
             />
-            )}
-        {tab === "rooms" && (
-          <Rooms
-          rooms={rooms}
-          currentRoom={currentRoom}
-          friends = {allUsers?.filter(user => user._id !== currentUser._id)}
-          onlineUsers={onlineUsers.filter(user => user.userId !== currentUser._id)}
-          messagesPreview={messagesPreview}
-          unseenMessages={unseenMessages}
-          setCurrentRoom={setCurrentRoom}
-            setMainWindowContent={setMainWindowContent}
-            updateMessagesStatus={updateMessagesStatus}
-          />
-        )}
+          )}
+          {tab === "rooms" && (
+            <Rooms
+              rooms={rooms}
+              currentRoom={currentRoom}
+              friends={allUsers?.filter((user) => user._id !== currentUser._id)}
+              onlineUsers={onlineUsers.filter(
+                (user) => user.userId !== currentUser._id
+              )}
+              messagesPreview={messagesPreview}
+              unseenMessages={unseenMessages}
+              setCurrentRoom={setCurrentRoom}
+              setMainWindowContent={setMainWindowContent}
+              updateMessagesStatus={updateMessagesStatus}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

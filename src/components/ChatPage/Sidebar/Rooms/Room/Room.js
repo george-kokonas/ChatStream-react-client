@@ -49,6 +49,7 @@ const Room = ({
 
   return (
     <li className={`${styles.roomItem} ${listItemClassname}`}>
+      {/* PROFILE AVATAR */}
       <div className={styles.leftSide}>
         <Avatar
           src={friend.profileImage}
@@ -57,6 +58,7 @@ const Room = ({
         />
       </div>
 
+      {/* USERNAME AND LAST MESSAGE PREVIEW */}
       <div className={styles.center}>
         <div className={styles.username}>{friend?.username}</div>
         <div className={styles.preview}>
@@ -64,6 +66,7 @@ const Room = ({
         </div>
       </div>
 
+      {/* UNREAD MESSAGES COUNT AND LAST SENT MESSAGE TIMESTAMP */}
       <div className={styles.rightSide}>
         <div className={`${styles.unreadCount} badge`}>
           <CustomTimeAgo date={preview.createdAt} />

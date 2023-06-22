@@ -16,7 +16,7 @@ const User = ({ user, isOnline, newRoomHandler }) => {
         />
       </div>
 
-        {/* PROFILE USERNAME AND INFO */}
+        {/* USERNAME AND INFO */}
         <div className={styles.center}>
           <div className={styles.username}>{user.username}</div>
           <div className={styles.profileInfo}>{user.profileInfo}</div>
