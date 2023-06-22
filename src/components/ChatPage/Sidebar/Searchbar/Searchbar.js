@@ -5,17 +5,32 @@ const Searchbar = ({
   setFilteredUsers,
   setSearchQuery,
   searchQuery,
+  setFilteredUserNames,
+  friendsUserNames,
+  tab,
 }) => {
-  const handleSearch = (e) => {
+  const handleSearchUser = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
 
     // Filter users based on search query
-    const filteredUserResults = allUsers.filter((user) =>
+    const filteredUsersResults = allUsers.filter((user) =>
       user.username.toLowerCase().includes(query.toLowerCase())
     );
-    setFilteredUsers(filteredUserResults);
+    setFilteredUsers(filteredUsersResults);
   };
+
+  const handleSearchRoom = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+
+    // Filter friends usernames based on search query
+    const filteredFriendsUserNames = friendsUserNames.filter((friend) =>
+      friend.username.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredUserNames(filteredFriendsUserNames);
+  };
+
   return (
     <>
       <input
@@ -23,7 +38,7 @@ const Searchbar = ({
         type='text'
         placeholder='Search...'
         value={searchQuery}
-        onChange={handleSearch}
+        onChange={tab === "users" ? handleSearchUser : handleSearchRoom}
       />
     </>
   );

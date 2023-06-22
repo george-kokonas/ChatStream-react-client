@@ -25,6 +25,28 @@ const Sidebar = ({
   const [tab, setTab] = useState("rooms");
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredUsers, setFilteredUsers] = useState(allUsers);
+  // Search for Chats tab is by friend's username
+  const [filteredUserNames, setFilteredUserNames] = useState(null);
+
+  const filteredRoomsHandler = () => {
+    //return the rooms array unmodified
+    if (!searchQuery) return rooms;
+
+
+    //Will hold the rooms that contains the filtered usernames result
+    let requestedRooms = [];
+
+    //Find another way - Bad O(n^2) complexity
+    for (let i = 0; i < filteredUserNames.length; i++) {
+      for (let j = 0; j < rooms.length; j++) {
+        if (rooms[j].members.includes(filteredUserNames[i]._id)) {
+          requestedRooms.push(rooms[j]);
+        }
+      }
+    }
+    //return the matching rooms
+    return requestedRooms;
+  };
 
   return (
     <div className={styles.container}>
@@ -36,14 +58,19 @@ const Sidebar = ({
           socket={socket}
         />
         <Searchbar
-          setSearchQuery={setSearchQuery}
+          tab={tab}
           searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
           allUsers={allUsers}
           setFilteredUsers={setFilteredUsers}
+          friendsUserNames={allUsers?.filter(
+            (user) => user._id !== currentUser._id
+          )}
+          setFilteredUserNames={setFilteredUserNames}
         />
       </div>
 
-      <Tabs tab={tab} setTab={setTab} />
+      <Tabs tab={tab} setTab={setTab} setSearchQuery={setSearchQuery} />
       <div className={styles.content}>
         <div className={styles.wrapper}>
           {tab === "users" && (
@@ -58,7 +85,7 @@ const Sidebar = ({
           )}
           {tab === "rooms" && (
             <Rooms
-              rooms={rooms}
+              rooms={filteredRoomsHandler()}
               currentRoom={currentRoom}
               friends={allUsers?.filter((user) => user._id !== currentUser._id)}
               onlineUsers={onlineUsers.filter(
