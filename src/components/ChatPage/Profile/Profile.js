@@ -115,7 +115,7 @@ const Profile = ({ currentUser, setMainWindowContent, setIsLoading }) => {
                 event.preventDefault();
                 imageInputRef.current.click();
               }}
-              // width='40%'
+      
             />
           </div>
 

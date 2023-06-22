@@ -12,10 +12,15 @@
   }
 
   .uploadImageContainer {
-    height: 60%;
+    height: 70%;
 
     .imagePreview {
-      height: 30vh;
+      margin: auto;
+      border: 2px double rgb(169, 169, 169);
+      border-radius: 50% ;
+      height: 50vh;
+      width: 50vh;
+      object-fit:cover;
 
       &:hover {
         cursor: pointer;
@@ -27,30 +32,32 @@
     margin: auto;
 
     .userInfoInput {
+      flex: 1;
       margin-bottom: 6%;
       text-align: center;
+      width: 50vw;
       max-width: 60vw;
       height: 7vh;
     }
   }
 }
 
-@media screen and (min-width: 768px) {
-  .profileContainer {
-    .uploadImageContainer {
-      height: 70%;
+// @media screen and (min-width: 768px) {
+//   .profileContainer {
+//     .uploadImageContainer {
+//       height: 70%;
 
-      .imagePreview {
-        margin: auto;
-        height: 44vh;
-      }
-    }
+//       .imagePreview {
+//         margin: auto;
+//         height: 44vh;
+//       }
+//     }
 
-    .userInfoContainer {
-      .userInfoInput {
-        margin-top: 2%;
-        width: 50vw;
-      }
-    }
-  }
-}
+//     .userInfoContainer {
+//       .userInfoInput {
+//         margin-top: 2%;
+//         width: 50vw;
+//       }
+//     }
+//   }
+// }

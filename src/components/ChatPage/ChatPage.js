@@ -24,7 +24,7 @@ const ChatPage = ({ onUserChangeState }) => {
   const [messagesPreview, setMessagesPreview] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [unseenMessages, setUnseenMessages] = useState([]);
-  const [mainWindowContent, setMainWindowContent] = useState("");
+  const [mainWindowContent, setMainWindowContent] = useState("profile");
 
   const socket = useRef();
 

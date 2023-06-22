@@ -22,16 +22,15 @@ const Sidebar = ({
   onUserChangeState,
   socket,
 }) => {
-  const [tab, setTab] = useState("rooms");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredUsers, setFilteredUsers] = useState(allUsers);
   // Search for Chats tab is by friend's username
   const [filteredUserNames, setFilteredUserNames] = useState(null);
+  const [filteredUsers, setFilteredUsers] = useState(allUsers);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [tab, setTab] = useState("rooms");
 
   const filteredRoomsHandler = () => {
     //return the rooms array unmodified
     if (!searchQuery) return rooms;
-
 
     //Will hold the rooms that contains the filtered usernames result
     let requestedRooms = [];
