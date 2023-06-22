@@ -4,6 +4,7 @@ import axios from "axios";
 import Sidebar from "./Sidebar/Sidebar";
 import Conversation from "./Conversation/Conversation";
 import Profile from "./Profile/Profile";
+import Overview from "./Overview/Overview";
 import "../UI/Loader/Loader.css";
 
 import { initiateSocket, getSocket } from "../helpers/socket";
@@ -24,7 +25,7 @@ const ChatPage = ({ onUserChangeState }) => {
   const [messagesPreview, setMessagesPreview] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [unseenMessages, setUnseenMessages] = useState([]);
-  const [mainWindowContent, setMainWindowContent] = useState("profile");
+  const [mainWindowContent, setMainWindowContent] = useState("overview");
 
   const socket = useRef();
 
@@ -317,6 +318,10 @@ const ChatPage = ({ onUserChangeState }) => {
                 setMainWindowContent={setMainWindowContent}
                 setIsLoading={setIsLoading}
               />
+            )}
+
+            {mainWindowContent === "overview" && (
+              <Overview currentUser={currentUser} allUsers = {allUsers} onlineUsers={onlineUsers}/>
             )}
           </div>
 

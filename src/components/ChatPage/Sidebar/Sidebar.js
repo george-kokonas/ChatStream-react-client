@@ -26,7 +26,7 @@ const Sidebar = ({
   const [filteredUserNames, setFilteredUserNames] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState(allUsers);
   const [searchQuery, setSearchQuery] = useState("");
-  const [tab, setTab] = useState("rooms");
+  const [tab, setTab] = useState("users");
 
   const filteredRoomsHandler = () => {
     //return the rooms array unmodified
@@ -69,7 +69,7 @@ const Sidebar = ({
         />
       </div>
 
-      <Tabs tab={tab} setTab={setTab} setSearchQuery={setSearchQuery} />
+      <Tabs tab={tab} setTab={setTab} setMainWindowContent={setMainWindowContent} setSearchQuery={setSearchQuery} />
       <div className={styles.content}>
         <div className={styles.wrapper}>
           {tab === "users" && (

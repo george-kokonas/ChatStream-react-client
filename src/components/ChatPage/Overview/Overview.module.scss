@@ -1,0 +1,38 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    
+    border: 1px solid red;
+    height: 100vh;
+
+    h2{
+        align-self: center;
+        margin-top: 3vh;
+        display: inline-flex;
+        flex-direction: column;
+    }
+
+    .overview{
+        align-self: center;
+        text-align: center;
+        margin-top: 3vh;
+        border: 1px solid black;
+        border-radius: 30px;
+        height: 50vh;
+        max-width: fit-content;
+        padding: 50px;
+        h1{
+            
+        }
+        
+    }
+    
+    .prompt{
+        margin-top: 6vh;
+        font-size: 4vh;
+        text-align: center;
+     
+
+    }
+}

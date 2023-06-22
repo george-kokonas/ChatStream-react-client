@@ -1,6 +1,6 @@
 import styles from "./Tabs.module.scss";
 
-const Tabs = ({ tab, setTab, setSearchQuery }) => {
+const Tabs = ({ tab, setTab, setMainWindowContent, setSearchQuery }) => {
   return (
     <div className={styles.tabs}>
       <div
@@ -16,6 +16,7 @@ const Tabs = ({ tab, setTab, setSearchQuery }) => {
         className={`${styles.tab} ${tab === "users" ? styles.active : ""}`}
         onClick={() => {
           setTab("users");
+          setMainWindowContent("overview")
           setSearchQuery("")
         }}
       >
