@@ -22,7 +22,7 @@ const Messages = ({ message, sentByMe , currentUser, friend }) => {
     </li>
   ) : (
     <li className='d-flex justify-content mb-3'>
-      <Avatar  src={friend.profileImage} size="large"/>
+      <Avatar  src={friend?.profileImage} size="large"/>
   
       <MDBCard className={styles.othersMessage}>
         <MDBCardBody className={styles.message}>

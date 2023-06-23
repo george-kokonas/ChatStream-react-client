@@ -68,12 +68,12 @@ const Room = ({
 
       {/* UNREAD MESSAGES COUNT AND LAST SENT MESSAGE TIMESTAMP */}
       <div className={styles.rightSide}>
-        <div className={`${styles.unreadCount} badge`}>
-          <CustomTimeAgo date={preview.createdAt} />
-        </div>
         <span className={`${styles.unreadCount} badge bg-danger`}>
           {unseenMessages?.length > 0 && unseenMessages?.length}
         </span>
+        <div className={`${styles.unreadCount} badge`}>
+          <CustomTimeAgo date={preview.createdAt} />
+        </div>
 
         <div>{isOnlineFriend}</div>
       </div>
@@ -82,10 +82,3 @@ const Room = ({
 };
 
 export default Room;
-
-// {/* <img
-//   src={friend?.profileImage || defaultAvatar}
-//   alt='avatar'
-//   className='rounded-circle d-flex align-self-center shadow-1-strong'
-//   width='55'
-// /> */}

@@ -30,7 +30,9 @@ const ProfileButton = ({
     <div className={styles.profile}>
       <MDBDropdown>
         <MDBDropdownToggle
+
           tag='a'
+          style={{color: "white"}}
           className='d-flex align-items-center'
           href='#'
         >
