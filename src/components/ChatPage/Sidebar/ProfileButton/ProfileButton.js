@@ -16,6 +16,7 @@ const ProfileButton = ({
   setMainWindowContent,
   onUserChangeState,
   socket,
+  setIsBarVisible,
 }) => {
   const navigate = useNavigate();
 
@@ -30,9 +31,8 @@ const ProfileButton = ({
     <div className={styles.profile}>
       <MDBDropdown>
         <MDBDropdownToggle
-
           tag='a'
-          style={{color: "white"}}
+          style={{ color: "white" }}
           className='d-flex align-items-center'
           href='#'
         >
@@ -41,7 +41,12 @@ const ProfileButton = ({
           </div>
         </MDBDropdownToggle>
         <MDBDropdownMenu>
-          <MDBDropdownItem onClick={() => setMainWindowContent("profile")}>
+          <MDBDropdownItem
+            onClick={() => {
+              setMainWindowContent("profile");
+              setIsBarVisible(true)
+            }}
+          >
             <MDBDropdownLink href='#'>Set Profile</MDBDropdownLink>
           </MDBDropdownItem>
           <MDBDropdownItem onClick={() => logoutHandler()}>

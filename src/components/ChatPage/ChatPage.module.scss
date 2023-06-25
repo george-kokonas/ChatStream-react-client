@@ -2,10 +2,27 @@
   display: grid;
   grid-template-columns: 30% 70%;
   height: 100vh;
+
+
+
+  .toggleButtonContainer {
+    background-color: aliceblue;
+    position: absolute;
+    top: 15px;
+    left: 30px;
+    z-index: 999;
+    // .toggleButton {
+    //   //styles for button
+    // }
+  }
   
   /* Media Query for Mobile Devices */
   @media (max-width: 480px) {
     .sidebar {
+      width: 100vw;
+    }
+
+    .hiddenBar{
       display: none;
     }
 
@@ -17,28 +34,45 @@
   /* Media Query for low resolution Tablets, Ipads */
   @media (min-width: 481px) and (max-width: 767px) {
     .sidebar {
+      width: 100vw;
+    }
+
+    .hiddenBar{
       display: none;
     }
 
     .mainWindowContainer{
       width: 100vw;
     }
+  
   }
 
   /* Media Query for Tablets Ipads portrait mode */
   @media (min-width: 768px) and (max-width: 1024px) {
     grid-template-columns: 40% auto;
+
+    .toggleButtonContainer{
+      display: none;
+    }
    
   }
 
   /* Media Query for Laptops and Desktops */
   @media (min-width: 1025px) and (max-width: 1280px) {
     grid-template-columns: 35% auto;
+
+    .toggleButtonContainer{
+      display: none;
+    }
   
   }
 
   /* Media Query for Large screens */
   @media (min-width: 1281px) {
     grid-template-columns: 26% auto;
+
+    .toggleButtonContainer{
+      display: none;
+    }
   }
 }

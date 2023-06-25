@@ -21,6 +21,7 @@ const Sidebar = ({
   setMainWindowContent,
   onUserChangeState,
   socket,
+  setIsBarVisible,
 }) => {
   // Search for Chats tab is by friend's username
   const [filteredUserNames, setFilteredUserNames] = useState(null);
@@ -55,6 +56,7 @@ const Sidebar = ({
           setMainWindowContent={setMainWindowContent}
           onUserChangeState={onUserChangeState}
           socket={socket}
+          setIsBarVisible={setIsBarVisible}
         />
         <Searchbar
           tab={tab}
@@ -91,17 +93,18 @@ const Sidebar = ({
         )}
         {tab === "rooms" && (
           <Rooms
-            rooms={filteredRoomsHandler()}
-            currentRoom={currentRoom}
-            friends={allUsers?.filter((user) => user._id !== currentUser._id)}
-            onlineUsers={onlineUsers.filter(
-              (user) => user.userId !== currentUser._id
+          rooms={filteredRoomsHandler()}
+          currentRoom={currentRoom}
+          friends={allUsers?.filter((user) => user._id !== currentUser._id)}
+          onlineUsers={onlineUsers.filter(
+            (user) => user.userId !== currentUser._id
             )}
             messagesPreview={messagesPreview}
             unseenMessages={unseenMessages}
             setCurrentRoom={setCurrentRoom}
             setMainWindowContent={setMainWindowContent}
             updateMessagesStatus={updateMessagesStatus}
+            setIsBarVisible={setIsBarVisible}
           />
         )}
       </div>

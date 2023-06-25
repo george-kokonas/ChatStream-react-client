@@ -93,15 +93,15 @@ const Profile = ({ currentUser, setMainWindowContent, setIsLoading }) => {
       <div className={styles.profileContainer}>
         {/* USER UPLOAD PROFILE IMAGE CONTAINER */}
         <div className={styles.uploadImageContainer}>
-          {/* close button */}
-          <div className={styles.closeBtn}>
-            <button
-              type='button'
-              className='btn-close btn-close-black '
-              aria-label='Close'
-              onClick={() => setMainWindowContent("")}
-            />
-          </div>
+          {/* close button
+          // <div className={styles.closeBtn}>
+          //   <button
+          //     type='button'
+          //     className='btn-close btn-close-black '
+          //     aria-label='Close'
+          //     onClick={() => setMainWindowContent("")}
+          //   />
+          // </div> */}
 
           {/* image preview */}
           <div

@@ -26,6 +26,7 @@ const ChatPage = ({ onUserChangeState }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [unseenMessages, setUnseenMessages] = useState([]);
   const [mainWindowContent, setMainWindowContent] = useState("overview");
+  const [isBarVisible, setIsBarVisible] = useState(false);
 
   const socket = useRef();
 
@@ -278,7 +279,11 @@ const ChatPage = ({ onUserChangeState }) => {
       {/* SIDEBAR */}
       {currentUser && (
         <div className={styles.container}>
-          <div className={styles.sidebar}>
+          <div
+            className={
+              !isBarVisible ? `${styles.sidebar}` : `${styles.hiddenBar}`
+            }
+          >
             <Sidebar
               currentUser={currentUser}
               allUsers={allUsers}
@@ -293,45 +298,48 @@ const ChatPage = ({ onUserChangeState }) => {
               setMainWindowContent={setMainWindowContent}
               onUserChangeState={onUserChangeState}
               socket={socket.current}
+              setIsBarVisible={setIsBarVisible}
             />
           </div>
 
-          <div className={styles.mainWindowContainer}>
-            {/* CONVERSATION */}
-            {mainWindowContent === "conversation" && (
-              <>
-                {currentRoom && (
-                  <Conversation
-                    currentUser={currentUser}
-                    allUsers={allUsers}
-                    currentRoom={currentRoom}
-                    messages={messages.filter(
-                      (message) => message.roomId === currentRoom?._id
-                    )}
-                    onNewMessage={(data) => setMessages([...messages, data])}
-                    socket={socket.current}
-                  />
-                )}
-              </>
-            )}
+          {isBarVisible && (
+            <div className={styles.mainWindowContainer}>
+              <button className={styles.toggleButtonContainer} onClick={()=> setIsBarVisible(false)}>toggle</button>
+              {/* CONVERSATION */}
+              {mainWindowContent === "conversation" && (
+                <>
+                  {currentRoom && (
+                    <Conversation
+                      currentUser={currentUser}
+                      allUsers={allUsers}
+                      currentRoom={currentRoom}
+                      messages={messages.filter(
+                        (message) => message.roomId === currentRoom?._id
+                      )}
+                      onNewMessage={(data) => setMessages([...messages, data])}
+                      socket={socket.current}
+                    />
+                  )}
+                </>
+              )}
 
-            {mainWindowContent === "profile" && (
-              <Profile
-                currentUser={currentUser}
-                setMainWindowContent={setMainWindowContent}
-                setIsLoading={setIsLoading}
-              />
-            )}
+          {mainWindowContent === "profile" && (
+            <Profile
+            currentUser={currentUser}
+            setMainWindowContent={setMainWindowContent}
+            setIsLoading={setIsLoading}
+            />
+          )}
+            </div>
+          )}
 
-            {mainWindowContent === "overview" && (
+          {/* {mainWindowContent === "overview" && (
               <Overview
-                currentUser={currentUser}
-                allUsers={allUsers}
-                onlineUsers={onlineUsers}
+              currentUser={currentUser}
+              allUsers={allUsers}
+              onlineUsers={onlineUsers}
               />
-            )}
-
-          </div>
+            )} */}
         </div>
       )}
       {isLoading && <div className='loader-container' />}

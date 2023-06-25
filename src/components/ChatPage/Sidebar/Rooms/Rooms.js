@@ -11,6 +11,7 @@ const Rooms = ({
   setCurrentRoom,
   setMainWindowContent,
   updateMessagesStatus,
+  setIsBarVisible,
 }) => {
   return (
     <>
@@ -21,6 +22,7 @@ const Rooms = ({
               setCurrentRoom(room);
               updateMessagesStatus(room._id);
               setMainWindowContent("conversation");
+              setIsBarVisible(true);
             }}
             key={room._id}
           >
