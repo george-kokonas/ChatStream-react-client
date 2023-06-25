@@ -3,30 +3,27 @@
   grid-template-columns: 30% 70%;
   height: 100vh;
 
-
-
   .toggleButtonContainer {
-    background-color: aliceblue;
     position: absolute;
     top: 15px;
     left: 30px;
     z-index: 999;
-    // .toggleButton {
-    //   //styles for button
-    // }
+    &:hover {
+      cursor: pointer;
+    }
   }
-  
+
   /* Media Query for Mobile Devices */
   @media (max-width: 480px) {
     .sidebar {
       width: 100vw;
     }
 
-    .hiddenBar{
+    .hiddenBar {
       display: none;
     }
 
-    .mainWindowContainer{
+    .mainWindowContainer {
       width: 100vw;
     }
   }
@@ -37,41 +34,38 @@
       width: 100vw;
     }
 
-    .hiddenBar{
+    .hiddenBar {
       display: none;
     }
 
-    .mainWindowContainer{
+    .mainWindowContainer {
       width: 100vw;
     }
-  
   }
 
   /* Media Query for Tablets Ipads portrait mode */
   @media (min-width: 768px) and (max-width: 1024px) {
     grid-template-columns: 40% auto;
 
-    .toggleButtonContainer{
+    .toggleButtonContainer {
       display: none;
     }
-   
   }
 
   /* Media Query for Laptops and Desktops */
   @media (min-width: 1025px) and (max-width: 1280px) {
     grid-template-columns: 35% auto;
 
-    .toggleButtonContainer{
+    .toggleButtonContainer {
       display: none;
     }
-  
   }
 
   /* Media Query for Large screens */
   @media (min-width: 1281px) {
     grid-template-columns: 26% auto;
 
-    .toggleButtonContainer{
+    .toggleButtonContainer {
       display: none;
     }
   }

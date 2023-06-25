@@ -5,7 +5,9 @@ import Sidebar from "./Sidebar/Sidebar";
 import Conversation from "./Conversation/Conversation";
 import Profile from "./Profile/Profile";
 import Overview from "./Overview/Overview";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../UI/Loader/Loader.css";
+import { faSliders } from "@fortawesome/free-solid-svg-icons";
 
 import { initiateSocket, getSocket } from "../helpers/socket";
 import getAuthHeaders from "../helpers/authHeaders";
@@ -274,6 +276,7 @@ const ChatPage = ({ onUserChangeState }) => {
     }
   }, [instantMessage, rooms]);
 
+  console.log(unseenMessages);
   return (
     <>
       {/* SIDEBAR */}
@@ -304,7 +307,18 @@ const ChatPage = ({ onUserChangeState }) => {
 
           {isBarVisible && (
             <div className={styles.mainWindowContainer}>
-              <button className={styles.toggleButtonContainer} onClick={()=> setIsBarVisible(false)}>toggle</button>
+
+              {/* TOGGLE BUTTON */}
+              <div className={styles.toggleButtonContainer}>
+                <FontAwesomeIcon
+                  icon={faSliders}
+                  style={{ color: "#dfdddd" }}
+                  size='2xl'
+                  beat={unseenMessages.length > 0}
+                  onClick={() => setIsBarVisible(false)}
+                />
+              </div>
+      
               {/* CONVERSATION */}
               {mainWindowContent === "conversation" && (
                 <>
@@ -323,13 +337,14 @@ const ChatPage = ({ onUserChangeState }) => {
                 </>
               )}
 
-          {mainWindowContent === "profile" && (
-            <Profile
-            currentUser={currentUser}
-            setMainWindowContent={setMainWindowContent}
-            setIsLoading={setIsLoading}
-            />
-          )}
+              {/* PROFILE */}
+              {mainWindowContent === "profile" && (
+                <Profile
+                  currentUser={currentUser}
+                  setMainWindowContent={setMainWindowContent}
+                  setIsLoading={setIsLoading}
+                />
+              )}
             </div>
           )}
 
