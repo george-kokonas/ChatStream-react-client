@@ -1,20 +1,20 @@
 import Avatar from "../../../../UI/Avatar/Avatar";
 import styles from "./User.module.scss";
 
-
-const User = ({ user, isOnline, newRoomHandler }) => {
+const User = ({ user, isOnline }) => {
   return (
     <>
-      <li className={`${styles.userItem}`} onClick={() => newRoomHandler(user)}>
-
+      <li
+        className={`${styles.userItem}`}
+      >
         {/* PROFILE AVATAR */}
         <div className={styles.leftSide}>
-        <Avatar
-          src={user.profileImage}
-          size='large'
-          status={isOnline ? "online" : "offline"}
-        />
-      </div>
+          <Avatar
+            src={user.profileImage}
+            size='large'
+            status={isOnline ? "online" : "offline"}
+          />
+        </div>
 
         {/* USERNAME AND INFO */}
         <div className={styles.center}>

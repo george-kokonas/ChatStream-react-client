@@ -12,22 +12,29 @@ const AllUsers = ({
   rooms,
   setRooms,
   setCurrentRoom,
+  setMainWindowContent,
+  setIsBarVisible,
+  setTab,
 }) => {
-
   const newRoomHandler = async (selectedUser) => {
     //prevent user from starting a conversation with himself
+
+    console.log("current" , currentUser);
     if (selectedUser._id === currentUser._id) {
       return;
     }
 
+    console.log(1);
     //if no chat create room else navigate to chat with clicked user
     for (let i = 0; i < rooms.length; i++) {
       if (rooms[i].members.includes(selectedUser._id)) {
         setCurrentRoom(rooms[i]);
+        setMainWindowContent("conversation");
+        setTab("rooms");
+        setIsBarVisible(true);
         return;
       }
     }
-
     // create room
     const room = {
       senderId: currentUser._id,
@@ -47,6 +54,12 @@ const AllUsers = ({
       //set new Room as current in ChatPage.js
       setCurrentRoom(data);
 
+      //switch to chats tab
+      setTab("rooms");
+
+      //a
+      setIsBarVisible(true);
+
       //open conversations list
     } catch (error) {
       console.log(error);
@@ -55,21 +68,24 @@ const AllUsers = ({
   };
 
   return (
-      <div>
-        {users?.map((user) => (
-          <div key={user._id}>
-            <User
-              currentUser={currentUser}
-              user={user}
-              rooms={rooms}
-              newRoomHandler={newRoomHandler}
-              isOnline={onlineUsers.some(
-                (onlineUser) => onlineUser.userId === user._id
-              )}
-            />
-          </div>
-        ))}
-      </div>
+    <div>
+      {users?.map((user) => (
+        <div
+          key={user._id}
+          onClick={() => {
+            newRoomHandler(user);
+          }}
+        >
+          <User
+            user={user}
+            rooms={rooms}
+            isOnline={onlineUsers.some(
+              (onlineUser) => onlineUser.userId === user._id
+            )}
+          />
+        </div>
+      ))}
+    </div>
   );
 };
 

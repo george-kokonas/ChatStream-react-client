@@ -89,6 +89,9 @@ const Sidebar = ({
             rooms={rooms}
             setRooms={setRooms}
             setCurrentRoom={setCurrentRoom}
+            setMainWindowContent={setMainWindowContent}
+            setIsBarVisible={setIsBarVisible}
+            setTab={setTab}
           />
         )}
         {tab === "rooms" && (
