@@ -1,19 +1,16 @@
 .roomItem {
   display: grid;
-  grid-template-columns: 0.7fr 1fr 1.3fr;
-  grid-template-rows: 100%;
-  height: 10vh;
-  background-color: rgb(16, 20, 34);
-  
+  grid-template-columns: 0.7fr 1.5fr 1fr;
+  min-width: 25vw;
+  min-height: 100px;
+  background-color: rgb(33, 35, 41);
   list-style: none;
-  margin: 0 20px 15px 20px;
-  
-  padding: 2%;
-  border-radius: 20px;
+  padding: 1%;
+  border-bottom: 1px solid white;
   cursor: pointer;
-  
+
   &:hover {
-    background-color: rgb(30, 35, 57);
+    background-color: rgb(40, 43, 53);
   }
 
   .leftSide {
@@ -22,19 +19,22 @@
   }
 
   .center {
+    display: flex;
+    flex-direction: column;
     padding-top: 1px;
-    text-align: left;
+    text-align: center;
+    justify-content: center;
 
     .username {
       font-size: 22px;
       font-weight: bolder;
       font-family: "Arial", sans-serif;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-      color: #f4f3f3;
+      color: #cbc6c6;
     }
     .preview {
       font-size: 16px;
-      color: #3395ea;
+      color: #3286d0;
       font-style: italic;
       line-height: 1.2;
       padding-top: 7px;
@@ -42,42 +42,36 @@
       text-shadow: 1px 1px 2px rgba(216, 187, 187, 0.2);
     }
   }
-  
+
   .rightSide {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    
-    span {
-      position: relative;
-    }
+    position: relative;
+    text-align: right;
+ 
+    //time ago
     div {
-      margin: 0;
-      position: relative;
-      top: 15px;
-      width: fit-content;
-      background-color: #6b88a2;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      color: #ffffff91;
     }
   }
 }
 
 .currentRoom {
   border: 2px solid rgb(225, 213, 213);
-  background-color: #8ba6c1;
-  background-color: #879fb7;
+  background-color: rgb(60, 66, 86);
   
   &:hover {
-    background-color: #8ba6c1;
+    background-color: rgb(60, 66, 86);
   }
-  
+
   .center {
     .username {
-      color: #f4f3f3;
+      color: #e6e6e6
     }
     .preview {
       font-weight: 600;
-      color: #000000;
-  
+      color: #3286d0;
     }
   }
 }

@@ -2,17 +2,18 @@ import { MDBCard, MDBCardBody, MDBIcon } from "mdb-react-ui-kit";
 import CustomTimeAgo from "../../../../UI/CustomTimeAgo/CustomTimeAgo";
 import Avatar from "../../../../UI/Avatar/Avatar";
 
-import styles from "./Message.module.css"
+import styles from "./Message.module.scss";
 
-const Messages = ({ message, sentByMe , currentUser, friend }) => {
-  
+const Message = ({ message, sentByMe, currentUser, friend }) => {
   let messageOutput = sentByMe ? (
-    <li className='d-flex flex-row-reverse mb-3'>
-      <Avatar src={currentUser.profileImage} size="large"/>  
-    
-      <MDBCard className={styles.myMessage}>
-        <MDBCardBody className={styles.message}>
-          <p className={styles.messageText}>{message.text}</p>
+    <li className={styles.myMessageContainer}>
+      <Avatar
+        src={currentUser.profileImage}
+        size='x-large'
+      />
+       <MDBCard className={`${styles.card} ${styles.myCard}`}>
+        <MDBCardBody className={styles.messageContainer}>
+          <p className={styles.text}>{message.text}</p>
           <p className={`${styles.timeContainer} text-muted`}>
             <MDBIcon className={styles.clockIcon} far icon='clock' />
             <CustomTimeAgo date={message.createdAt} />
@@ -21,12 +22,15 @@ const Messages = ({ message, sentByMe , currentUser, friend }) => {
       </MDBCard>
     </li>
   ) : (
-    <li className='d-flex justify-content mb-3'>
-      <Avatar  src={friend?.profileImage} size="large"/>
-  
-      <MDBCard className={styles.othersMessage}>
-        <MDBCardBody className={styles.message}>
-          <p className={styles.messageText}>{message.text}</p>
+    <li className={styles.friendsMessageContainer}>
+      <Avatar
+        src={friend?.profileImage}
+        size='x-large'
+      />
+
+      <MDBCard className={styles.card}>
+        <MDBCardBody className={styles.messageContainer}>
+          <p className={styles.text}>{message.text}</p>
           <p className={`${styles.timeContainer} text-muted`}>
             <MDBIcon className={styles.clockIcon} far icon='clock' />
             <CustomTimeAgo date={message.createdAt} />
@@ -35,7 +39,7 @@ const Messages = ({ message, sentByMe , currentUser, friend }) => {
       </MDBCard>
     </li>
   );
-  return <>{messageOutput}</>;
+  return <div className={styles.container}>{messageOutput}</div>;
 };
 
-export default Messages;
+export default Message;

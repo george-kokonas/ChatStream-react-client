@@ -1,8 +1,6 @@
 import React from "react";
 import Room from "./Room/Room";
 
-import styles from "./Rooms.module.scss";
-
 const Rooms = ({
   rooms,
   currentRoom,
@@ -19,7 +17,6 @@ const Rooms = ({
       {rooms.length > 0 &&
         rooms.map((room) => (
           <div
-            className={styles.container}
             onClick={() => {
               setCurrentRoom(room);
               updateMessagesStatus(room._id);

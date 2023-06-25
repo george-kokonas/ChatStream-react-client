@@ -4,7 +4,7 @@ import styles from "./Avatar.module.scss";
 
 const Avatar = ({ src, size, status }) => {
   const imageSize =
-    size === "small" ? 47 : size === "medium" ? 54 : size === "large" ? 61 : 47;
+    size === "small" ? 47 : size === "medium" ? 54 : size === "large" ? 61 : size === "x-large" ? 68 : 47;
 
   const userStatus =
     status === "online" ? `${styles.online}` : `${styles.offline}`;

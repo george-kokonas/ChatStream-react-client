@@ -1,3 +1,22 @@
-.container{
-    // border: 1px solid black;
+.container {
+  // display: flex;
+  // flex-direction: column;
+  // width: 100vw;
+
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #cccccc #f0f0f0;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #cccccc;
+    border-radius: 5px;
+  }
 }

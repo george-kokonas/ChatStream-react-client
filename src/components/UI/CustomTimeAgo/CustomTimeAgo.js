@@ -14,7 +14,7 @@ const CustomTimeAgo = ({ date }) => {
     return `${value} ${unit}${value !== 1 ? "s" : ""} ${suffix}`;
   };
 
-  return <TimeAgo date={date} formatter={formatter} />;
+  return <TimeAgo date={date} formatter={formatter} style={{fontSize:"14px"}} />;
 };
 
 export default CustomTimeAgo;

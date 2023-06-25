@@ -5,7 +5,7 @@ import axios from "axios";
 import getAuthHeaders from "../../../helpers/authHeaders";
 import API_URL from "../../../helpers/config";
 
-import "./Inputs.css";
+import styles from "./Inputs.module.scss";
 
 const Inputs = ({ currentUser, currentRoom, socket, onNewMessage }) => {
   const [newMessage, setNewMessage] = useState("");
@@ -68,21 +68,18 @@ const Inputs = ({ currentUser, currentRoom, socket, onNewMessage }) => {
 
   return (
     <form onSubmit={submitMessageHandler}>
-      <div className='text-muted d-flex justify-content-start align-items-center'>
+      <div className={`${styles.container} text-muted `}>
         <input
           onChange={(event) => inputChangeHandler(event)}
           type='text'
           value={newMessage}
-          className='form-control form-control-lg msg-input'
-          placeholder='Type message'
+          className={styles.textField}
+          placeholder='Type a message...'
         />
-        <button
-          type='submit'
-          className='btn btn-link ms=0'
-          style={{ textDecoration: "none", color: "inherit" }}
-        >
-          <i className='fas fa-paper-plane'></i>
-        </button>
+        
+          <button className={styles.sendButton} type='submit'>
+            <i className='fas fa-paper-plane'></i>
+          </button>
       </div>
     </form>
   );

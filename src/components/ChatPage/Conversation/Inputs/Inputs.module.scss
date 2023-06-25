@@ -1,0 +1,24 @@
+.container {
+  position: relative;
+  height: 50px;
+
+  .textField {
+    height: 100%;
+    width: 100%;
+    padding-right: 40px;
+    border: none;
+    box-shadow: none;
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  .sendButton {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+  }
+}

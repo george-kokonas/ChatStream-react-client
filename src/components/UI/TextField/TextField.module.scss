@@ -9,6 +9,7 @@
   font-family: Arial, sans-serif;
 
   &:focus {
+    border: none;
     outline: 1px solid #f39566e8;
     box-shadow: 0 0 4px rgba(243, 149, 102, 0.8);
   }

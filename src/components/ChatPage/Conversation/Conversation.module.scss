@@ -1,21 +1,16 @@
 .container {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  width: 100%;
   justify-content: space-between;
-  height: 100vh;
-  padding: 50px 0px 0px 20px;
-  background-color: rgb(245, 249, 252);
-  border: 2px solid red;
+  background-color: rgb(33, 35, 41);
+  border-left: 1px solid rgb(233, 233, 233);
+  padding-top: 2vh;
 
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100vh;
-
-    .typingIndicator {
-      padding-left: 15px;
-    }
+  // Messages
+  .conversation {
+    max-height: calc(100vh - 80px);
 
     overflow-y: auto;
     scrollbar-width: thin;
@@ -32,6 +27,17 @@
     &::-webkit-scrollbar-thumb {
       background-color: #cccccc;
       border-radius: 5px;
+    }
+  }
+
+  //Typing indicator and text input 
+  .bottom {
+    .typingIndicator {
+      height: 30px;
+    }
+
+    .inputs {
+      height: 50px;
     }
   }
 }

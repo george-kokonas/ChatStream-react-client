@@ -1,18 +1,16 @@
 .userItem {
   display: grid;
-  grid-template-columns: 0.7fr 1fr 0.9fr;
-  grid-template-rows: 100%;
-  min-height: 10vh;
-  background-color: #e7ebef;
-  background-color: rgb(16, 20, 34);
+  grid-template-columns: 4fr 6fr;
+  min-width: 25vw;
+  min-height: 100px;
+  background-color: rgb(33, 35, 41);
   list-style: none;
-  margin: 0 20px 15px 20px;
-  padding: 2%;
-  border-radius: 20px;
+  padding: 1%;
+  border-bottom: 1px solid white;
   cursor: pointer;
 
   &:hover {
-     background-color: rgb(30, 35, 57);
+    background-color: rgb(40, 43, 53);
   }
 
   .leftSide {
@@ -24,33 +22,24 @@
     display: flex;
     flex-direction: column;
     padding-top: 1px;
-    text-align: center;
+    // text-align: center;
     justify-content: center;
 
     .username {
       font-size: 22px;
-      line-height: 1.2;
       font-weight: bolder;
       font-family: "Arial", sans-serif;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-      color: #07133baa;
-      color: #3395ea;
-         color: #f4f3f3;
+      color: #cbc6c6;
     }
     .profileInfo {
       font-size: 16px;
       font-style: italic;
       line-height: 1.2;
       padding-top: 7px;
-      color: #3395ea;
+      color: #3286d0;
       font-family: "Arial", sans-serif;
       text-shadow: 1px 1px 2px rgba(216, 187, 187, 0.2);
     }
-  }
-
-  .rightSide {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
   }
 }

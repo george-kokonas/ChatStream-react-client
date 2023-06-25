@@ -4,8 +4,14 @@
     border-radius: 7px;
     border: none;
     padding: 15px;
+    background-color: rgb(186, 201, 207);
 
     &:focus {
+      border-color: none;
       outline: none;
+    }
+
+    &::placeholder{
+      font-style: italic;
     }
   }

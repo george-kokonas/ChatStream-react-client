@@ -71,11 +71,9 @@ const Room = ({
         <span className={`${styles.unreadCount} badge bg-danger`}>
           {unseenMessages?.length > 0 && unseenMessages?.length}
         </span>
-        <div className={`${styles.unreadCount} badge`}>
+        <div className={styles.unreadCount}>
           <CustomTimeAgo date={preview.createdAt} />
         </div>
-
-        <div>{isOnlineFriend}</div>
       </div>
     </li>
   );

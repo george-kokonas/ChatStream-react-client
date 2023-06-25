@@ -278,23 +278,26 @@ const ChatPage = ({ onUserChangeState }) => {
       {/* SIDEBAR */}
       {currentUser && (
         <div className={styles.container}>
-          <Sidebar
-            currentUser={currentUser}
-            allUsers={allUsers}
-            onlineUsers={onlineUsers}
-            rooms={rooms}
-            setRooms={(newRoom) => setRooms([...rooms, newRoom])}
-            setCurrentRoom={(room) => setCurrentRoom(room)}
-            currentRoom={currentRoom}
-            messagesPreview={messagesPreview}
-            unseenMessages={unseenMessages}
-            updateMessagesStatus={updateMessagesStatus}
-            setMainWindowContent={setMainWindowContent}
-            onUserChangeState={onUserChangeState}
-            socket={socket.current}
-          />
+          <div className={styles.sidebar}>
+            <Sidebar
+              currentUser={currentUser}
+              allUsers={allUsers}
+              onlineUsers={onlineUsers}
+              rooms={rooms}
+              setRooms={(newRoom) => setRooms([...rooms, newRoom])}
+              setCurrentRoom={(room) => setCurrentRoom(room)}
+              currentRoom={currentRoom}
+              messagesPreview={messagesPreview}
+              unseenMessages={unseenMessages}
+              updateMessagesStatus={updateMessagesStatus}
+              setMainWindowContent={setMainWindowContent}
+              onUserChangeState={onUserChangeState}
+              socket={socket.current}
+            />
+          </div>
 
           <div className={styles.mainWindowContainer}>
+            {/* CONVERSATION */}
             {mainWindowContent === "conversation" && (
               <>
                 {currentRoom && (
@@ -321,11 +324,14 @@ const ChatPage = ({ onUserChangeState }) => {
             )}
 
             {mainWindowContent === "overview" && (
-              <Overview currentUser={currentUser} allUsers = {allUsers} onlineUsers={onlineUsers}/>
+              <Overview
+                currentUser={currentUser}
+                allUsers={allUsers}
+                onlineUsers={onlineUsers}
+              />
             )}
-          </div>
 
-          {/* CONVERSATION */}
+          </div>
         </div>
       )}
       {isLoading && <div className='loader-container' />}
