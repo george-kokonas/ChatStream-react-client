@@ -6,11 +6,11 @@
   justify-content: space-between;
   background-color: rgb(33, 35, 41);
   border-left: 1px solid rgb(233, 233, 233);
-  padding-top: 2vh;
-
+  
   // Messages
   .conversation {
     max-height: calc(100vh - 80px);
+    padding-top: 2vh;
 
     overflow-y: auto;
     scrollbar-width: thin;
