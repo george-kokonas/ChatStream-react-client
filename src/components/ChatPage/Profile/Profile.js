@@ -4,12 +4,13 @@ import axios from "axios";
 import API_URL from "../../helpers/config";
 import getAuthHeaders from "../../helpers/authHeaders";
 
-import { MDBBtn } from "mdb-react-ui-kit";
+import TextField from "../../UI/TextField/TextField";
+import Button from "../../UI/Button/Button";
 import styles from "./Profile.module.scss";
 import addProfilePic from "../../../assets/addProfileImage.png";
 import "../../UI/Loader/Loader.css";
 
-const Profile = ({ currentUser, setMainWindowContent, setIsLoading }) => {
+const Profile = ({ currentUser, setIsLoading }) => {
   const [image, setImage] = useState("");
   const [userInfo, setUserInfo] = useState("");
 
@@ -88,82 +89,70 @@ const Profile = ({ currentUser, setMainWindowContent, setIsLoading }) => {
   };
 
   return (
-    <>
-      {/* PROFILE WINDOW CONTAINER */}
-      <div className={styles.profileContainer}>
-        {/* USER UPLOAD PROFILE IMAGE CONTAINER */}
-        <div className={styles.uploadImageContainer}>
-          {/* close button
-          // <div className={styles.closeBtn}>
-          //   <button
-          //     type='button'
-          //     className='btn-close btn-close-black '
-          //     aria-label='Close'
-          //     onClick={() => setMainWindowContent("")}
-          //   />
-          // </div> */}
-
-          {/* image preview */}
-          <div
-            className={`${styles.imagePreview} d-flex justify-content-center mb-4 `}
-          >
-            <img
-              src={image ? image : `${addProfilePic}`}
-              className={`${image} rounded-circle`}
-              alt='add-profile'
-              onClick={(event) => {
-                event.preventDefault();
-                imageInputRef.current.click();
-              }}
-      
-            />
-          </div>
-
-          <div
-            onClick={UploadImageHandler}
-            className='d-flex justify-content-center'
-          >
-            <MDBBtn rounded className='mx-2 ' color='dark'>
-              UPLOAD
-            </MDBBtn>
-          </div>
-
-          {/* input ref to open file explorer */}
-          <input
-            ref={imageInputRef}
-            type='file'
-            style={{ display: "none" }}
-            onChange={imageChangeHandler}
+    <div className={styles.container}>
+      {/* UPLOAD USER IMAGE */}
+      <div className={styles.uploadImageContainer}>
+        <div
+          className={`${styles.imagePreview} d-flex justify-content-center mb-4 `}
+        >
+          <img
+            src={image ? image : `${addProfilePic}`}
+            className={`${image} rounded-circle`}
+            alt='add-profile'
+            onClick={(event) => {
+              event.preventDefault();
+              imageInputRef.current.click();
+            }}
           />
         </div>
 
-        {/* UPLOAD USER INFO CONTAINER */}
-        <div
-          className={`${styles.userInfoContainer} d-flex justify-content-center`}
-        >
-          {/* text input */}
-          <div className='form-group'>
-            <input
-              type='text'
-              className={`${styles.userInfoInput} form-control`}
-              aria-describedby='user-info-input'
-              placeholder='Enter something you want to share with the world...'
-              value={userInfo}
-              onChange={(event) => setUserInfo(event.target.value)}
-            />
+        <div>
+          <Button
+            type='submit'
+            width='150px'
+            height='5vh'
+            // responsiveWidth='60vw'
+            borderRadius='20px'
+            label='submit'
+            onClick={UploadImageHandler}
+          />
+        </div>
 
-            <div
-              onClick={submitInfoHandler}
-              className={`${styles.infoSubmitBtn} d-flex justify-content-center `}
-            >
-              <MDBBtn rounded className='my-2 ' color='dark'>
-                SUBMIT
-              </MDBBtn>
-            </div>
-          </div>
+        {/* input ref to open file explorer */}
+        <input
+          ref={imageInputRef}
+          type='file'
+          style={{ display: "none" }}
+          onChange={imageChangeHandler}
+        />
+      </div>
+      <hr />
+
+      {/* UPLOAD USER INFO */}
+      <div className={styles.userInfoContainer}>
+        <TextField
+          type='text'
+          value={userInfo}
+          placeholder='Enter something you want to share...'
+          width='40vw'
+          height='7vh'
+          // responsiveWidth='80vw'
+          backgroundColor='rgb(217, 222, 237)'
+          onChange={(event) => setUserInfo(event.target.value)}
+        />
+        <div className={styles.submitInfoButton}>
+          <Button
+            type='submit'
+            width='150px'
+            height='5vh'
+            responsiveWidth='60vw'
+            borderRadius='20px'
+            label='submit'
+            onClick={submitInfoHandler}
+          />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

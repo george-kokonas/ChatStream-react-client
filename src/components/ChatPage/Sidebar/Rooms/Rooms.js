@@ -22,7 +22,7 @@ const Rooms = ({
               setCurrentRoom(room);
               updateMessagesStatus(room._id);
               setMainWindowContent("conversation");
-              setIsBarVisible(true);
+              setIsBarVisible(false);
             }}
             key={room._id}
           >

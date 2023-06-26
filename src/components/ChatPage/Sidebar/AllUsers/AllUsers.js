@@ -31,7 +31,7 @@ const AllUsers = ({
         setCurrentRoom(rooms[i]);
         setMainWindowContent("conversation");
         setTab("rooms");
-        setIsBarVisible(true);
+        setIsBarVisible(false);
         return;
       }
     }
@@ -58,7 +58,7 @@ const AllUsers = ({
       setTab("rooms");
 
       //a
-      setIsBarVisible(true);
+      setIsBarVisible(false);
 
       //open conversations list
     } catch (error) {

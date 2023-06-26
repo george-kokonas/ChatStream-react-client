@@ -44,7 +44,7 @@ const ProfileButton = ({
           <MDBDropdownItem
             onClick={() => {
               setMainWindowContent("profile");
-              setIsBarVisible(true)
+              setIsBarVisible(false)
             }}
           >
             <MDBDropdownLink href='#'>Set Profile</MDBDropdownLink>

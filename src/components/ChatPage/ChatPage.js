@@ -4,7 +4,7 @@ import axios from "axios";
 import Sidebar from "./Sidebar/Sidebar";
 import Conversation from "./Conversation/Conversation";
 import Profile from "./Profile/Profile";
-import Overview from "./Overview/Overview";
+// import Overview from "./Overview/Overview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../UI/Loader/Loader.css";
 import { faSliders } from "@fortawesome/free-solid-svg-icons";
@@ -28,7 +28,7 @@ const ChatPage = ({ onUserChangeState }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [unseenMessages, setUnseenMessages] = useState([]);
   const [mainWindowContent, setMainWindowContent] = useState("conversation");
-  const [isBarVisible, setIsBarVisible] = useState(false);
+  const [isBarVisible, setIsBarVisible] = useState(true);
 
   const socket = useRef();
 
@@ -284,7 +284,7 @@ const ChatPage = ({ onUserChangeState }) => {
         <div className={styles.container}>
           <div
             className={
-              !isBarVisible ? `${styles.sidebar}` : `${styles.hiddenBar}`
+              isBarVisible ? `${styles.sidebar}` : `${styles.hiddenBar}`
             }
           >
             <Sidebar
@@ -305,9 +305,8 @@ const ChatPage = ({ onUserChangeState }) => {
             />
           </div>
 
-          {isBarVisible && (
+          {!isBarVisible && (
             <div className={styles.mainWindowContainer}>
-
               {/* TOGGLE BUTTON */}
               <div className={styles.toggleButtonContainer}>
                 <FontAwesomeIcon
@@ -315,10 +314,10 @@ const ChatPage = ({ onUserChangeState }) => {
                   style={{ color: "#dfdddd" }}
                   size='2xl'
                   beat={unseenMessages.length > 0}
-                  onClick={() => setIsBarVisible(false)}
+                  onClick={() => setIsBarVisible(true)}
                 />
               </div>
-      
+
               {/* CONVERSATION */}
               {mainWindowContent === "conversation" && (
                 <>
