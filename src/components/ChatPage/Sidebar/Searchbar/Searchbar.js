@@ -33,9 +33,9 @@ const Searchbar = ({
 
   return (
     <TextInput
-      type='password'
+      type='text'
       value={searchQuery}
-      placeholder='Password...'
+      placeholder='Search...'
       width='70%'
       height='40px'
       mobileWidth='70%'
