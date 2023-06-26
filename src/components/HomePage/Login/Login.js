@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import API_URL from "../../helpers/config";
-import Textfield from "../../UI/TextField/TextField";
+import TextInput from "../../UI/TextInput/TextInput";
 import Button from "../../UI/Button/Button";
 
 import styles from "../formStyles/formStyles.module.scss";
@@ -75,14 +75,16 @@ const Login = ({ onUserChangeState, onSetLoading }) => {
     <div className={styles.container}>
       {/* EMAIL INPUT FIELD */}
       <div className={styles.inputWrapper}>
-        <Textfield
-          className={styles.textInp}
+        <TextInput
           type='email'
           value={email}
-          height='5vh'
+          placeholder='E-mail...'
           width='40vw'
-          responsiveWidth='80vw'
-          placeholder='E-mail'
+          height='5.5vh'
+          mobileWidth='70vw'
+          mobileHeight='5.5vh'
+          backgroundColor='#f5ede9e8'
+          borderRadius='7px'
           onChange={(event) => {
             setEmail(event.target.value);
             setEmailError(null);
@@ -95,13 +97,16 @@ const Login = ({ onUserChangeState, onSetLoading }) => {
 
       {/* PASSWORD INPUT FIELD */}
       <div className={styles.inputWrapper}>
-        <Textfield
-          value={password}
+        <TextInput
           type='password'
-          height='5vh'
+          value={password}
+          placeholder='Password...'
           width='40vw'
-          responsiveWidth='80vw'
-          placeholder='Password'
+          height='5.5vh'
+          mobileWidth='70vw'
+          mobileHeight='5.5vh'
+          backgroundColor='#f5ede9e8'
+          borderRadius='7px'
           onChange={(event) => {
             setPassword(event.target.value);
             setPasswordError(null);
@@ -116,12 +121,16 @@ const Login = ({ onUserChangeState, onSetLoading }) => {
       <div className={styles.buttonContainer}>
         <Button
           type='submit'
-          label='log in'
+          text='log in'
           width='40vw'
-          height='4vh'
-          responsiveWidth='80vw'
+          height='4.5vh'
+          mobileWidth='70vw'
+          mobileHeight='4.5vh'
+          borderRadius='7px'
+          backgroundColor='#ea8959e8'
           onClick={submitHandler}
         />
+
         <p className={styles.accountText}>
           No account yet? <br />{" "}
           <span

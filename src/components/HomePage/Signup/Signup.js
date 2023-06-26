@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import API_URL from "../../helpers/config";
-import Textfield from "../../UI/TextField/TextField";
+import TextInput from "../../UI/TextInput/TextInput";
 import Button from "../../UI/Button/Button";
 
 import styles from "../formStyles/formStyles.module.scss";
@@ -95,15 +95,20 @@ const SignUp = ({ onUserChangeState, onSetLoading }) => {
       {/* EMAIL INPUT FIELD */}
       <div className={styles.container}>
         <div className={styles.inputWrapper}>
-          <Textfield
-            type='email'
-            value={email}
-            height='5vh'
-            width='40vw'
-            responsiveWidth='80vw'
-            placeholder='E-mail'
-            onChange={(event) => setEmail(event.target.value)}
-          />
+        <TextInput
+          type='email'
+          value={email}
+          placeholder='E-mail...'
+          width='40vw'
+          height='5.5vh'
+          mobileWidth='70vw'
+          mobileHeight='5.5vh'
+          backgroundColor='#f5ede9e8'
+          borderRadius='7px'
+          onChange={(event) => {
+            setEmail(event.target.value);
+          }}
+        />
           {emailError && (
             <span className={styles.errorMessage}>{emailError}</span>
           )}
@@ -111,15 +116,18 @@ const SignUp = ({ onUserChangeState, onSetLoading }) => {
         {/* USERNAME INPUT FIELD */}
 
         <div className={styles.inputWrapper}>
-          <Textfield
-            type='text'
-            value={username}
-            height='5vh'
-            width='40vw'
-            responsiveWidth='80vw'
-            placeholder='Username'
-            onChange={(event) => setUsername(event.target.value)}
-          />
+        <TextInput
+          type='text'
+          value={username}
+          placeholder='Username...'
+          width='40vw'
+          height='5.5vh'
+          mobileWidth='70vw'
+          mobileHeight='5.5vh'
+          backgroundColor='#f5ede9e8'
+          borderRadius='7px'
+          onChange={(event) => setUsername(event.target.value)}
+        />
           {usernameError && (
             <span className={styles.errorMessage}>{usernameError}</span>
           )}
@@ -127,29 +135,37 @@ const SignUp = ({ onUserChangeState, onSetLoading }) => {
 
         {/* PASSWORD INPUT FIELD */}
         <div className={styles.inputWrapper}>
-          <Textfield
-            type='password'
-            value={password}
-            height='5vh'
-            width='40vw'
-            responsiveWidth='80vw'
-            placeholder='Password'
-            onChange={(event) => setPassword(event.target.value)}
-          />
+        <TextInput
+          type='password'
+          value={password}
+          placeholder='Password...'
+          width='40vw'
+          height='5.5vh'
+          mobileWidth='70vw'
+          mobileHeight='5.5vh'
+          backgroundColor='#f5ede9e8'
+          borderRadius='7px'
+          onChange={(event) => setPassword(event.target.value)}
+        />
           {passwordError && (
             <span className={styles.errorMessage}>{passwordError}</span>
           )}
         </div>
+        
         {/* SUBMIT BUTTON */}
         <div className={styles.buttonContainer}>
-          <Button
-            type='submit'
-            label='sign up'
-            width='40vw'
-            height='4vh'
-            responsiveWidth='80vw'
-            onClick={submitHandler}
-          />
+        <Button
+          type='submit'
+          text='sign up'
+          width='40vw'
+          height='4.5vh'
+          mobileWidth='70vw'
+          mobileHeight='4.5vh'
+          borderRadius='7px'
+          backgroundColor='#ea8959e8'
+          onClick={submitHandler}
+        />
+    
           <p className={styles.accountText}>
             Already a member?{" "}
             <span

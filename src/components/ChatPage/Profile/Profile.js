@@ -4,7 +4,7 @@ import axios from "axios";
 import API_URL from "../../helpers/config";
 import getAuthHeaders from "../../helpers/authHeaders";
 
-import TextField from "../../UI/TextField/TextField";
+import TextInput from "../../UI/TextInput/TextInput";
 import Button from "../../UI/Button/Button";
 import styles from "./Profile.module.scss";
 import addProfilePic from "../../../assets/addProfileImage.png";
@@ -109,11 +109,13 @@ const Profile = ({ currentUser, setIsLoading }) => {
         <div>
           <Button
             type='submit'
-            width='150px'
-            height='5vh'
-            // responsiveWidth='60vw'
-            borderRadius='20px'
-            label='submit'
+            text='upload'
+            width='15vw'
+            height='4.5vh'
+            mobileWidth='40vw'
+            mobileHeight='4.5vh'
+            borderRadius='12px'
+            backgroundColor='#ea8959e8'
             onClick={UploadImageHandler}
           />
         </div>
@@ -130,24 +132,28 @@ const Profile = ({ currentUser, setIsLoading }) => {
 
       {/* UPLOAD USER INFO */}
       <div className={styles.userInfoContainer}>
-        <TextField
-          type='text'
+        <TextInput
+          type='email'
           value={userInfo}
           placeholder='Enter something you want to share...'
           width='40vw'
-          height='7vh'
-          // responsiveWidth='80vw'
-          backgroundColor='rgb(217, 222, 237)'
+          height='5.5vh'
+          mobileWidth='70vw'
+          mobileHeight='5.5vh'
+          backgroundColor='#f5ede9e8'
+          borderRadius='7px'
           onChange={(event) => setUserInfo(event.target.value)}
         />
         <div className={styles.submitInfoButton}>
           <Button
             type='submit'
-            width='150px'
-            height='5vh'
-            responsiveWidth='60vw'
-            borderRadius='20px'
-            label='submit'
+            text='sumbit'
+            width='15vw'
+            height='4.5vh'
+            mobileWidth='40vw'
+            mobileHeight='4.5vh'
+            borderRadius='12px'
+            backgroundColor='#ea8959e8'
             onClick={submitInfoHandler}
           />
         </div>

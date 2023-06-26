@@ -276,7 +276,6 @@ const ChatPage = ({ onUserChangeState }) => {
     }
   }, [instantMessage, rooms]);
 
-  console.log(unseenMessages);
   return (
     <>
       {/* SIDEBAR */}

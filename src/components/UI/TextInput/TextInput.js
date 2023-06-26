@@ -1,24 +1,26 @@
 import React, { useEffect, useState, useCallback } from "react";
-import styles from "./Button.module.scss";
+import styles from "./TextInput.module.scss";
 
-const Button = ({
-  text,
+const TextInput = ({
+  type,
+  value,
+  placeholder,
   width,
-  mobileWidth,
   height,
+  mobileWidth,
   mobileHeight,
   backgroundColor,
   borderRadius,
-  onClick,
+  onChange
 }) => {
-  const [buttonWidth, setButtonWidth] = useState(width);
-  const [buttonHeight, setButtonHeight] = useState(height);
+  const [inputWidth, setInputWidth] = useState(width);
+  const [inputHeight, setInputHeight] = useState(height);
 
   const handleResize = useCallback(() => {
     const newWidth = window.innerWidth < 768 ? mobileWidth : width;
     const newHeight = window.innerWidth < 768 ? mobileHeight : height;
-    setButtonWidth(newWidth);
-    setButtonHeight(newHeight);
+    setInputWidth(newWidth);
+    setInputHeight(newHeight);
   }, [width, mobileWidth, height, mobileHeight]);
 
   useEffect(() => {
@@ -33,19 +35,23 @@ const Button = ({
     };
   }, [handleResize]);
 
-  const buttonStyles = {
-    width: buttonWidth,
-    height: buttonHeight,
-    "--background-color": backgroundColor, // Set the CSS variable value
-    borderRadius,
+  const inputStyles = {
+    width: inputWidth,
+    height: inputHeight,
+    backgroundColor :backgroundColor,
+    borderRadius: borderRadius
   };
 
   return (
-    <button className={styles.button} style={buttonStyles} onClick={onClick}>
-      {text}
-    </button>
+    <input
+      className={styles.textInput}
+      type={type}
+      value={value}
+      placeholder={placeholder}
+      style={inputStyles}
+      onChange={onChange}
+    />
   );
 };
 
-
-export default Button;
+export default TextInput;

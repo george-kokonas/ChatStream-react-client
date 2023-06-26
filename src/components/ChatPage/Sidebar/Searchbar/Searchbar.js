@@ -1,4 +1,4 @@
-import styles from "./Searchbar.module.scss";
+import TextInput from "../../../UI/TextInput/TextInput";
 
 const Searchbar = ({
   allUsers,
@@ -32,15 +32,18 @@ const Searchbar = ({
   };
 
   return (
-    <>
-      <input
-        className={styles.searchbar}
-        type='text'
-        placeholder='Search...'
-        value={searchQuery}
-        onChange={tab === "users" ? handleSearchUser : handleSearchRoom}
-      />
-    </>
+    <TextInput
+      type='password'
+      value={searchQuery}
+      placeholder='Password...'
+      width='70%'
+      height='40px'
+      mobileWidth='70%'
+      mobileHeight='70%'
+      backgroundColor='rgb(186, 201, 207)'
+      borderRadius='7px'
+      onChange={tab === "users" ? handleSearchUser : handleSearchRoom}
+    />
   );
 };
 

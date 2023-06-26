@@ -1,19 +1,23 @@
 .button {
   display: flex;
-  align-items: center;
   justify-content: center;
-  background-color: #ea8959e8;
+  align-items: center;
   color: #ededed;
   font-weight: bold;
   border: none;
   border-radius: 5px;
   font-size: 15px;
-  font-family: Arial, sans-serif;
+  font-family: "Roboto", sans-serif;
   padding: 10px 20px;
   transition: background-color 0.3s ease;
-  cursor: pointer;
   text-transform: uppercase;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+
+  /* Use a CSS variable for background color */
+  background-color: var(
+    --background-color
+  ); 
 
   &:hover {
     background-color: rgb(76, 76, 76);
