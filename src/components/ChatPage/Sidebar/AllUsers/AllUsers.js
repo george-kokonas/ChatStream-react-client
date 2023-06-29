@@ -17,14 +17,12 @@ const AllUsers = ({
   setTab,
 }) => {
   const newRoomHandler = async (selectedUser) => {
+    
     //prevent user from starting a conversation with himself
-
-    console.log("current" , currentUser);
     if (selectedUser._id === currentUser._id) {
       return;
     }
-
-    console.log(1);
+    
     //if no chat create room else navigate to chat with clicked user
     for (let i = 0; i < rooms.length; i++) {
       if (rooms[i].members.includes(selectedUser._id)) {

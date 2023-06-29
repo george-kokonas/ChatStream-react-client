@@ -6,6 +6,10 @@
   justify-content: space-between;
   background-color: rgb(33, 35, 41);
   border-left: 1px solid rgb(233, 233, 233);
+
+  @media (max-width: 767px) {
+    border: none;
+  }
   
   // Messages
   .conversation {

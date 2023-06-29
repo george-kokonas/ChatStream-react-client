@@ -13,8 +13,8 @@
     }
   }
 
-  /* Media Query for Mobile Devices */
-  @media (max-width: 480px) {
+  /* Media Query for Mobile  , low resolution Tablets, Ipads */
+  @media (max-width: 767px) {
     .sidebar {
       width: 100vw;
     }
@@ -28,20 +28,6 @@
     }
   }
 
-  /* Media Query for low resolution Tablets, Ipads */
-  @media (min-width: 481px) and (max-width: 767px) {
-    .sidebar {
-      width: 100vw;
-    }
-
-    .hiddenBar {
-      display: none;
-    }
-
-    .mainWindowContainer {
-      width: 100vw;
-    }
-  }
 
   /* Media Query for Tablets Ipads portrait mode */
   @media (min-width: 768px) and (max-width: 1024px) {

@@ -4,7 +4,6 @@ import axios from "axios";
 import Sidebar from "./Sidebar/Sidebar";
 import Conversation from "./Conversation/Conversation";
 import Profile from "./Profile/Profile";
-// import Overview from "./Overview/Overview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../UI/Loader/Loader.css";
 import { faSliders } from "@fortawesome/free-solid-svg-icons";
@@ -345,14 +344,6 @@ const ChatPage = ({ onUserChangeState }) => {
               )}
             </div>
           )}
-
-          {/* {mainWindowContent === "overview" && (
-              <Overview
-              currentUser={currentUser}
-              allUsers={allUsers}
-              onlineUsers={onlineUsers}
-              />
-            )} */}
         </div>
       )}
       {isLoading && <div className='loader-container' />}
