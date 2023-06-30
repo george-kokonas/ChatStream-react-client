@@ -4,7 +4,7 @@ This repository contains the client side for ChatStream, a real time chat Applic
 
 ## Project Overview
 This repository is part of a larger project that includes the following components as well:
-- [Express Server](https://github.com/your-username/express-server): The Express server handles API requests and database operations for the ChatStream application, including authorization-authentication.
+- [Express Server](https://github.com/george-kokonas/ChatStream-express-server): The Express server handles API requests and database operations for the ChatStream application, including authorization-authentication.
 - [Socket Server](https://github.com/george-kokonas/ChatStream-socket-server): The Socket server handles real-time communication between clients in the ChatStream application.
 
 You can explore these repositories to learn more about the other components of the project.
@@ -102,7 +102,7 @@ Now you can open your web browser and navigate to http://localhost:3000 (or the 
 
 Any feedback, ideas, suggestions, or bug reports you may have regarding this project are welcome! If you would like to contribute to the development of this application, please contact me. Together, we can make ChatStream better!
 
-For any inquiries or direct communication, you can reach out to me via email at [g.kokwnas@gmail.com](mailto:g.kokwnas@gmail.com).
+For any inquiries or direct communication, you can reach out to me via email at [g.kokwnas@gmail.com](mailto:g.kokwnas@gmail.com)
 
 ## License
 
