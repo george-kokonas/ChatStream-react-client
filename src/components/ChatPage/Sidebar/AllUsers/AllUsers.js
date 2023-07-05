@@ -23,7 +23,7 @@ const AllUsers = ({
       return;
     }
     
-    //if no chat create room else navigate to chat with clicked user
+    //if no chat, create room, else navigate to chat with clicked user
     for (let i = 0; i < rooms.length; i++) {
       if (rooms[i].members.includes(selectedUser._id)) {
         setCurrentRoom(rooms[i]);
@@ -33,7 +33,8 @@ const AllUsers = ({
         return;
       }
     }
-    // create room
+
+    // add participants
     const room = {
       senderId: currentUser._id,
       receiverId: selectedUser._id,
@@ -55,12 +56,10 @@ const AllUsers = ({
       //switch to chats tab
       setTab("rooms");
 
-      //a
+      //used for small screens to toggle between sidebar and conversations
       setIsBarVisible(false);
 
-      //open conversations list
     } catch (error) {
-      console.log(error);
       alert("Unable to start new conversation...");
     }
   };

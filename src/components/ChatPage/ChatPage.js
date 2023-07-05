@@ -76,7 +76,6 @@ const ChatPage = ({ onUserChangeState }) => {
           setCurrentUser(data);
           setIsLoading(false);
         } catch (error) {
-          console.log(error);
           alert("Error fetching user data...");
         }
       } else {
@@ -164,7 +163,6 @@ const ChatPage = ({ onUserChangeState }) => {
         setMessages(data);
       } catch (error) {
         alert("Error fetching data");
-        console.log(error);
       }
     };
 
@@ -190,7 +188,6 @@ const ChatPage = ({ onUserChangeState }) => {
         setUnseenMessages(updatedUnseenMessages);
       } catch (error) {
         alert("Error updating message statuses");
-        console.error(error);
       }
     },
     [unseenMessages]
@@ -273,6 +270,7 @@ const ChatPage = ({ onUserChangeState }) => {
     }
   }, [instantMessage, rooms]);
 
+  // DELETE SELECTED ROOM
   const deleteRoomHandler = async (roomId) => {
     const token = localStorage.getItem("token");
     const userId = currentUser._id;
@@ -290,7 +288,7 @@ const ChatPage = ({ onUserChangeState }) => {
       setMainWindowContent("");
       setCurrentRoom(null);
     } catch (error) {
-      console.log(error);
+        alert("Unable to delete chat...")
     }
   };
 

@@ -56,7 +56,6 @@ const Profile = ({ currentUser, setIsLoading }) => {
         "Profile Updated Successfully! Refresh the page to see the changes..."
       );
     } catch (error) {
-      console.error(error);
       alert("Unable to upload Image...");
     }
     setImage("");
@@ -82,7 +81,6 @@ const Profile = ({ currentUser, setIsLoading }) => {
       );
     } catch (error) {
       alert("Unable to Update User Info...");
-      console.log(error);
     }
     setUserInfo("");
     setIsLoading(false);

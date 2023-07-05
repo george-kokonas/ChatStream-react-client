@@ -63,7 +63,6 @@ const Login = ({ onUserChangeState, onSetLoading }) => {
         onUserChangeState(true);
       } catch (error) {
         alert(error.response.data.message);
-        console.log(error);
       }
 
       resetInputs();

@@ -1,8 +1,6 @@
 import React from "react";
 import Room from "./Room/Room";
 
-import { useEffect } from "react";
-
 const Rooms = ({
   rooms,
   currentRoom,
@@ -22,12 +20,6 @@ const Rooms = ({
     setMainWindowContent("conversation");
     setIsBarVisible(false);
   };
-
-
-  useEffect(() => {
-    // console.log(rooms);
-  },[rooms])
-
 
   return (
     <>
