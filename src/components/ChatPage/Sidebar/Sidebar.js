@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import ProfileButton from "./ProfileButton/ProfileButton";
 import Searchbar from "./Searchbar/Searchbar";
@@ -14,6 +14,7 @@ const Sidebar = ({
   rooms,
   setRooms,
   currentRoom,
+  deleteRoomHandler,
   setCurrentRoom,
   messagesPreview,
   unseenMessages,
@@ -28,6 +29,15 @@ const Sidebar = ({
   const [filteredUsers, setFilteredUsers] = useState(allUsers);
   const [searchQuery, setSearchQuery] = useState("");
   const [tab, setTab] = useState("users");
+
+  useEffect(()=>{
+    if(rooms.length >0){
+      setTab("rooms")
+      
+    }else{
+      setTab("users")
+    }
+  },[rooms])
 
   const filteredRoomsHandler = () => {
     //return the rooms array unmodified
@@ -97,7 +107,9 @@ const Sidebar = ({
         {tab === "rooms" && (
           <Rooms
           rooms={filteredRoomsHandler()}
+          setRooms={setRooms}
           currentRoom={currentRoom}
+          deleteRoomHandler={deleteRoomHandler}
           friends={allUsers?.filter((user) => user._id !== currentUser._id)}
           onlineUsers={onlineUsers.filter(
             (user) => user.userId !== currentUser._id

@@ -123,7 +123,6 @@ const ChatPage = ({ onUserChangeState }) => {
   useEffect(() => {
     const getLastMessages = async () => {
       const roomsIds = rooms.map((room) => room._id);
-
       try {
         const { data } = await axios.get(
           `${API_URL}/chat/getLastMessages/${roomsIds}`,
@@ -131,7 +130,7 @@ const ChatPage = ({ onUserChangeState }) => {
         );
         setMessagesPreview(data);
       } catch (error) {
-        alert("Error fetching messages...");
+        alert("Error fetching preview messages...");
       }
     };
     rooms.length && getLastMessages();
@@ -254,7 +253,6 @@ const ChatPage = ({ onUserChangeState }) => {
 
   // TRIGGERED ON RECEIVER'S SIDE WHEN INSTANT MESSAGE ARRIVES AND INITIATES A CONVERSATION (FIRST MESSAGE)
   useEffect(() => {
-    //bad - find another way
     if (!instantMessage) return;
     const roomExists = rooms.find((room) => room._id === instantMessage.roomId);
 
@@ -275,6 +273,27 @@ const ChatPage = ({ onUserChangeState }) => {
     }
   }, [instantMessage, rooms]);
 
+  const deleteRoomHandler = async (roomId) => {
+    const token = localStorage.getItem("token");
+    const userId = currentUser._id;
+    try {
+      await axios.delete(`${API_URL}/chat/deleteChatRoom`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: { roomId, userId },
+      });
+
+      const filteredRooms = rooms.filter((room) => room._id !== roomId);
+      setRooms(filteredRooms);
+      setInstantMessage(null)
+      setMainWindowContent("");
+      setCurrentRoom(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       {/* SIDEBAR */}
@@ -293,6 +312,7 @@ const ChatPage = ({ onUserChangeState }) => {
               setRooms={(newRoom) => setRooms([...rooms, newRoom])}
               setCurrentRoom={(room) => setCurrentRoom(room)}
               currentRoom={currentRoom}
+              deleteRoomHandler={(roomId) => deleteRoomHandler(roomId)}
               messagesPreview={messagesPreview}
               unseenMessages={unseenMessages}
               updateMessagesStatus={updateMessagesStatus}

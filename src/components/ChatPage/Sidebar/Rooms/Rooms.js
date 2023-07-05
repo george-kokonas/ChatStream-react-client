@@ -1,9 +1,12 @@
 import React from "react";
 import Room from "./Room/Room";
 
+import { useEffect } from "react";
+
 const Rooms = ({
   rooms,
   currentRoom,
+  deleteRoomHandler,
   friends,
   onlineUsers,
   messagesPreview,
@@ -13,24 +16,31 @@ const Rooms = ({
   updateMessagesStatus,
   setIsBarVisible,
 }) => {
+  const clickRoomHandler = (room) => {
+    setCurrentRoom(room);
+    updateMessagesStatus(room._id);
+    setMainWindowContent("conversation");
+    setIsBarVisible(false);
+  };
+
+
+  useEffect(() => {
+    // console.log(rooms);
+  },[rooms])
+
+
   return (
     <>
       {rooms.length > 0 &&
         rooms.map((room) => (
-          <div
-            onClick={() => {
-              setCurrentRoom(room);
-              updateMessagesStatus(room._id);
-              setMainWindowContent("conversation");
-              setIsBarVisible(false);
-            }}
-            key={room._id}
-          >
+          <div key={room._id}>
             <Room
+              clickRoomHandler={(room) => clickRoomHandler(room)}
               room={room}
               currentRoom={currentRoom}
+              deleteRoomHandler= {deleteRoomHandler}
               friend={friends.find((friend) =>
-                room.members.includes(friend._id)
+                room.members?.includes(friend._id)
               )}
               onlineUsers={onlineUsers}
               messagePreview={messagesPreview.filter(

@@ -7,15 +7,22 @@
   list-style: none;
   padding: 1%;
   border-bottom: 1px solid white;
-  cursor: pointer;
 
   &:hover {
     background-color: rgb(40, 43, 53);
+
+    .rightSide {
+      .dropDown {
+        color: white;
+        display: block;
+      }
+    }
   }
 
   .leftSide {
     margin: 0;
     align-self: center;
+    cursor: pointer;
   }
 
   .center {
@@ -24,6 +31,7 @@
     padding-top: 1px;
     text-align: center;
     justify-content: center;
+    cursor: pointer;
 
     .username {
       font-size: 22px;
@@ -46,9 +54,22 @@
   .rightSide {
     position: relative;
     text-align: right;
- 
-    //time ago
-    div {
+
+    .dropDown {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      display: none;
+      cursor: pointer;
+    }
+
+    .unreadCount {
+      position: absolute;
+      bottom: 35px;
+      right: 0px;
+    }
+
+    .timeAgo {
       position: absolute;
       bottom: 0;
       right: 0;
@@ -60,14 +81,14 @@
 .currentRoom {
   border: 2px solid rgb(225, 213, 213);
   background-color: rgb(60, 66, 86);
-  
+
   &:hover {
     background-color: rgb(60, 66, 86);
   }
 
   .center {
     .username {
-      color: #e6e6e6
+      color: #e6e6e6;
     }
     .preview {
       font-weight: 600;

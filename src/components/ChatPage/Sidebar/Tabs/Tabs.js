@@ -3,7 +3,6 @@ import styles from "./Tabs.module.scss";
 const Tabs = ({
   tab,
   setTab,
-  setMainWindowContent,
   setSearchQuery,
   hasPreviousChats,
 }) => {
@@ -25,7 +24,6 @@ const Tabs = ({
         className={`${styles.tab} ${tab === "users" ? styles.active : ""}`}
         onClick={() => {
           setTab("users");
-          // setMainWindowContent("overview");
           setSearchQuery("");
         }}
       >

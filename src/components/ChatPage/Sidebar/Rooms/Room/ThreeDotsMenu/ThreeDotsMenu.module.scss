@@ -1,0 +1,18 @@
+.threeDotsMenuContainer {
+    // position: relative;
+    // display: flex;
+    // align-items: center;
+}
+
+.threeDotsMenuOverlay {
+    position: absolute;
+    right: 27px;
+    top: 13px;
+    z-index: 1;
+    height: 20px;
+}
+
+.menuItemWrapper {
+    background-color: rgb(254, 254, 254);
+  }
+  
