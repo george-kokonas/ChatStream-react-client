@@ -60,6 +60,7 @@ const AllUsers = ({
       setIsBarVisible(false);
 
     } catch (error) {
+      console.log(error);
       alert("Unable to start new conversation...");
     }
   };

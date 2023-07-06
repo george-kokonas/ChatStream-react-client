@@ -6,13 +6,12 @@ import Conversation from "./Conversation/Conversation";
 import Profile from "./Profile/Profile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../UI/Loader/Loader.css";
-import { faSliders } from "@fortawesome/free-solid-svg-icons";
 
 import { initiateSocket, getSocket } from "../helpers/socket";
 import getAuthHeaders from "../helpers/authHeaders";
-import fetchChatRooms from "../helpers/fetchChatRooms";
 import API_URL from "../helpers/config";
 
+import { faSliders } from "@fortawesome/free-solid-svg-icons";
 import styles from "./ChatPage.module.scss";
 
 const ChatPage = ({ onUserChangeState }) => {
@@ -105,11 +104,12 @@ const ChatPage = ({ onUserChangeState }) => {
   /* ON USER LOGIN, FETCH HIS ROOMS*/
   useEffect(() => {
     const getRooms = async () => {
-      const url = `${API_URL}/chat/getChatRoom/${currentUser?._id}`;
-
       try {
-        const roomsData = await fetchChatRooms(url);
-        setRooms(roomsData);
+        const { data } = await axios.get(
+          `${API_URL}/chat/getChatRoom/${currentUser?._id}`,
+          getAuthHeaders()
+        );
+        setRooms(data);
       } catch (error) {
         alert("Error fetching Conversations...");
       }
@@ -248,18 +248,21 @@ const ChatPage = ({ onUserChangeState }) => {
     });
   }, [messages]);
 
-  // TRIGGERED ON RECEIVER'S SIDE WHEN INSTANT MESSAGE ARRIVES AND INITIATES A CONVERSATION (FIRST MESSAGE)
+  /* TRIGGERED ON RECEIVER'S SIDE WHEN INSTANT MESSAGE ARRIVES AND INITIATES A CONVERSATION (FIRST MESSAGE)*/
   useEffect(() => {
     if (!instantMessage) return;
+
+    //check if room already exists
     const roomExists = rooms.find((room) => room._id === instantMessage.roomId);
 
     const getRooms = async () => {
-      const url = `${API_URL}/chat/getNewChatRoom/${instantMessage?.roomId}`;
-
       try {
-        const roomData = await fetchChatRooms(url);
+        const { data } = await axios.get(
+          `${API_URL}/chat/getNewChatRoom/${instantMessage?.roomId}`,
+          getAuthHeaders()
+        );
         // Add new room to existing rooms
-        setRooms([...rooms, roomData]);
+        setRooms([...rooms, data]);
       } catch (error) {
         alert("Error fetching data");
       }
@@ -272,23 +275,20 @@ const ChatPage = ({ onUserChangeState }) => {
 
   // DELETE SELECTED ROOM
   const deleteRoomHandler = async (roomId) => {
-    const token = localStorage.getItem("token");
     const userId = currentUser._id;
     try {
       await axios.delete(`${API_URL}/chat/deleteChatRoom`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
         data: { roomId, userId },
+        ...getAuthHeaders(),
       });
 
       const filteredRooms = rooms.filter((room) => room._id !== roomId);
       setRooms(filteredRooms);
-      setInstantMessage(null)
+      setInstantMessage(null);
       setMainWindowContent("");
       setCurrentRoom(null);
     } catch (error) {
-        alert("Unable to delete chat...")
+      alert("Unable to delete chat...");
     }
   };
 

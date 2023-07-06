@@ -97,6 +97,7 @@ const Profile = ({ currentUser, setIsLoading }) => {
             src={image ? image : `${addProfilePic}`}
             className={`${image} rounded-circle`}
             alt='add-profile'
+            width="350"
             onClick={(event) => {
               event.preventDefault();
               imageInputRef.current.click();
