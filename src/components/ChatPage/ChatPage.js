@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import Sidebar from "./Sidebar/Sidebar";
@@ -7,7 +7,11 @@ import Profile from "./Profile/Profile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../UI/Loader/Loader.css";
 
-import { initiateSocket, getSocket } from "../helpers/socket";
+import useSocket, {
+  useOnlineUsers,
+  emitUserToOnlineUsers,
+  useInstantMessages,
+} from "../socket/socket";
 import getAuthHeaders from "../helpers/authHeaders";
 import API_URL from "../helpers/config";
 
@@ -28,36 +32,42 @@ const ChatPage = ({ onUserChangeState }) => {
   const [mainWindowContent, setMainWindowContent] = useState("conversation");
   const [isBarVisible, setIsBarVisible] = useState(true);
 
-  const socket = useRef();
+  /* Initialize socket */
+  const socket = useSocket();
 
-  /* INITIATE SOCKET */
-  useEffect(() => {
-    initiateSocket();
-    socket.current = getSocket();
+  /* Online Users functionality */
+  useOnlineUsers(socket, setOnlineUsers);
+  emitUserToOnlineUsers(socket, currentUser);
 
-    // clean up the socket when the component unmounts
-    return () => {
-      socket.current.disconnect();
-    };
-  }, []);
+  /* Instant Messages functionality */
+  useInstantMessages(
+    socket,
+    currentRoom,
+    setMessages,
+    setUnseenMessages,
+    updateMessagesStatus
+  );
 
-  /*ON USER LOGIN, UPDATE ONLINE USERS ARRAY AND GET ONLINE USERS*/
-  useEffect(() => {
-    if (currentUser) {
-      //add user to onlineUsers array on socket server
-      socket.current.emit("addUser", currentUser?._id);
+  /*UPDATE SEEN MESSAGES STATUS*/
+  async function updateMessagesStatus(roomId) {
+    try {
+      //update messages status in current room
+      await axios.put(
+        `${API_URL}/chat/updateMessagesStatus/${roomId}`,
+        null,
+        getAuthHeaders()
+      );
 
-      //get online users
-      socket.current.on("getOnlineUsers", (users) => {
-        setOnlineUsers(users);
-      });
+      //filter the seen messages from the unseenMessages array
+      const updatedUnseenMessages = unseenMessages.filter(
+        (message) => message.roomId !== roomId
+      );
+      // Update unseenMessages array
+      setUnseenMessages(updatedUnseenMessages);
+    } catch (error) {
+      alert("Error updating message statuses");
     }
-
-    // unsubscribe from event
-    return () => {
-      socket.current.off("getOnlineUsers");
-    };
-  }, [currentUser]);
+  }
 
   /*ON USER LOGIN, GET CURRENT USER DATA*/
   useEffect(() => {
@@ -169,60 +179,6 @@ const ChatPage = ({ onUserChangeState }) => {
     currentRoom && getMessages();
   }, [currentRoom]);
 
-  /*UPDATE SEEN MESSAGES STATUS*/
-  const updateMessagesStatus = useCallback(
-    async (roomId) => {
-      try {
-        //update messages status in current room
-        await axios.put(
-          `${API_URL}/chat/updateMessagesStatus/${roomId}`,
-          null,
-          getAuthHeaders()
-        );
-
-        //filter the seen messages from the unseenMessages array
-        const updatedUnseenMessages = unseenMessages.filter(
-          (message) => message.roomId !== roomId
-        );
-        // Update unseenMessages array
-        setUnseenMessages(updatedUnseenMessages);
-      } catch (error) {
-        alert("Error updating message statuses");
-      }
-    },
-    [unseenMessages]
-  );
-
-  /*ON INSTANT MESSAGE ARRIVAL, SET MESSAGE AND HANDLE UNREAD LOGIC (CONVERSATIONS LIST UNREAD)*/
-  useEffect(() => {
-    socket.current.on("getMessage", (instantMessage) => {
-      setInstantMessage({
-        _id: instantMessage._id,
-        roomId: instantMessage.roomId,
-        senderId: instantMessage.senderId,
-        receiverId: instantMessage.receiverId,
-        text: instantMessage.text,
-        isSeen: instantMessage.isSeen,
-        createdAt: instantMessage.createdAt,
-      });
-      setMessages((prev) => [...prev, instantMessage]);
-
-      //if user is already in conversation that receives instant message, mark message as seen
-      if (currentRoom?._id === instantMessage.roomId) {
-        updateMessagesStatus(instantMessage.roomId);
-
-        //add messages to unseenMessages array to increase the count
-      } else {
-        setUnseenMessages((prev) => [...prev, instantMessage]);
-      }
-    });
-
-    // unsubscribe from event
-    return () => {
-      socket.current.off("getMessage");
-    };
-  }, [currentRoom, updateMessagesStatus]);
-
   /*SET INCOMING INSTANT MESSAGE AS LAST MESSAGE (CONVERSATIONS LIST PREVIEW) */
   useEffect(() => {
     if (!instantMessage) return;
@@ -273,7 +229,7 @@ const ChatPage = ({ onUserChangeState }) => {
     }
   }, [instantMessage, rooms]);
 
-  // DELETE SELECTED ROOM
+  /* DELETE SELECTED CHATROOM*/
   const deleteRoomHandler = async (roomId) => {
     const userId = currentUser._id;
     try {
@@ -294,7 +250,6 @@ const ChatPage = ({ onUserChangeState }) => {
 
   return (
     <>
-      {/* SIDEBAR */}
       {currentUser && (
         <div className={styles.container}>
           <div
