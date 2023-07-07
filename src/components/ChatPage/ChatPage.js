@@ -9,9 +9,8 @@ import "../UI/Loader/Loader.css";
 
 import useSocket, {
   useOnlineUsers,
-  emitUserToOnlineUsers,
   useInstantMessages,
-} from "../socket/socket";
+} from "../socket/useSocket";
 import getAuthHeaders from "../helpers/authHeaders";
 import API_URL from "../helpers/config";
 
@@ -36,8 +35,8 @@ const ChatPage = ({ onUserChangeState }) => {
   const socket = useSocket();
 
   /* Online Users functionality */
-  useOnlineUsers(socket, setOnlineUsers);
-  emitUserToOnlineUsers(socket, currentUser);
+  useOnlineUsers(socket,currentUser, setOnlineUsers);
+  // emitUserToOnlineUsers(socket, currentUser);
 
   /* Instant Messages functionality */
   useInstantMessages(
