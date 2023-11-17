@@ -31,7 +31,7 @@ const Rooms = ({
               room={room}
               currentRoom={currentRoom}
               deleteRoomHandler= {deleteRoomHandler}
-              friend={friends.find((friend) =>
+              friend={friends?.find((friend) =>
                 room.members?.includes(friend._id)
               )}
               onlineUsers={onlineUsers}

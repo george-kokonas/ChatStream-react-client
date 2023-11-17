@@ -133,7 +133,7 @@ const ChatPage = ({ onUserChangeState }) => {
       const roomsIds = rooms.map((room) => room._id);
       try {
         const { data } = await axios.get(
-          `${API_URL}/chat/getLastMessages/${roomsIds}`,
+          `${API_URL}/chat/getMessagesPreview/${roomsIds}`,
           getAuthHeaders()
         );
         setMessagesPreview(data);
